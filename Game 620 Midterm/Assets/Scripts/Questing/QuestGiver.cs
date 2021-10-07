@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class QuestGiver : NPC {
   public bool AssignedQuest { get; set; }
-  public bool Helped { get; set; }
 
   [SerializeField]
   private GameObject quests;
@@ -13,11 +12,16 @@ public class QuestGiver : NPC {
   private string questType;
   public Quest Quest { get; set; }
 
+  private void Start() {
+    QuestEvents.QuestAccepted += AssignQuest;
+  }
+
 
   public override void Interact() {
     if (!AssignedQuest) {
       base.Interact();
-      AssignQuest();
+      QuestEvents.ProposeQuest(this);
+      //AssignQuest();
     }
     else if (AssignedQuest) {
       CheckQuest();
@@ -25,10 +29,12 @@ public class QuestGiver : NPC {
   }
 
 
-  private void AssignQuest() {
-    AssignedQuest = true;
-    Quest = (Quest)quests.AddComponent(System.Type.GetType(questType));
-    Debug.Log("Assigned");
+  private void AssignQuest(QuestGiver questGiver) {
+    if (questGiver.tag == this.tag) {
+      AssignedQuest = true;
+      Quest = (Quest)quests.AddComponent(System.Type.GetType(questType));
+      Debug.Log("Assigned");
+    }
   }
 
   private void CheckQuest() {

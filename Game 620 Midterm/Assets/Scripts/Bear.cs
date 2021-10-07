@@ -18,8 +18,6 @@ public class Bear : Enemy {
       if (this.health <= 0) {
         Die();
       }
-
-      Debug.Log(this.health);
     }
 
 

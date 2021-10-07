@@ -8,6 +8,13 @@ TagManager:
   - AreaTwo
   - AreaThree
   - AreaFour
+  - Tom
+  - Macy
+  - Bringo
+  - QuestGiver
+  - help
+  - coding sucks
+  - so much effort
   layers:
   - Default
   - TransparentFX
