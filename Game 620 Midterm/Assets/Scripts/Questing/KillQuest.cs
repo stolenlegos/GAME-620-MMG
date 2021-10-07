@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Kill_Quest : Quest {
-  [SerializeField]
+public class KillQuest : Quest {
   private int targetNumber;
-
-  [SerializeField]
   private EnemyID enemyID;
+
 
   void Start() {
     enemyID = RandomiseType();
@@ -18,8 +16,6 @@ public class Kill_Quest : Quest {
     Goals.Add(new KillGoal(this, enemyID, Description, false, 0, targetNumber));
 
     Goals.ForEach(g => g.Initialise());
-    Debug.Log(enemyID);
-    Debug.Log(targetNumber);
     Debug.Log(QuestName);
     Debug.Log(Description);
   }

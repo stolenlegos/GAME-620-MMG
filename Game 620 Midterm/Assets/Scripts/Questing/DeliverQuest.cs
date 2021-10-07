@@ -6,6 +6,7 @@ public class DeliverQuest : Quest {
   private ItemID itemID;
   private NpcID npcID;
 
+
   void Start() {
     itemID = RandomiseType();
     npcID = RandomiseNPC();
@@ -15,8 +16,6 @@ public class DeliverQuest : Quest {
     Goals.Add(new DeliverGoal(this, itemID, npcID, Description, false, 0, 1));
 
     Goals.ForEach(g => g.Initialise());
-    Debug.Log(itemID);
-    Debug.Log(npcID);
     Debug.Log(QuestName);
     Debug.Log(Description);
   }
