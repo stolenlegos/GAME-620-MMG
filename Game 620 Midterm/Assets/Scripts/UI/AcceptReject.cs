@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIEvents : MonoBehaviour {
+public class AcceptReject : MonoBehaviour {
   [SerializeField]
   private Text questProposalText;
   [SerializeField]

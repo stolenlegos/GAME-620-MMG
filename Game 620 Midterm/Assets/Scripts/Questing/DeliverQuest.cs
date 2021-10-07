@@ -16,8 +16,7 @@ public class DeliverQuest : Quest {
     Goals.Add(new DeliverGoal(this, itemID, npcID, Description, false, 0, 1));
 
     Goals.ForEach(g => g.Initialise());
-    Debug.Log(QuestName);
-    Debug.Log(Description);
+    AddToList(this);
   }
 
 
