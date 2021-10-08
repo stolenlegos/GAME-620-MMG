@@ -17,6 +17,15 @@ public class DeliverQuest : Quest {
 
     Goals.ForEach(g => g.Initialise());
     AddToList(this);
+
+    UIEvents.QuestRemoved += DeleteQuest;
+  }
+
+
+  private void DeleteQuest(Quest quest){
+    if (quest == this) {
+      Destroy(this);
+    }
   }
 
 
