@@ -16,8 +16,16 @@ public class KillQuest : Quest {
     Goals.Add(new KillGoal(this, enemyID, Description, false, 0, targetNumber));
 
     Goals.ForEach(g => g.Initialise());
-    Debug.Log(QuestName);
-    Debug.Log(Description);
+    AddToList(this);
+
+    UIEvents.QuestRemoved += DeleteQuest;
+  }
+
+
+  private void DeleteQuest(Quest quest){
+    if (quest == this) {
+      Destroy(this);
+    }
   }
 
 

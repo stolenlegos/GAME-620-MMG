@@ -21,4 +21,9 @@ public class Quest : MonoBehaviour {
       InventoryController.Instance.GiveItem(ItemReward);
     }*/
   }
+
+
+  protected void AddToList(Quest quest) {
+    UIEvents.QuestCreated(quest);
+  }
 }

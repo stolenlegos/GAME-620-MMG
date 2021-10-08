@@ -14,6 +14,7 @@ public class QuestGiver : NPC {
 
   private void Start() {
     QuestEvents.QuestAccepted += AssignQuest;
+    UIEvents.QuestRemoved += DroppedQuest;
   }
 
 
@@ -33,7 +34,6 @@ public class QuestGiver : NPC {
     if (questGiver.tag == this.tag) {
       AssignedQuest = true;
       Quest = (Quest)quests.AddComponent(System.Type.GetType(questType));
-      Debug.Log("Assigned");
     }
   }
 
@@ -46,6 +46,14 @@ public class QuestGiver : NPC {
     else {
       Debug.Log("Finish your task, butthole.");
       //pass in progress dialogue string here
+    }
+  }
+
+
+  private void DroppedQuest(Quest quest) {
+    if (quest == this.Quest) {
+      AssignedQuest = false;
+      Quest = null;
     }
   }
 }
