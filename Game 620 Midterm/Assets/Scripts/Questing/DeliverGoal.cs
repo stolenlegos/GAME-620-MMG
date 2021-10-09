@@ -9,6 +9,7 @@ public class DeliverGoal : Goal {
   public DeliverGoal (Quest quest, ItemID itemID, NpcID npcID, string description, bool completed, int currentAmount, int requiredAmount) {
     this.Quest = quest;
     this.ItemID = itemID;
+    this.NpcID = npcID;
     this.Description = description;
     this.Completed = completed;
     this.CurrentAmount = currentAmount;

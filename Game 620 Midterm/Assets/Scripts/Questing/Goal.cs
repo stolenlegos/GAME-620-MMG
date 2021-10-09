@@ -23,7 +23,7 @@ public class Goal {
 
 
   protected void Complete () {
-    Quest.CheckGoals();
     Completed = true;
+    Quest.CheckGoals();
   }
 }

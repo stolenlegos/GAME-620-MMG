@@ -6,6 +6,7 @@ public abstract class Enemy : MonoBehaviour {
   public EnemyID ID;
   public int xp;
   protected int health;
+  [SerializeField]
   protected bool inPlayerSpace;
 
   protected abstract void Die();
@@ -15,8 +16,8 @@ public abstract class Enemy : MonoBehaviour {
 
 
 public enum EnemyID {
-  bananas,
-  apples,
-  lottoWinner,
-  bear
+  Evil_Beings,
+  Things_that_will_attack_you,
+  Lotto_Winners,
+  Bears
 }

@@ -38,15 +38,15 @@ public class AcceptReject : MonoBehaviour {
 
   public void RejectQuest() {
     if (rejectCount == 0) {
-      questProposalText.text = "But please?";
+      questProposalText.text = "These old bones can't do it themselves.";
       rejectCount++;
     }
     else if (rejectCount == 1) {
-      questProposalText.text = "Pretty please?";
+      questProposalText.text = "There will be a great reward.";
       rejectCount++;
     }
     else if (rejectCount == 2) {
-      questProposalText.text = "Do it ya bastard.";
+      questProposalText.text = "Udělej to, ty parchante.";
       rejectCount++;
     }
     else if (rejectCount == 3) {

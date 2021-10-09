@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestGiver : NPC {
+  private int localReputation;
   public bool AssignedQuest { get; set; }
 
   [SerializeField]
@@ -15,6 +16,7 @@ public class QuestGiver : NPC {
   private void Start() {
     QuestEvents.QuestAccepted += AssignQuest;
     UIEvents.QuestRemoved += DroppedQuest;
+    localReputation = 0;
   }
 
 
@@ -39,12 +41,13 @@ public class QuestGiver : NPC {
 
   private void CheckQuest() {
     if (Quest.Completed) {
-      Quest.GiveReward();
+      Quest.GiveReward(Quest);
       AssignedQuest = false;
+      localReputation += 1;
       //pass completed dialogue string here
     }
     else {
-      Debug.Log("Finish your task, butthole.");
+      Debug.Log("Finish your task, please.");
       //pass in progress dialogue string here
     }
   }
@@ -54,6 +57,7 @@ public class QuestGiver : NPC {
     if (quest == this.Quest) {
       AssignedQuest = false;
       Quest = null;
+      localReputation -= 1;
     }
   }
 }
