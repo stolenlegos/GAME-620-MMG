@@ -15,6 +15,7 @@ TagManager:
   - help
   - coding sucks
   - so much effort
+  - PlayerHitBox
   layers:
   - Default
   - TransparentFX

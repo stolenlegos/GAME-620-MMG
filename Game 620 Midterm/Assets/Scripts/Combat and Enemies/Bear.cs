@@ -6,7 +6,7 @@ public class Bear : Enemy {
 
 
    private void Start() {
-     this.ID = EnemyID.bear;
+     this.ID = EnemyID.Bears;
      this.xp = 200;
      this.health = 100;
      this.inPlayerSpace = false;
@@ -40,14 +40,14 @@ public class Bear : Enemy {
 
 
     private void OnTriggerEnter2D (Collider2D other) {
-      if (other.tag == "Player") {
+      if (other.tag == "PlayerHitBox") {
         this.inPlayerSpace = true;
       }
     }
 
 
     private void OnTriggerExit2D (Collider2D other) {
-      if (other.tag == "Player") {
+      if (other.tag == "PlayerHitBox") {
         this.inPlayerSpace = false;
       }
     }

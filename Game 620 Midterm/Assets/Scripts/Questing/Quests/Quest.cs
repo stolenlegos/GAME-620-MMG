@@ -8,7 +8,7 @@ public class Quest : MonoBehaviour {
   public string QuestName { get; set; }
   public string Description { get; set; }
   public bool Completed { get; set; }
-  //public Item ItemReward { get; set; }
+  public string questReward { get; set; }
 
 
   public void CheckGoals() {
@@ -16,10 +16,8 @@ public class Quest : MonoBehaviour {
   }
 
 
-  public void GiveReward() {
-    /* if (ItemReward != null) {
-      InventoryController.Instance.GiveItem(ItemReward);
-    }*/
+  public void GiveReward(Quest quest) {
+    QuestEvents.QuestReward(quest);
   }
 
 

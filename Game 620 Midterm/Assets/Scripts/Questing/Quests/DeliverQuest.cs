@@ -7,7 +7,7 @@ public class DeliverQuest : Quest {
   private NpcID npcID;
 
 
-  void Start() {
+  private void Start() {
     itemID = RandomiseType();
     npcID = RandomiseNPC();
     QuestName = RandomiseName();

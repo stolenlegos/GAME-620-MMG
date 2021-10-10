@@ -7,11 +7,12 @@ public class KillQuest : Quest {
   private EnemyID enemyID;
 
 
-  void Start() {
+  private void Start() {
     enemyID = RandomiseType();
     targetNumber = RandomiseNumber();
     QuestName = RandomiseName();
     Description = RandomiseDescription();
+    questReward = "You got Mig's praise. Very rare. Non transferrable.";
 
     Goals.Add(new KillGoal(this, enemyID, Description, false, 0, targetNumber));
 
@@ -48,7 +49,7 @@ public class KillQuest : Quest {
 
 
   private EnemyID RandomiseType() {
-    EnemyID id = (EnemyID)Random.Range(0, 3);
+    EnemyID id = (EnemyID)Random.Range(0, 4);
     return id;
   }
 }
