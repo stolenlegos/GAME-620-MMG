@@ -16,8 +16,8 @@ public abstract class Enemy : MonoBehaviour {
 
 
 public enum EnemyID {
-  Evil_Beings,
-  Things_that_will_attack_you,
-  Lotto_Winners,
-  Bears
+  Rats,
+  Slimes,
+  Bears,
+  Dragon
 }

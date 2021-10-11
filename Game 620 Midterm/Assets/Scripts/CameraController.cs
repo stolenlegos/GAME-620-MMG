@@ -14,7 +14,9 @@ public class CameraController : MonoBehaviour
     private void Start() {
       offset = transform.position - player.position;
       QuestEvents.QuestAccepted += ZoomAndSlow;
-      UIEvents.QuestRemoved += ZoomOutandSpeed;
+      UIEvents.QuestRemoved += ZoomOutandSpeedDroppedAndReward;
+      QuestEvents.GrantReward += ZoomOutandSpeedDroppedAndReward;
+      QuestEvents.QuestRejected += ZoomOutAndSpeedRejected;
 
       mainCam = GetComponent<Camera>();
 
@@ -35,7 +37,18 @@ public class CameraController : MonoBehaviour
     }
 
 
-    private void ZoomOutandSpeed (Quest quest) {
+    private void ZoomOutandSpeedDroppedAndReward (Quest quest) {
+      if (mainCam.fieldOfView < 60) {
+        mainCam.fieldOfView += 2;
+      }
+
+      if (Time.timeScale < 1f) {
+        Time.timeScale += 0.1f;
+      }
+    }
+
+
+    private void ZoomOutAndSpeedRejected (QuestGiver questgiver){
       if (mainCam.fieldOfView < 60) {
         mainCam.fieldOfView += 2;
       }

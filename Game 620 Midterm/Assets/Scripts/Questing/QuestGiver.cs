@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class QuestGiver : NPC {
   public NpcID id;
-  private int localReputation;
   public bool AssignedQuest { get; set; }
 
   [SerializeField]
@@ -19,7 +18,6 @@ public class QuestGiver : NPC {
   private void Start() {
     QuestEvents.QuestAccepted += AssignQuest;
     UIEvents.QuestRemoved += DroppedQuest;
-    localReputation = 0;
   }
 
 
@@ -51,7 +49,6 @@ public class QuestGiver : NPC {
     if (Quest.Completed) {
       Quest.GiveReward(Quest);
       AssignedQuest = false;
-      localReputation += 1;
       //pass quest completed dialogue string here
     }
     else {
@@ -67,7 +64,6 @@ public class QuestGiver : NPC {
     if (quest == this.Quest) {
       AssignedQuest = false;
       Quest = null;
-      localReputation -= 1;
       //pass world quicker mechanic here
     }
   }

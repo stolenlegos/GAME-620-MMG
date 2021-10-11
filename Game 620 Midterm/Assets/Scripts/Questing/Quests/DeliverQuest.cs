@@ -12,6 +12,7 @@ public class DeliverQuest : Quest {
     npcID = RandomiseNPC();
     QuestName = RandomiseName();
     Description = RandomiseDescription();
+    MainQuest = false;
 
     Goals.Add(new DeliverGoal(this, itemID, npcID, Description, false, 0, 1));
 

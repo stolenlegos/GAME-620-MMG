@@ -12,6 +12,7 @@ public class FetchQuest : Quest {
       spawnLocation = RandomiseSpawn();
       QuestName = RandomiseName();
       Description = RandomiseDescription();
+      MainQuest = false;
 
       Goals.Add(new FetchGoal(this, itemID, spawnLocation, Description, false, 0, 1));
 

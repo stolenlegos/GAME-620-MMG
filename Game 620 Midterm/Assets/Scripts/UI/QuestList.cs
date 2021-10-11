@@ -14,6 +14,7 @@ public class QuestList : MonoBehaviour {
 
   private void Start(){
     UIEvents.QuestListAdd += AddQuest;
+    QuestEvents.GrantReward += QuestCompleted;
     logOpen = false;
     questListObj.SetActive(false);
   }
@@ -40,6 +41,11 @@ public class QuestList : MonoBehaviour {
     Quest removedQuest = questList[buttonID.id];
     UIEvents.QuestListRemove(removedQuest);
     questList.RemoveAt(buttonID.id);
+  }
+
+
+  private void QuestCompleted(Quest quest){
+    questList.Remove(quest);
   }
 
 

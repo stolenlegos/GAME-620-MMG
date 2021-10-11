@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -586,7 +586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &66786449
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &158619963
@@ -1361,7 +1361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &293191330
@@ -2475,7 +2475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!212 &690376648
@@ -2693,7 +2693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &737316240
@@ -3001,7 +3001,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1907978731}
-  mainCam: {fileID: 963194227}
 --- !u!1 &985646262
 GameObject:
   m_ObjectHideFlags: 0
@@ -4979,7 +4978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &1399362325
@@ -5104,7 +5103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &1416033399
@@ -6652,7 +6651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &1948299218
@@ -6924,7 +6923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &1973496407
@@ -7133,7 +7132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &2053284532
@@ -7237,8 +7236,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2063502872}
   - component: {fileID: 2063502873}
+  - component: {fileID: 2063502874}
   m_Layer: 0
-  m_Name: RewardManager
+  m_Name: ReputationManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7267,9 +7267,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2063502871}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d78c8c46821082c4290858e9e454f9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realReputation: 0
+  perceivedReputation: 0
+--- !u!114 &2063502874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063502871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d127152f262bd74da2904ea3e5b9900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDamage: {fileID: 1907978735}
 --- !u!1 &2076506522
 GameObject:
   m_ObjectHideFlags: 0
@@ -7367,7 +7382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3e5e8e8f584ff4bb905b8b082f9785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   xp: 0
   inPlayerSpace: 0
 --- !u!61 &2091521716

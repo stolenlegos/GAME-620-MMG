@@ -12,7 +12,7 @@ public class KillQuest : Quest {
     targetNumber = RandomiseNumber();
     QuestName = RandomiseName();
     Description = RandomiseDescription();
-    questReward = "You got Mig's praise. Very rare. Non transferrable.";
+    MainQuest = false;
 
     Goals.Add(new KillGoal(this, enemyID, Description, false, 0, targetNumber));
 
