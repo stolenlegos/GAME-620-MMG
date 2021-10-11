@@ -588,6 +588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &66786449
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -744,6 +745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e351b0daad28546b936dcfab1a8fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   quests: {fileID: 1895943319}
   questType: KillQuest
 --- !u!61 &106386094
@@ -1043,6 +1045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &158619963
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1360,6 +1363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &293191330
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1483,6 +1487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e351b0daad28546b936dcfab1a8fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   quests: {fileID: 1895943319}
   questType: DeliverQuest
 --- !u!61 &385043193
@@ -1832,6 +1837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e351b0daad28546b936dcfab1a8fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   quests: {fileID: 1895943319}
   questType: KillQuest
 --- !u!1 &589877805
@@ -2092,6 +2098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e351b0daad28546b936dcfab1a8fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   quests: {fileID: 1895943319}
   questType: KillQuest
 --- !u!61 &617687350
@@ -2470,6 +2477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!212 &690376648
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2687,6 +2695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &737316240
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2991,7 +3000,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127576de1ea90694ebbc7259554b94ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1907978729}
+  player: {fileID: 1907978731}
+  mainCam: {fileID: 963194227}
 --- !u!1 &985646262
 GameObject:
   m_ObjectHideFlags: 0
@@ -3971,6 +3981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e351b0daad28546b936dcfab1a8fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   quests: {fileID: 1895943319}
   questType: DeliverQuest
 --- !u!61 &1190480035
@@ -4591,6 +4602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e351b0daad28546b936dcfab1a8fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   quests: {fileID: 1895943319}
   questType: KillQuest
 --- !u!61 &1308782399
@@ -4969,6 +4981,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &1399362325
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5093,6 +5106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &1416033399
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5692,6 +5706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e351b0daad28546b936dcfab1a8fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   quests: {fileID: 1895943319}
   questType: DeliverQuest
 --- !u!61 &1754307585
@@ -6639,6 +6654,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &1948299218
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6910,6 +6926,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &1973496407
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7118,6 +7135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &2053284532
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7351,6 +7369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   xp: 0
+  inPlayerSpace: 0
 --- !u!61 &2091521716
 BoxCollider2D:
   m_ObjectHideFlags: 0
