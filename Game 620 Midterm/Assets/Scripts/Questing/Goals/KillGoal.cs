@@ -28,8 +28,8 @@ public class KillGoal : Goal {
 
   //Function called when enemy dies, check to see if it is the enemy type assiged
   //to the goal. if so increases the progress of the goal.
-  private void EnemyDied(Enemy enemy) {
-    if (enemy.ID == this.EnemyID) {
+  private void EnemyDied(EnemyObject enemy) {
+    if (enemy.enemyData.ID == this.EnemyID) {
       this.CurrentAmount++;
       Evaluate();
     }

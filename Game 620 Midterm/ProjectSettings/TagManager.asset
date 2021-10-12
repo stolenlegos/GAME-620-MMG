@@ -4,19 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - AreaOne
-  - AreaTwo
-  - AreaThree
-  - AreaFour
-  - Tom
-  - Macy
-  - Bringo
-  - QuestGiver
-  - help
-  - coding sucks
-  - so much effort
   - PlayerHitBox
   - Spawn
+  - Enemy
   layers:
   - Default
   - TransparentFX
