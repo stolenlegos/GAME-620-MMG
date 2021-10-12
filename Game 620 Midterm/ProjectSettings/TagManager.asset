@@ -16,6 +16,7 @@ TagManager:
   - coding sucks
   - so much effort
   - PlayerHitBox
+  - Spawn
   layers:
   - Default
   - TransparentFX
