@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestGiver : NPC {
-  public NpcID id;
+  public QuestGiverID id;
   public bool AssignedQuest { get; set; }
 
   [SerializeField]
@@ -35,7 +35,7 @@ public class QuestGiver : NPC {
 
 //pulls up the quest accept UI screen
   private void AssignQuest(QuestGiver questGiver) {
-    if (questGiver.tag == this.tag) {
+    if (questGiver.id == this.id) {
       AssignedQuest = true;
       Quest = (Quest)quests.AddComponent(System.Type.GetType(questType));
       //pass world slower mechanic here
@@ -67,4 +67,24 @@ public class QuestGiver : NPC {
       //pass world quicker mechanic here
     }
   }
+}
+
+
+public enum QuestGiverID {
+  Tom,
+  Tim,
+  Mary,
+  Gregg,
+  Goeff,
+  Mig,
+  Sam,
+  Ilia,
+  Meagan,
+  TimTheToolManTaylor,
+  HankHill,
+  JustinTimberlake,
+  BeachBum,
+  Craig,
+  RichardAyode,
+  MattBerry
 }

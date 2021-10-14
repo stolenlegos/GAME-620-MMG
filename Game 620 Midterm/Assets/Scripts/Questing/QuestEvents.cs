@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestEvents {
-  public delegate void QuestHandler(QuestGiver questGiver);
-  public static event QuestHandler QuestAccepted;
-  public static event QuestHandler QuestProposed;
-  public static event QuestHandler QuestRejected;
+  public delegate void QuestARD(QuestGiver questGiver);
+  public static event QuestARD QuestAccepted;
+  public static event QuestARD QuestProposed;
+  public static event QuestARD QuestRejected;
+
+  public delegate void DeliveryCompleted(DeliveryRecipient recipient);
+  public static event DeliveryCompleted CompleteDelivery;
 
   public delegate void Reward (Quest quest);
   public static event Reward GrantReward;
@@ -32,6 +35,13 @@ public class QuestEvents {
   public static void RejectQuest(QuestGiver questGiver) {
     if (QuestRejected != null) {
       QuestRejected(questGiver);
+    }
+  }
+
+
+  public static void DeliveryGoalCompleted(DeliveryRecipient recipient) {
+    if (CompleteDelivery != null) {
+      CompleteDelivery(recipient);
     }
   }
 

@@ -20,6 +20,9 @@ public class DeliverQuest : Quest {
     AddToList(this);
 
     UIEvents.QuestRemoved += DeleteQuest;
+    QuestEvents.CompleteDelivery += CheckGoals;
+
+    PrepareRecipient();
   }
 
 
@@ -27,6 +30,21 @@ public class DeliverQuest : Quest {
     if (quest == this) {
       Destroy(this);
     }
+  }
+
+
+  private void CheckGoals (DeliveryRecipient recipient) {
+    foreach (DeliverGoal goal in Goals) {
+      goal.ItemDelivered(recipient);
+    }
+  }
+
+
+  private void PrepareRecipient() {
+    GameObject recipient = GameObject.Find(npcID.ToString());
+    Debug.Log(recipient);
+    DeliveryRecipient recipientBool = recipient.GetComponent<DeliveryRecipient>();
+    recipientBool.needsDelivery = true;
   }
 
 

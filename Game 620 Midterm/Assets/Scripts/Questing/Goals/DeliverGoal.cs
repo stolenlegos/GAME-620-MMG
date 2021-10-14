@@ -30,8 +30,9 @@ public class DeliverGoal : Goal {
 
 //function needs to be added to a delegate for dropping an item
 //enacted when the player drops off item to third party
-  private void ItemDelivered(IItem item) {
-    if (item.ID == this.ItemID) {
+  public void ItemDelivered(DeliveryRecipient recipient) {
+    if (recipient.id == this.NpcID) {
+      //pass thank you dialogue here
       this.CurrentAmount++;
       Evaluate();
     }
