@@ -25,14 +25,14 @@ public class FetchGoal : Goal {
 //goal specific Initialise function. good for adding functions to delegates.
     public override void Initialise() {
       base.Initialise();
-      //InventoryEvents.OnItemRemoved += ItemDelivered;
+      QuestEvents.ItemPickedUp += ItemFetched;
     }
 
 
 //function needs to be added to a delegate for dropping an item
 //enacted when the player drops off item to the original quest giver.
-    private void ItemDelivered(IItem item) {
-      if (item.ID == this.ItemID) {
+    private void ItemFetched(ItemID item) {
+      if (item == this.ItemID) {
         this.CurrentAmount++;
         Evaluate();
       }

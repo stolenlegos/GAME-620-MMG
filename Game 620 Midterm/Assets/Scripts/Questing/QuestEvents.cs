@@ -14,6 +14,12 @@ public class QuestEvents {
   public delegate void Reward (Quest quest);
   public static event Reward GrantReward;
 
+  public delegate void Spawn (FetchQuest quest);
+  public static event Spawn SpawnFetchItem;
+
+  public delegate void Item (ItemID id);
+  public static event Item ItemPickedUp;
+
 
 //when player accepts the quest from UI
   public static void AcceptQuest(QuestGiver questGiver) {
@@ -50,6 +56,20 @@ public class QuestEvents {
   public static void QuestReward(Quest quest) {
     if (GrantReward != null) {
       GrantReward(quest);
+    }
+  }
+
+
+  public static void SpawnItem(FetchQuest quest) {
+    if (SpawnFetchItem != null) {
+      SpawnFetchItem(quest);
+    }
+  }
+
+
+  public static void PickUpItem(ItemID id) {
+    if (ItemPickedUp != null) {
+      ItemPickedUp(id);
     }
   }
 }

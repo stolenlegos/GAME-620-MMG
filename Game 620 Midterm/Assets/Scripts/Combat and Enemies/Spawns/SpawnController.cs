@@ -12,12 +12,17 @@ public class SpawnController : MonoBehaviour {
   private Spawner[] enemySpawners;
 
   [SerializeField]
-  private List<Transform> spawnLocations = new List<Transform>();
+  private List<Transform> enemySpawnLocations = new List<Transform>();
 
   [Header("as the Spawners Array in the Script")]
   [Header("The following must be in the same order")]
   [SerializeField]
   private List<GameObject> enemyPrefabs = new List<GameObject>();
+
+  [Header("as the ItemID enum.")]
+  [Header("The following must be in the same order")]
+  [SerializeField]
+  private List<GameObject> itemPrefabs = new List<GameObject>();
 
 
   private void Start() {
@@ -32,6 +37,8 @@ public class SpawnController : MonoBehaviour {
       new Spawner(dragonPrototype),
       new Spawner(bearPrototype)
     };
+
+    QuestEvents.SpawnFetchItem += FetchItemSpawn;
   }
 
 
@@ -42,7 +49,7 @@ public class SpawnController : MonoBehaviour {
       Spawner randomSpawner = enemySpawners[randomInt];
       Enemy randomEnemy = randomSpawner.SpawnEnemy();
       GameObject randomPrefab = enemyPrefabs[randomInt];
-      Transform randomSpawnLocation = spawnLocations[Random.Range(0, spawnLocations.Count)];
+      Transform randomSpawnLocation = enemySpawnLocations[Random.Range(0, enemySpawnLocations.Count)];
       SpawnObject SpawnBlocked = randomSpawnLocation.GetComponent<SpawnObject>();
 
       if (!SpawnBlocked.spawnerBlocked) {
@@ -54,5 +61,13 @@ public class SpawnController : MonoBehaviour {
     else {
       timer -= Time.deltaTime;
     }
+  }
+
+
+  private void FetchItemSpawn(FetchQuest quest){
+    GameObject itemToSpawn = itemPrefabs[(int)quest.itemID];
+
+    GameObject item = Instantiate(itemToSpawn);
+    item.transform.position = quest.spawnLocation.transform.position;
   }
 }

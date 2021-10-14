@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FetchQuest : Quest {
-    private ItemID itemID;
-    private GameObject spawnLocation;
+    public ItemID itemID;
+    public GameObject spawnLocation;
 
 
     private void Start() {
@@ -20,6 +20,9 @@ public class FetchQuest : Quest {
       AddToList(this);
 
       UIEvents.QuestRemoved += DeleteQuest;
+
+      QuestEvents.SpawnItem(this);
+      Debug.Log(Description);
     }
 
 
@@ -31,20 +34,20 @@ public class FetchQuest : Quest {
 
 
     private string RandomiseName() {
-      string name = "";
+      string name = "Fetch " + itemID.ToString();
       return name;
     }
 
 
     private string RandomiseDescription() {
-      string des = "";
+      string des = "Fetch " + itemID.ToString() + " from " + spawnLocation.name + ".";
       return des;
     }
 
 
     private GameObject RandomiseSpawn() {
       GameObject[] spawnList = GameObject.FindGameObjectsWithTag("FetchSpawnLocation");
-      GameObject spawn = spawnList[Random.Range(0,spawnList.Length + 1)];
+      GameObject spawn = spawnList[Random.Range(0, spawnList.Length)];
       return spawn;
     }
 
