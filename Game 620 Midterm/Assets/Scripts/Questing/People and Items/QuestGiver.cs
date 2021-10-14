@@ -9,8 +9,7 @@ public class QuestGiver : NPC {
   [SerializeField]
   private GameObject quests;
 
-  [SerializeField]
-  private string questType;
+  public string questType;
   public Quest Quest { get; set; }
 
 

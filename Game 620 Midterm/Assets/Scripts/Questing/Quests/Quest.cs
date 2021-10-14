@@ -9,6 +9,7 @@ public class Quest : MonoBehaviour {
   public string Description { get; set; }
   public bool Completed { get; set; }
   public bool MainQuest { get; set; }
+  public string QuestType { get; set; }
 
 
   public void CheckGoals() {

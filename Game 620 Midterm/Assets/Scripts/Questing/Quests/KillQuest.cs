@@ -13,6 +13,7 @@ public class KillQuest : Quest {
     QuestName = RandomiseName();
     Description = RandomiseDescription();
     MainQuest = false;
+    QuestType = "KillQuest";
 
     Goals.Add(new KillGoal(this, enemyID, Description, false, 0, targetNumber));
 

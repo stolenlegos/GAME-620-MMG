@@ -7,7 +7,10 @@ public interface IItem {
 }
 
 public enum ItemID {
+  sword,
   jewels,
-  StanleyCup,
-  toyHorse,
+  shield,
+  bread,
+  corn,
+  book
 }
