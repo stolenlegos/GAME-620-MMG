@@ -40,6 +40,7 @@ public class NPC : MonoBehaviour {
 //variable and the inspector. Keep GenericNPC at the top of the list.
 public enum NpcID {
   GenericNPC,
+  MailBox,
   Tom,
   Gregg,
   Satan

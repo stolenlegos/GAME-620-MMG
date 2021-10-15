@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DeliveryRecipient : NPC {
-  public NpcID id;
+  public NpcID id = NpcID.MailBox;
   public bool needsDelivery;
 
 

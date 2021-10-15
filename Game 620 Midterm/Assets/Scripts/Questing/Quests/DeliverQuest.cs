@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DeliverQuest : Quest {
-  private NpcID npcID;
-
 
   private void Start() {
     ItemID = RandomiseType();
-    npcID = RandomiseNPC();
     QuestName = RandomiseName();
     Description = RandomiseDescription();
     MainQuest = false;
     QuestType = "DeliverQuest";
 
-    Goals.Add(new DeliverGoal(this, ItemID, npcID, Description, false, 0, 1));
+    Goals.Add(new DeliverGoal(this, ItemID, NpcID.MailBox, Description, false, 0, 1));
 
     Goals.ForEach(g => g.Initialise());
     AddToList(this);
@@ -41,8 +38,7 @@ public class DeliverQuest : Quest {
 
 
   private void PrepareRecipient() {
-    GameObject recipient = GameObject.Find(npcID.ToString());
-    Debug.Log(recipient);
+    GameObject recipient = GameObject.Find("Mail Box");
     DeliveryRecipient recipientBool = recipient.GetComponent<DeliveryRecipient>();
     recipientBool.needsDelivery = true;
   }
@@ -55,14 +51,8 @@ public class DeliverQuest : Quest {
 
 
   private string RandomiseDescription() {
-    string des = "You gotta deliver " + ItemID.ToString() + " to " + npcID.ToString() + ".";
+    string des = "You gotta deliver " + ItemID.ToString() + " to the mail post.";
     return des;
-  }
-
-
-  private NpcID RandomiseNPC() {
-    NpcID npc = (NpcID)Random.Range(1, 4);
-    return npc;
   }
 
 
