@@ -12,11 +12,18 @@ public class QuestGiver : NPC {
   public string questType;
   public Quest Quest { get; set; }
 
+  private string[] proposalDialogue;
+  private bool droppedLastQuest;
+  private bool neverHelped;
+
 
 //assigns functions to delegates
   private void Start() {
     QuestEvents.QuestAccepted += AssignQuest;
     UIEvents.QuestRemoved += DroppedQuest;
+    QuestEvents.QuestRejected += this.QuestRejected;
+    droppedLastQuest = false;
+    neverHelped = true;
   }
 
 
@@ -24,11 +31,25 @@ public class QuestGiver : NPC {
   public override void Interact() {
     if (!AssignedQuest) {
       base.Interact();
-      QuestEvents.ProposeQuest(this);
+      Quest = (Quest)quests.AddComponent(System.Type.GetType(questType));
+
+      if(questType == "KillQuest"){
+        proposalDialogue = CreateProposalDialogueKill();
+      }
+      else if(questType == "FetchQuest") {
+        proposalDialogue = CreateProposalDialogueFetch();
+      }
+      else if (questType == "DeliverQuest") {
+        proposalDialogue = CreateProposalDialogueDeliver();
+      }
+
+      QuestEvents.ProposeQuest(this, proposalDialogue);
     }
     else if (AssignedQuest) {
       CheckQuest();
     }
+
+    neverHelped = false;
   }
 
 
@@ -36,8 +57,14 @@ public class QuestGiver : NPC {
   private void AssignQuest(QuestGiver questGiver) {
     if (questGiver.id == this.id) {
       AssignedQuest = true;
-      Quest = (Quest)quests.AddComponent(System.Type.GetType(questType));
-      //pass world slower mechanic here
+    }
+  }
+
+
+  private void QuestRejected(QuestGiver questGiver) {
+    if (questGiver.id == this.id) {
+      Destroy(Quest);
+      droppedLastQuest = true;
     }
   }
 
@@ -48,6 +75,7 @@ public class QuestGiver : NPC {
     if (Quest.Completed) {
       Quest.GiveReward(Quest);
       AssignedQuest = false;
+      droppedLastQuest = false;
       //pass quest completed dialogue string here
     }
     else {
@@ -63,10 +91,132 @@ public class QuestGiver : NPC {
     if (quest == this.Quest) {
       AssignedQuest = false;
       Quest = null;
+      droppedLastQuest = true;
       //pass world quicker mechanic here
     }
   }
+
+
+  private string[] CreateProposalDialogueKill() {
+    int idNum = (int)Quest.EnemyID + 1;
+    int num;
+    string lineTwo;
+
+    if (droppedLastQuest) {
+      num = Random.Range(8, 10);
+    } else {
+      num = Random.Range(6, 8);
+    }
+
+    string lineOne = DialogueManager.KillProposalDialogue[0];
+
+    if(!neverHelped){
+      lineTwo = DialogueManager.KillProposalDialogue[idNum] + "\n" + DialogueManager.KillProposalDialogue[num];
+    }
+    else {
+      lineTwo = DialogueManager.KillProposalDialogue[idNum];
+    }
+
+    string lineThree = DialogueManager.KillDenyDialogue[0];
+    string lineFour = DialogueManager.KillDenyDialogue[1];
+    string lineFive = DialogueManager.KillDenyDialogue[2];
+    string lineSix = DialogueManager.KillDenyDialogue[3];
+    string lineSeven = DialogueManager.KillAcceptDialogue;
+
+    string[] dialogue = new string[] {
+      lineOne,
+      lineTwo,
+      lineThree,
+      lineFour,
+      lineFive,
+      lineSix,
+      lineSeven
+    };
+
+    return dialogue;
+  }
+
+
+  private string[] CreateProposalDialogueFetch() {
+    int idNum = (int)Quest.ItemID + 1;
+    int num;
+    string lineTwo;
+
+    if (droppedLastQuest) {
+      num = Random.Range(9, 11);
+    } else {
+      num = Random.Range(7, 9);
+    }
+
+    string lineOne = DialogueManager.FetchProposeDialogue[0];
+
+    if(!neverHelped){
+      lineTwo = DialogueManager.FetchProposeDialogue[idNum] + "\n" + DialogueManager.FetchProposeDialogue[num];
+    }
+    else {
+      lineTwo = DialogueManager.FetchProposeDialogue[idNum];
+    }
+
+    string lineThree = DialogueManager.FetchDenyDialogue[0];
+    string lineFour = DialogueManager.FetchDenyDialogue[1];
+    string lineFive = DialogueManager.FetchDenyDialogue[2];
+    string lineSix = DialogueManager.FetchDenyDialogue[3];
+    string lineSeven = DialogueManager.FetchAcceptDialogue;
+
+    string[] dialogue = new string[] {
+      lineOne,
+      lineTwo,
+      lineThree,
+      lineFour,
+      lineFive,
+      lineSix,
+      lineSeven
+    };
+
+    return dialogue;
+  }
+
+
+  private string[] CreateProposalDialogueDeliver() {
+    int idNum = (int)Quest.ItemID + 1;
+    int num;
+    string lineTwo;
+
+    if (droppedLastQuest) {
+      num = Random.Range(9, 11);
+    } else {
+      num = Random.Range(7, 9);
+    }
+
+    string lineOne = DialogueManager.DeliveryProposalDialogue[0];
+
+    if(!neverHelped){
+      lineTwo = DialogueManager.DeliveryProposalDialogue[idNum] + "\n" + DialogueManager.DeliveryProposalDialogue[num];
+    }
+    else {
+      lineTwo = DialogueManager.DeliveryProposalDialogue[idNum];
+    }
+
+    string lineThree = DialogueManager.DeliveryDenyDialogue[0];
+    string lineFour = DialogueManager.DeliveryDenyDialogue[1];
+    string lineFive = DialogueManager.DeliveryDenyDialogue[2];
+    string lineSix = DialogueManager.DeliveryDenyDialogue[3];
+    string lineSeven = DialogueManager.DeliveryAcceptDialogue;
+
+    string[] dialogue = new string[] {
+      lineOne,
+      lineTwo,
+      lineThree,
+      lineFour,
+      lineFive,
+      lineSix,
+      lineSeven
+    };
+
+    return dialogue;
+  }
 }
+
 
 
 public enum QuestGiverID {

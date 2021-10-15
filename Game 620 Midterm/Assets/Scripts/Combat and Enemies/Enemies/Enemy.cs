@@ -17,9 +17,9 @@ public abstract class Enemy {
 
 
 public enum EnemyID {
-  Rats,
-  Slimes,
+  Dragons,
   Bears,
   Ghosts,
-  Dragons
+  Rats,
+  Slimes
 }

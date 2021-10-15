@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class KillQuest : Quest {
   private int targetNumber;
-  private EnemyID enemyID;
 
 
   private void Start() {
-    enemyID = RandomiseType();
+    EnemyID = RandomiseType();
     targetNumber = RandomiseNumber();
     QuestName = RandomiseName();
     Description = RandomiseDescription();
     MainQuest = false;
     QuestType = "KillQuest";
 
-    Goals.Add(new KillGoal(this, enemyID, Description, false, 0, targetNumber));
+    Goals.Add(new KillGoal(this, EnemyID, Description, false, 0, targetNumber));
 
     Goals.ForEach(g => g.Initialise());
     AddToList(this);
@@ -32,13 +31,13 @@ public class KillQuest : Quest {
 
 
   private string RandomiseName() {
-    string name = "Kill " + targetNumber.ToString() + " " + enemyID.ToString();
+    string name = "Kill " + targetNumber.ToString() + " " + EnemyID.ToString();
     return name;
   }
 
 
   private string RandomiseDescription() {
-    string des = "You gotta kill " + targetNumber.ToString() + " " + enemyID.ToString();
+    string des = "You gotta kill " + targetNumber.ToString() + " " + EnemyID.ToString();
     return des;
   }
 

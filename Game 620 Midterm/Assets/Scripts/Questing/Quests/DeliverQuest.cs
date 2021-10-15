@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DeliverQuest : Quest {
-  private ItemID itemID;
   private NpcID npcID;
 
 
   private void Start() {
-    itemID = RandomiseType();
+    ItemID = RandomiseType();
     npcID = RandomiseNPC();
     QuestName = RandomiseName();
     Description = RandomiseDescription();
     MainQuest = false;
     QuestType = "DeliverQuest";
 
-    Goals.Add(new DeliverGoal(this, itemID, npcID, Description, false, 0, 1));
+    Goals.Add(new DeliverGoal(this, ItemID, npcID, Description, false, 0, 1));
 
     Goals.ForEach(g => g.Initialise());
     AddToList(this);
@@ -50,13 +49,13 @@ public class DeliverQuest : Quest {
 
 
   private string RandomiseName() {
-    string name = "Deliver " + itemID.ToString();
+    string name = "Deliver " + ItemID.ToString();
     return name;
   }
 
 
   private string RandomiseDescription() {
-    string des = "You gotta deliver " + itemID.ToString() + " to " + npcID.ToString() + ".";
+    string des = "You gotta deliver " + ItemID.ToString() + " to " + npcID.ToString() + ".";
     return des;
   }
 

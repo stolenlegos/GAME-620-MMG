@@ -65,7 +65,7 @@ public class SpawnController : MonoBehaviour {
 
 
   private void FetchItemSpawn(FetchQuest quest){
-    GameObject itemToSpawn = itemPrefabs[(int)quest.itemID];
+    GameObject itemToSpawn = itemPrefabs[(int)quest.ItemID];
 
     GameObject item = Instantiate(itemToSpawn);
     item.transform.position = quest.spawnLocation.transform.position;

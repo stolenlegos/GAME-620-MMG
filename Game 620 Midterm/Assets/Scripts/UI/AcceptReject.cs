@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class AcceptReject : MonoBehaviour {
   [SerializeField]
+  private GameObject leaveDialogueButton;
+  [SerializeField]
   private GameObject acceptButton;
   [SerializeField]
   private GameObject denyButton;
@@ -17,76 +19,90 @@ public class AcceptReject : MonoBehaviour {
   private QuestGiver temp;
   private int rejectCount;
   private bool proposalInProgress;
+  private string[] tempDialogue;
   private int dialogueCount;
 
 
   private void Start() {
     QuestEvents.QuestProposed += AcceptUI;
-    QuestEvents.QuestAccepted += DeactivateAcceptUI;
     proposalTextUI.SetActive(false);
     proposalInProgress = false;
     dialogueCount = 0;
   }
 
   private void Update() {
-    if(proposalInProgress && dialogueCount == 0) {
-      if (temp.questType == "KillQuest") {
-        questProposalText.text = DialogueManager.KillProposalDialogue[Random.Range(0,1)];
-      }
-      else if (temp.questType == "FetchQuest") {
-        questProposalText.text = DialogueManager.FetchProposeDialogue[Random.Range(0,1)];
-      }
-      else if (temp.questType == "DeliverQuest") {
-        questProposalText.text = DialogueManager.DeliveryProposalDialogue[Random.Range(0,1)];
-      }
+    if (proposalInProgress) {
+      questProposalText.text = tempDialogue[dialogueCount];
     }
   }
 
 
-  private void AcceptUI(QuestGiver questGiver) {
+  private void AcceptUI(QuestGiver questGiver, string[] dialogue) {
     temp = questGiver;
+    tempDialogue = dialogue;
     proposalTextUI.SetActive(true);
+    dialogueCount = 0;
     proposalInProgress = true;
   }
 
 
-  public void AcceptTheQuest() {
-    QuestEvents.AcceptQuest(temp);
+  public void AcceptButtonFuntion(){
+    dialogueCount = 6;
+    AcceptTheQuest();
+    leaveDialogueButton.SetActive(true);
+    acceptButton.SetActive(false);
+    denyButton.SetActive(false);
   }
 
 
-  private void DeactivateAcceptUI(QuestGiver questGiver) {
-    proposalTextUI.SetActive(false);
+  private void AcceptTheQuest() {
+    QuestEvents.AcceptQuest(temp);
   }
 
 
   public void RejectQuest() {
     if (rejectCount == 0) {
-      questProposalText.text = "These old bones can't do it themselves.";
+      dialogueCount = 2;
       rejectCount++;
     }
     else if (rejectCount == 1) {
-      questProposalText.text = "There will be a great reward.";
+      dialogueCount = 3;
       rejectCount++;
     }
     else if (rejectCount == 2) {
-      questProposalText.text = "Udělej to, ty parchante.";
+      dialogueCount = 4;
       rejectCount++;
     }
     else if (rejectCount == 3) {
-      ResetVariables();
+      dialogueCount = 5;
+      leaveDialogueButton.SetActive(true);
+      acceptButton.SetActive(false);
+      denyButton.SetActive(false);
       QuestEvents.RejectQuest(temp);
     }
   }
 
 
+  public void leaveDialogue() {
+    ResetVariables();
+  }
+
+
   private void ResetVariables() {
+    acceptButton.SetActive(false);
+    denyButton.SetActive(false);
+    continueButton.SetActive(true);
+    leaveDialogueButton.SetActive(false);
     proposalTextUI.SetActive(false);
     rejectCount = 0;
+    dialogueCount = 0;
   }
 
 
   public void ContinueButton(){
-    dialogueCount = 2;
+    dialogueCount = 1;
+    acceptButton.SetActive(true);
+    denyButton.SetActive(true);
+    continueButton.SetActive(false);
   }
 }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestEvents {
+  public delegate void QuestPropose (QuestGiver questGiver, string[] dialogue);
+  public static event QuestPropose QuestProposed;
+
   public delegate void QuestARD(QuestGiver questGiver);
   public static event QuestARD QuestAccepted;
-  public static event QuestARD QuestProposed;
   public static event QuestARD QuestRejected;
 
   public delegate void DeliveryCompleted(DeliveryRecipient recipient);
@@ -30,9 +32,9 @@ public class QuestEvents {
 
 
 //when a quest giver NPC asks the player to do a quest
-  public static void ProposeQuest(QuestGiver questGiver) {
+  public static void ProposeQuest(QuestGiver questGiver, string[] dialogue) {
     if (QuestProposed != null) {
-      QuestProposed(questGiver);
+      QuestProposed(questGiver, dialogue);
     }
   }
 
