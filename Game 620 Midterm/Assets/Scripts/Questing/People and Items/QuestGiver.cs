@@ -15,6 +15,8 @@ public class QuestGiver : NPC {
   private string[] proposalDialogue;
   private bool droppedLastQuest;
   private bool neverHelped;
+  private string inProgressDialogue;
+  private string questCompleteDialogue;
 
 
 //assigns functions to delegates
@@ -76,11 +78,32 @@ public class QuestGiver : NPC {
       Quest.GiveReward(Quest);
       AssignedQuest = false;
       droppedLastQuest = false;
-      //pass quest completed dialogue string here
+
+      if (questType == "KillQuest"){
+        questCompleteDialogue = DialogueManager.KillReturnDialogue;
+      }
+      else if (questType == "FetchQuest"){
+        questCompleteDialogue = DialogueManager.FetchReturnDialogue;
+      }
+      else if (questType == "DeliverQuest") {
+        questCompleteDialogue = DialogueManager.DeliveryReturnDialogue;
+      }
+
+      UIEvents.QuestHasFinished(questCompleteDialogue);
     }
     else {
       Debug.Log("Finish your task, please.");
-      //pass quest in progress dialogue string here
+      if (questType == "KillQuest"){
+        inProgressDialogue = DialogueManager.KillBeforeCompleteDialogue[Random.Range(0, 4)];
+      }
+      else if (questType == "FetchQuest"){
+        inProgressDialogue = DialogueManager.FetchBeforeCompleteDialogue[Random.Range(0, 4)];
+      }
+      else if (questType == "DeliverQuest") {
+        inProgressDialogue = DialogueManager.DeliveryBeforeCompleteDialogue[Random.Range(0, 4)];
+      }
+
+      UIEvents.QuestStillInProgress(inProgressDialogue);
     }
   }
 
