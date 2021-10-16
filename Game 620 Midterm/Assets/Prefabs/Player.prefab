@@ -77,7 +77,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5452898535110054546}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -93.65, y: 31.61, z: 0}
   m_LocalScale: {x: 0.9414291, y: 0.99061066, z: 6.346}
   m_Children:
   - {fileID: 5452898535094175558}
@@ -226,4 +226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e776bf83e8f49e4395e880d8582bf86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnPoint: {fileID: 0}
+  health: 200
   damage: 12
