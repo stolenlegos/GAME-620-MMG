@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class MQDialogueRepos {
 
-    public static string[] MQIntroDialogue = new string[] {
+    public static string[] MQ1Dialogue = new string[] {
+      //IntroDialogue
       "Greetings friend. I hear you want to be an adventurer.",
       "Haha, that’s good, that’s very good. Adventuring is a great profession, filled with wonderful quests and challenging battles.",
       "The world could use more and better adventurers and, if you listen to me, you will certainly become one!",
       "Now, the most important piece of advice I can give you is that adventuring is about balance.",
       "It is about making sure you are not overwhelmed and are working toward a healthy adventuring life-style.",
-      "So keep that in mind as you start your new life!"
-    };
-
-    public static string[] MQ1Dialogue = new string[] {
+      "So keep that in mind as you start your new life!",
+      //Quest Dialogue
       "Now that you understand what adventuring entails, it’s time for you to start the Adventuring Authorization Process.",
       "Now I know I mentioned all the “wonderful quests” and “challenging battles,” but before you get to that, you must complete tasks around town to establish yourself.",
       "The first set of tasks I want you to complete are feats of strength, known colloquially as killing monsters! Sounds fun, right?",
@@ -93,7 +92,7 @@ public class MQDialogueRepos {
       "Remember, check your quest log to see what you need to do. Now, once again, go forth, and adventure!..."
     };
 
-    public static string MQ4Finished = "Congratulations, you’ve completed this rigorous stage! I can see you’re tired, but you should be very proud.";
+    public static string[] MQ4Finished = new string[] {"Congratulations, you’ve completed this rigorous stage! I can see you’re tired, but you should be very proud."};
 
 
 
@@ -112,7 +111,7 @@ public class MQDialogueRepos {
       " Just complete them on your time, check your quest log when your confused, and when you’re done, return to me. Now go forth, and adventure!"
     };
 
-    public static string MQ5InProgress = "Take your time. Check your quest log. There’s no rush. Now, once again, go forth, and adventure!...";
+    public static string[] MQ5InProgress = new string[] {"Take your time. Check your quest log. There’s no rush. Now, once again, go forth, and adventure!..."};
 
     public static string[] MQ5Finished = new string[] {
       "Congratulations, you are now an official adventurer.",
