@@ -17,7 +17,7 @@ public abstract class Enemy {
 
 
 public enum EnemyID {
-  Dragons,
+  SkeleWolf,
   Bears,
   Ghosts,
   Rats,

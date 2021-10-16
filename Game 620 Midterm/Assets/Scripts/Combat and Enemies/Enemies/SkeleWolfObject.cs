@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DragonObject : EnemyObject {
+public class SkeleWolfObject : EnemyObject {
 
 
     private void Start() {
