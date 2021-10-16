@@ -12,17 +12,21 @@ public class MQDManager : MonoBehaviour {
   private int numOfLines;
   private int currentLine;
   private string[] currentDialogue;
+  private bool hasDialogue;
 
 
     private void Start() {
       currentLine = 0;
+      numOfLines = 1;
       textObj.SetActive(false);
       UIEvents.MQDialogue += RecieveDialogue;
     }
 
 
     private void Update() {
-      textGoHere.text = currentDialogue[currentLine];
+      if (hasDialogue) {
+        textGoHere.text = currentDialogue[currentLine];
+      }
       Reset();
     }
 
@@ -32,6 +36,7 @@ public class MQDManager : MonoBehaviour {
         Debug.Log("I have reset");
         textObj.SetActive(false);
         currentLine = 0;
+        hasDialogue = false;
       }
     }
 
@@ -44,6 +49,7 @@ public class MQDManager : MonoBehaviour {
     private void RecieveDialogue(string[] dialogue, int lines) {
       currentDialogue = dialogue;
       numOfLines = lines;
+      hasDialogue = true;
       textObj.SetActive(true);
     }
 }

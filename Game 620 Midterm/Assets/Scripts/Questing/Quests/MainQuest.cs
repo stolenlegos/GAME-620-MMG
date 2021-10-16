@@ -13,6 +13,7 @@ public class MainQuest : MonoBehaviour {
 
 
     private void Start() {
+      QuestEvents.GrantReward += UpdateQuestCompleted;
       KillQuestCompelted = 0;
       FetchQuestCompleted = 0;
       DeliveryQuestsCompleted = 0;
@@ -52,6 +53,19 @@ public class MainQuest : MonoBehaviour {
       KillQuestCompelted = 0;
       FetchQuestCompleted = 0;
       DeliveryQuestsCompleted = 0;
+    }
+
+
+    private void UpdateQuestCompleted(Quest quest) {
+      if (quest.QuestType == "KillQuest") {
+        KillQuestCompelted++;
+      }
+      else if (quest.QuestType == "FetchQuest") {
+        FetchQuestCompleted++;
+      }
+      else if (quest.QuestType == "DeliverQuest") {
+        DeliveryQuestsCompleted++;
+      }
     }
 
 
