@@ -65,6 +65,7 @@ public class QuestGiver : NPC {
 
   private void QuestRejected(QuestGiver questGiver) {
     if (questGiver.id == this.id) {
+      Debug.Log("Destroied");
       Destroy(Quest);
       droppedLastQuest = true;
     }
@@ -244,7 +245,7 @@ public class QuestGiver : NPC {
 
 public enum QuestGiverID {
   Tom,
-  Tim,
+  Terry,
   Mary,
   Gregg,
   Goeff,
@@ -258,5 +259,26 @@ public enum QuestGiverID {
   BeachBum,
   Craig,
   RichardAyode,
-  MattBerry
+  MattBerry,
+  Chad,
+  Brenda,
+  Monica,
+  Brad,
+  Susan,
+  Joey,
+  Wiley,
+  Phillip,
+  Gene,
+  Morgan,
+  Alex,
+  Bobby,
+  Suzy,
+  Sarah,
+  Chris,
+  Dave,
+  Hannah,
+  AlexanderHamilton,
+  USGrant,
+  GeorgeWashington,
+  MrPresident
 }

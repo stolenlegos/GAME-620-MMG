@@ -11,6 +11,9 @@ public class UIEvents {
   public static event RandomTextEvents QuestInProgress;
   public static event RandomTextEvents QuestFinished;
 
+  public delegate void MQText (string[] dialogue, int numOfLines);
+  public static event MQText MQDialogue;
+
 
   public static void QuestCreated(Quest quest) {
     if (QuestListAdd != null) {
@@ -34,6 +37,12 @@ public class UIEvents {
   public static void QuestHasFinished(string dialogue) {
     if (QuestFinished != null) {
       QuestFinished(dialogue);
+    }
+  }
+
+  public static void PassMQDialogue(string[] dialogue, int num) {
+    if (MQDialogue != null) {
+      MQDialogue(dialogue, num);
     }
   }
 }

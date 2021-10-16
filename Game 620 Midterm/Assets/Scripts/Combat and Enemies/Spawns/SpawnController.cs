@@ -6,8 +6,10 @@ public class SpawnController : MonoBehaviour {
   private float timer;
 
   private Ghost ghostPrototype;
-  private Dragon dragonPrototype;
+  private SkeleWolf skeleWolfPrototype;
   private Bear bearPrototype;
+  private Rat ratPrototype;
+  private Slime slimePrototype;
 
   private Spawner[] enemySpawners;
 
@@ -29,13 +31,17 @@ public class SpawnController : MonoBehaviour {
     timer = 0;
 
     ghostPrototype = new Ghost(20, 20, 20);
-    dragonPrototype = new Dragon(200, 100, 200);
+    skeleWolfPrototype = new SkeleWolf(200, 100, 200);
     bearPrototype = new Bear(50, 75, 75);
+    ratPrototype = new Rat(10, 30, 10);
+    slimePrototype = new Slime(40, 40, 40);
 
     enemySpawners = new Spawner[] {
       new Spawner(ghostPrototype),
-      new Spawner(dragonPrototype),
-      new Spawner(bearPrototype)
+      new Spawner(skeleWolfPrototype),
+      new Spawner(bearPrototype),
+      new Spawner(ratPrototype),
+      new Spawner(slimePrototype)
     };
 
     QuestEvents.SpawnFetchItem += FetchItemSpawn;
