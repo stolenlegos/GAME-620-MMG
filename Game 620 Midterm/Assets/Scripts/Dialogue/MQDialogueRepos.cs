@@ -6,12 +6,14 @@ public class MQDialogueRepos {
 
     public static string[] MQ1Dialogue = new string[] {
       //IntroDialogue
-      "Greetings friend. I hear you want to be an adventurer.",
+      "Greetings friend, welcome to Queston. I hear you want to be an adventurer.",
       "Haha, that’s good, that’s very good. Adventuring is a great profession, filled with wonderful quests and challenging battles.",
       "The world could use more and better adventurers and, if you listen to me, you will certainly become one!",
       "Now, the most important piece of advice I can give you is that adventuring is about balance.",
       "It is about making sure you are not overwhelmed and are working toward a healthy adventuring life-style.",
       "So keep that in mind as you start your new life!",
+      "For the time being, we can set up your living quarters just north of this building, next to the training yard.",
+      "It will be the building with the blue roof for as long as you stay with us.",
       //Quest Dialogue
       "Now that you understand what adventuring entails, it’s time for you to start the Adventuring Authorization Process.",
       "Now I know I mentioned all the “wonderful quests” and “challenging battles,” but before you get to that, you must complete tasks around town to establish yourself.",
