@@ -57,7 +57,7 @@ public class DeliverQuest : Quest {
 
 
   private ItemID RandomiseType() {
-    ItemID id = (ItemID)Random.Range(0, 3);
+    ItemID id = (ItemID)Random.Range(0, 6);
     return id;
   }
 }

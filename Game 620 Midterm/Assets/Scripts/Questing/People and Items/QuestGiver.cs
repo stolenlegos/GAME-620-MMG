@@ -48,7 +48,7 @@ public class QuestGiver : NPC {
 
 
   IEnumerator DialogueThisShit(){
-    for (float ft = 1f; ft >=0; ft -= 0.1f){
+    for (float ft = 0.7f; ft >=0; ft -= 0.1f){
       yield return new WaitForSeconds(.1f);
 
       if(questType == "KillQuest"){
