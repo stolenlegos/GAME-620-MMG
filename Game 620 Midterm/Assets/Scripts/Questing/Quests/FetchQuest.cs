@@ -22,7 +22,6 @@ public class FetchQuest : Quest {
       UIEvents.QuestRemoved += DeleteQuest;
 
       QuestEvents.SpawnItem(this);
-      Debug.Log(Description);
     }
 
 

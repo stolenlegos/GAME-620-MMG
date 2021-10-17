@@ -7,7 +7,7 @@ public class DialogueManager {
     //0
     "You there! Adventurer! I need your help with something. The city has been dealing with a lot of monster issues lately and the guardsmen are stretched thin.",
     //1
-    "I have gotten word there are some dragons that need to be dealt with. Could you help us out?",
+    "I have gotten word there are some skelewolves that need to be dealt with. Could you help us out?",
     //2
     "I have gotten word there are some bears that need to be dealt with. Could you help us out?",
     //3

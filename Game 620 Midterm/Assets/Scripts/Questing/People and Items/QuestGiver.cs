@@ -35,6 +35,22 @@ public class QuestGiver : NPC {
       base.Interact();
       Quest = (Quest)quests.AddComponent(System.Type.GetType(questType));
 
+      //I need it to pause here until Quest does its Start()
+      StartCoroutine("DialogueThisShit");
+
+    }
+    else if (AssignedQuest) {
+      CheckQuest();
+    }
+
+    neverHelped = false;
+  }
+
+
+  IEnumerator DialogueThisShit(){
+    for (float ft = 1f; ft >=0; ft -= 0.1f){
+      yield return new WaitForSeconds(.1f);
+
       if(questType == "KillQuest"){
         proposalDialogue = CreateProposalDialogueKill();
       }
@@ -47,11 +63,6 @@ public class QuestGiver : NPC {
 
       QuestEvents.ProposeQuest(this, proposalDialogue);
     }
-    else if (AssignedQuest) {
-      CheckQuest();
-    }
-
-    neverHelped = false;
   }
 
 
