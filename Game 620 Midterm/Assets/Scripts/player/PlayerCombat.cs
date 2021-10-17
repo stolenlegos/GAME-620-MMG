@@ -6,12 +6,13 @@ public class PlayerCombat : MonoBehaviour
 {
   [SerializeField]
   private Transform respawnPoint;
+
   public int health = 200;
-  public int damage = 6;
+  public int damage;
   private float timeBtwAttack;
   private float startTimeBtwAttack;
-  public Animator anim; 
-  public Transform sword; 
+  public Animator anim;
+  public Transform sword;
 
 
     void Update()
@@ -21,7 +22,7 @@ public class PlayerCombat : MonoBehaviour
           CombatEvents.PlayerAttack(this);
           timeBtwAttack = startTimeBtwAttack;
           AttackAnim();
-          anim.Play("swordSwing"); 
+          anim.Play("swordSwing");
           //anim.Play("idle");
         }
       } else{
@@ -42,12 +43,12 @@ public class PlayerCombat : MonoBehaviour
       }
       else if (Input.GetKey(KeyCode.D)) {
         sword.transform.rotation = Quaternion.Euler(0, 0, -90);
-      }    
+      }
       else if (Input.GetKey(KeyCode.S)) {
-        sword.transform.rotation = Quaternion.Euler(0, 0, 180); 
+        sword.transform.rotation = Quaternion.Euler(0, 0, 180);
       }
       else {
-        sword.transform.rotation = Quaternion.Euler(0, 0, 180); 
+        sword.transform.rotation = Quaternion.Euler(0, 0, 180);
       }
     }
 

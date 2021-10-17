@@ -15,6 +15,7 @@ public class DeliveryRecipient : NPC {
   public override void Interact() {
     base.Interact();
     if (needsDelivery) {
+      UIEvents.QuestStillInProgress("I'll send this out tonight.");
       QuestEvents.DeliveryGoalCompleted(this);
       needsDelivery = false;
     }
