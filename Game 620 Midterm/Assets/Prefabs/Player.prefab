@@ -228,4 +228,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnPoint: {fileID: 0}
   health: 200
-  damage: 12
+  damage: 2
+  anim: {fileID: 0}
+  sword: {fileID: 0}

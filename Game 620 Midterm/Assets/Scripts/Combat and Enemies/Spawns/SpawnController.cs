@@ -30,9 +30,9 @@ public class SpawnController : MonoBehaviour {
   private void Start() {
     timer = 0;
 
-    ghostPrototype = new Ghost(20, 20, 20);
-    skeleWolfPrototype = new SkeleWolf(200, 100, 200);
-    bearPrototype = new Bear(50, 75, 75);
+    ghostPrototype = new Ghost(75, 20, 20);
+    skeleWolfPrototype = new SkeleWolf(300, 100, 200);
+    bearPrototype = new Bear(150, 75, 75);
     ratPrototype = new Rat(10, 30, 10);
     slimePrototype = new Slime(40, 40, 40);
 
