@@ -85,7 +85,7 @@ public class MainQuest : MonoBehaviour {
 
     private void StageOneDialogue() {
       if(!stageAssigned) {
-        UIEvents.PassMQDialogue(MQDialogueRepos.MQ1Dialogue, 12);
+        UIEvents.PassMQDialogue(MQDialogueRepos.MQ1Dialogue, 14);
         stageAssigned = true;
       }
       else if (stageAssigned) {
