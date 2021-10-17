@@ -10,6 +10,8 @@ public class PlayerCombat : MonoBehaviour
   public int damage = 6;
   private float timeBtwAttack;
   private float startTimeBtwAttack;
+  public Animator anim; 
+  public Transform sword; 
 
 
     void Update()
@@ -18,6 +20,9 @@ public class PlayerCombat : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) {
           CombatEvents.PlayerAttack(this);
           timeBtwAttack = startTimeBtwAttack;
+          AttackAnim();
+          anim.Play("swordSwing"); 
+          //anim.Play("idle");
         }
       } else{
         timeBtwAttack -= Time.deltaTime;
@@ -28,6 +33,23 @@ public class PlayerCombat : MonoBehaviour
       }
     }
 
+    void AttackAnim(){
+      if (Input.GetKey(KeyCode.W)) {
+        sword.transform.rotation = Quaternion.Euler(0, 0, 0);
+      }
+      else if (Input.GetKey(KeyCode.A)) {
+        sword.transform.rotation = Quaternion.Euler(0, 0, 90);
+      }
+      else if (Input.GetKey(KeyCode.D)) {
+        sword.transform.rotation = Quaternion.Euler(0, 0, -90);
+      }    
+      else if (Input.GetKey(KeyCode.S)) {
+        sword.transform.rotation = Quaternion.Euler(0, 0, 180); 
+      }
+      else {
+        sword.transform.rotation = Quaternion.Euler(0, 0, 180); 
+      }
+    }
 
     private void Die() {
       gameObject.transform.position = respawnPoint.position;

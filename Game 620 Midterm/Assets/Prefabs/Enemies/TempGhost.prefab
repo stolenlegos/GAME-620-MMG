@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -287631184857326750}
   - component: {fileID: 4149329268507759031}
   - component: {fileID: 9126347706200128479}
+  - component: {fileID: 5811846700788330275}
   m_Layer: 0
   m_Name: TempGhost
   m_TagString: Enemy
@@ -144,3 +145,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29ad57d982410d74b8bfb76756ffea3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &5811846700788330275
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8891794189522292872}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c7120fa0d082631459327ff090dbf2fd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
