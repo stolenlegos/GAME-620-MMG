@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5688245097269587382}
   m_Layer: 0
   m_Name: TempBear
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,7 +119,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.055522203, y: -0.19987959}
+  m_Offset: {x: 0.041876554, y: -0.28516692}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -130,7 +130,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.529076, y: 1.8715259}
+  m_Size: {x: 4.4160666, y: 3.079196}
   m_EdgeRadius: 0
 --- !u!114 &5688245097269587382
 MonoBehaviour:
