@@ -105,7 +105,7 @@ public class MainQuest : MonoBehaviour {
 
 
     private bool EvaluateStageOne() {
-      if (KillQuestCompelted == 3) {
+      if (KillQuestCompelted >= 3) {
         return true;
       }
       else {
@@ -133,7 +133,7 @@ public class MainQuest : MonoBehaviour {
 
 
     private bool EvaluateStageTwo() {
-      if (DeliveryQuestsCompleted == 3) {
+      if (DeliveryQuestsCompleted >= 3) {
         return true;
       }
       else {
@@ -161,7 +161,7 @@ public class MainQuest : MonoBehaviour {
 
 
     private bool EvaluateStageThree() {
-      if (FetchQuestCompleted == 3) {
+      if (FetchQuestCompleted >= 3) {
         return true;
       }
       else {
@@ -189,7 +189,7 @@ public class MainQuest : MonoBehaviour {
 
 
     private bool EvaluateStageFour() {
-      if (KillQuestCompelted == 2 && FetchQuestCompleted == 2 && DeliveryQuestsCompleted == 2) {
+      if (KillQuestCompelted >= 2 && FetchQuestCompleted >= 2 && DeliveryQuestsCompleted >= 2) {
         return true;
       }
       else {
@@ -217,7 +217,7 @@ public class MainQuest : MonoBehaviour {
 
 
     private bool EvaluateStageFive() {
-      if (KillQuestCompelted == 1 && FetchQuestCompleted == 1 && DeliveryQuestsCompleted == 1) {
+      if (KillQuestCompelted >= 1 && FetchQuestCompleted >= 1 && DeliveryQuestsCompleted >= 1) {
         return true;
       }
       else {
