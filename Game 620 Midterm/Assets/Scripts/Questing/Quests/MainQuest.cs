@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MainQuest : MonoBehaviour {
+  [SerializeField]
   private int KillQuestCompelted;
+  [SerializeField]
   private int FetchQuestCompleted;
+  [SerializeField]
   private int DeliveryQuestsCompleted;
 
   private int stage;
