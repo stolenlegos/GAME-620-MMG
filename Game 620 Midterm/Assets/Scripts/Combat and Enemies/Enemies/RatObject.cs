@@ -19,6 +19,7 @@ public class RatObject : EnemyObject {
 
   protected override void Die() {
     CombatEvents.EnemyDied(this);
+    GameObject.Find("Spawn").GetComponent<SpawnController>().numLivingEnemies--; 
     Destroy(gameObject);
   }
 
