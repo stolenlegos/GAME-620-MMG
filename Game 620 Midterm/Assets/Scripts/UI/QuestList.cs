@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class QuestList : MonoBehaviour {
   private List<Quest> questList = new List<Quest>();
   [SerializeField]
+  private List<GameObject> buttonList = new List<GameObject>();
+  [SerializeField]
   private GameObject questListObj;
   [SerializeField]
   private Text questListText;
@@ -18,6 +20,7 @@ public class QuestList : MonoBehaviour {
     QuestEvents.QuestRejected += this.QuestRejected;
     logOpen = false;
     questListObj.SetActive(false);
+    FillButtonList();
   }
 
 
@@ -35,6 +38,7 @@ public class QuestList : MonoBehaviour {
 
   private void AddQuest(Quest quest) {
     questList.Add(quest);
+    ShowButtons(questList);
   }
 
 
@@ -42,6 +46,7 @@ public class QuestList : MonoBehaviour {
     Quest removedQuest = questList[buttonID.id];
     UIEvents.QuestListRemove(removedQuest);
     questList.RemoveAt(buttonID.id);
+    ShowButtons(questList);
   }
 
 
@@ -52,6 +57,7 @@ public class QuestList : MonoBehaviour {
 
   private void QuestCompleted(Quest quest){
     questList.Remove(quest);
+    ShowButtons(questList);
   }
 
 
@@ -59,6 +65,7 @@ public class QuestList : MonoBehaviour {
     if(Input.GetKeyDown(KeyCode.E)){
       questListObj.SetActive(true);
       logOpen = true;
+      ShowButtons(questList);
     }
   }
 
@@ -77,5 +84,28 @@ public class QuestList : MonoBehaviour {
       result += listMember.QuestName + "\n";
     }
     return result;
+  }
+
+  private void ShowButtons(List<Quest> list) {
+      foreach (Quest q in list){
+        int temp = list.IndexOf(q);
+        GameObject tempButton = buttonList[temp];
+        if (buttonList[temp] != null){
+          buttonList[temp].SetActive(true);
+        }
+      }
+
+      for (int j = list.Count; j < buttonList.Count; j++){
+        buttonList[j].SetActive(false);   
+      }  
+  }
+
+  private void FillButtonList(){
+    GameObject tempParent = questListObj.transform.Find("DropButtons").gameObject;
+    //i is number of buttons
+    for (int i = 0; i <8; i++){
+       GameObject tempButton = tempParent.transform.Find("Button"+i).gameObject;
+       buttonList.Add(tempButton);
+    }
   }
 }
