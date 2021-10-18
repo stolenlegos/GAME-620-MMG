@@ -7,6 +7,7 @@ public class ReputationBar : MonoBehaviour
 {
     public Slider posSlider;
     public Slider negSlider;
+    public Text display;
     public GlobalReputationManager repManager;
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,7 @@ public class ReputationBar : MonoBehaviour
              negSlider.value = rep*-1;
          }
          
+         display.text = "Reputation: " + rep;
          
          
     }
