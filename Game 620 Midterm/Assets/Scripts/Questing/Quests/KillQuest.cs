@@ -49,7 +49,7 @@ public class KillQuest : Quest {
 
 
   private EnemyID RandomiseType() {
-    EnemyID id = (EnemyID)Random.Range(0, 4);
+    EnemyID id = (EnemyID)Random.Range(0, 5);
     return id;
   }
 }

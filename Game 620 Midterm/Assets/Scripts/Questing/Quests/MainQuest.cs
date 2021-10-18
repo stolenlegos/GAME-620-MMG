@@ -240,4 +240,8 @@ public class MainQuest : MonoBehaviour {
         return false;
       }
     }
+
+    public int GetStage(){
+      return stage;
+    }
 }

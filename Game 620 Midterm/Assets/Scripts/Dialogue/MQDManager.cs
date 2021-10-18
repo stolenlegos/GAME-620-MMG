@@ -45,6 +45,10 @@ public class MQDManager : MonoBehaviour {
       currentLine++;
     }
 
+    public int GetLine() {
+      return currentLine;
+    }
+
 
     private void RecieveDialogue(string[] dialogue, int lines) {
       currentDialogue = dialogue;
