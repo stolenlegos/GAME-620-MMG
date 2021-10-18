@@ -13,6 +13,11 @@ public class MainQuest : MonoBehaviour {
   private int stage;
   private bool stageAssigned;
   private bool playerIsNear;
+  public GameObject qp1;
+  public GameObject qp2;
+  public GameObject qp3;
+  public GameObject qp4;
+  public GameObject qp5; 
 
 
     private void Start() {
@@ -23,6 +28,7 @@ public class MainQuest : MonoBehaviour {
       stage = 1;
       playerIsNear = false;
       stageAssigned = false;
+
     }
 
 
@@ -36,18 +42,28 @@ public class MainQuest : MonoBehaviour {
     private void Interact() {
       if (stage == 1) {
         StageOneDialogue();
+        qp1.SetActive(true); 
       }
       else if (stage == 2) {
         StageTwoDialogue();
+        qp1.SetActive(false);
+        qp2.SetActive(true); 
+
       }
       else if (stage == 3) {
         StageThreeDialogue();
+        qp2.SetActive(false);
+        qp3.SetActive(true); 
       }
       else if (stage == 4) {
         StageFourDialogue();
+        qp3.SetActive(false);
+        qp4.SetActive(true); 
       }
       else if (stage == 5) {
         StageFiveDialogue();
+        qp4.SetActive(false);
+        qp5.SetActive(true); 
       }
     }
 
