@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5688245097269587368}
   - component: {fileID: 5688245097269587369}
   - component: {fileID: 5688245097269587382}
+  - component: {fileID: 6600097676057653549}
   m_Layer: 0
   m_Name: TempBear
   m_TagString: Enemy
@@ -144,3 +145,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d11cebe2e5d1eca4fa2152f196f502ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6600097676057653549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5688245097269587383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4763c0c9b202f894da062b88f9edc6e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: -30
+  rb: {fileID: 5688245097269587368}
+  maxTime: 10

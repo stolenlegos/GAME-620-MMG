@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -1575484732722614029}
   - component: {fileID: -6545098412105808404}
   - component: {fileID: 6083411206542651373}
+  - component: {fileID: 6452349316237537867}
   m_Layer: 0
   m_Name: TempRat
   m_TagString: Enemy
@@ -144,3 +145,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a948bb99bb63bfe45a6998f512f9628c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6452349316237537867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899659752386664001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4763c0c9b202f894da062b88f9edc6e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: -50
+  rb: {fileID: -1575484732722614029}
+  maxTime: 5

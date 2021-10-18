@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4149329268507759031}
   - component: {fileID: 9126347706200128479}
   - component: {fileID: 5811846700788330275}
+  - component: {fileID: 5969919407327029333}
   m_Layer: 0
   m_Name: TempGhost
   m_TagString: Enemy
@@ -164,3 +165,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5969919407327029333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8891794189522292872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4763c0c9b202f894da062b88f9edc6e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: -80
+  rb: {fileID: -287631184857326750}
+  maxTime: 6

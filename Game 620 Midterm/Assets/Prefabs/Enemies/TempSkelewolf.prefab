@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -2791778488360933652}
   - component: {fileID: 844112189650981004}
   - component: {fileID: 901052235514310404}
+  - component: {fileID: 6232481003103623343}
   m_Layer: 0
   m_Name: TempSkelewolf
   m_TagString: Enemy
@@ -144,3 +145,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dea19f513fb4c3a45914af272bb716a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6232481003103623343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7899484480969727455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4763c0c9b202f894da062b88f9edc6e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: -60
+  rb: {fileID: -2791778488360933652}
+  maxTime: 12
