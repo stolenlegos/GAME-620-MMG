@@ -12,6 +12,10 @@ public class SpawnController : MonoBehaviour {
   private Slime slimePrototype;
 
   private Spawner[] enemySpawners;
+  
+  [SerializeField]
+  public int numLivingEnemies;
+  public int maxLivingEnemies; 
 
   [SerializeField]
   private List<Transform> enemySpawnLocations = new List<Transform>();
@@ -29,6 +33,7 @@ public class SpawnController : MonoBehaviour {
 
   private void Start() {
     timer = 0;
+    numLivingEnemies = 0; 
 
     ghostPrototype = new Ghost(75, 20, 20);
     skeleWolfPrototype = new SkeleWolf(300, 100, 200);
@@ -58,8 +63,9 @@ public class SpawnController : MonoBehaviour {
       Transform randomSpawnLocation = enemySpawnLocations[Random.Range(0, enemySpawnLocations.Count)];
       SpawnObject SpawnBlocked = randomSpawnLocation.GetComponent<SpawnObject>();
 
-      if (!SpawnBlocked.spawnerBlocked) {
+      if (!SpawnBlocked.spawnerBlocked && numLivingEnemies < maxLivingEnemies) {
         randomEnemy.Initialise(randomSpawnLocation, randomPrefab);
+        numLivingEnemies++;
       }
 
       timer = 5;

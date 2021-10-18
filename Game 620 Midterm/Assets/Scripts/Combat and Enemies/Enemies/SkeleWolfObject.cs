@@ -7,6 +7,7 @@ public class SkeleWolfObject : EnemyObject {
 
     private void Start() {
       CombatEvents.PlayerDealDamage += TakeDamage;
+      GameObject.Find("Spawn").GetComponent<SpawnController>().numLivingEnemies--; 
       this.inPlayerSpace = false;
     }
 

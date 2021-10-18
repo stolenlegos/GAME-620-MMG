@@ -12,6 +12,7 @@ public class SlimeObject : EnemyObject {
 
   private void Update() {
     if (enemyData.health <= 0) {
+      GameObject.Find("Spawn").GetComponent<SpawnController>().numLivingEnemies--; 
       Die();
     }
   }
