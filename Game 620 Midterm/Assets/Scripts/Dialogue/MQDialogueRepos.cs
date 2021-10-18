@@ -110,7 +110,7 @@ public class MQDialogueRepos {
       "Now there is one last stage you must complete before becoming an adventurer.",
       "I want you to complete one of each of the tasks that you have completed for me before.",
       "No worries in how long it takes or if people are frustrated with you or not.",
-      " Just complete them on your time, check your quest log when your confused, and when you’re done, return to me. Now go forth, and adventure!"
+      "Just complete them on your time, check your quest log when your confused, and when you’re done, return to me. Now go forth, and adventure!"
     };
 
     public static string[] MQ5InProgress = new string[] {"Take your time. Check your quest log. There’s no rush. Now, once again, go forth, and adventure!..."};
