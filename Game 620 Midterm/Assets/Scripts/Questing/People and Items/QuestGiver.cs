@@ -42,13 +42,11 @@ public class QuestGiver : NPC {
     else if (AssignedQuest) {
       CheckQuest();
     }
-
-    neverHelped = false;
   }
 
 
   IEnumerator DialogueThisShit(){
-    for (float ft = 0.7f; ft >=0; ft -= 0.1f){
+    for (float ft = 0.1f; ft >=0; ft -= 0.1f){
       yield return new WaitForSeconds(.1f);
 
       if(questType == "KillQuest"){
@@ -70,6 +68,7 @@ public class QuestGiver : NPC {
   private void AssignQuest(QuestGiver questGiver) {
     if (questGiver.id == this.id) {
       AssignedQuest = true;
+      neverHelped = false;
     }
   }
 
