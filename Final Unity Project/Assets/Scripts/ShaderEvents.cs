@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShaderEvents  {
-    public delegate void Saturation ();
+    public delegate void Saturation (GameObject obj);
     public static event Saturation SaturationChange;
 
-    public static void RemoveColor() {
+    public static void RemoveColor(GameObject obj) {
       if (SaturationChange != null) {
-        SaturationChange();
+        Debug.Log(obj);
+        SaturationChange(obj);
       }
     }
 }

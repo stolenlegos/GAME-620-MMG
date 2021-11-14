@@ -25,7 +25,6 @@ public class SaturationControl : MonoBehaviour
       }
 
       material.SetFloat("_Saturation", saturationLevel);
-      Debug.Log(saturationLevel);
     }
 
 
@@ -42,7 +41,9 @@ public class SaturationControl : MonoBehaviour
     }
 
 
-    private void BoolChange() {
-      colored = !colored;
+    private void BoolChange (GameObject obj) {
+      if (obj == this.gameObject) {
+        colored = !colored;
+      }
     }
 }
