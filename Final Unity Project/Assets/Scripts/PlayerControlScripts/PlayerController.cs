@@ -16,8 +16,8 @@ public class PlayerController : MonoBehaviour
     private CharacterState mPlayerState = CharacterState.IDLE;
 
     //Movement Settings
-    private float mSpeed = 5.0f;
-    private float mJumpStrength = 10.0f;
+    private float mSpeed = 2.0f;
+    private float mJumpStrength = 7.0f;
 
     //State Animation Controller
     //fill in animator stuff here
