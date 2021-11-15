@@ -6,8 +6,9 @@ public class PlayerSatControl : MonoBehaviour {
   [SerializeField]
   private List<GameObject> _objectsNear = new List<GameObject>();
 
+//hello
     void Update() {
-        if (Input.GetKeyDown(KeyCode.F)) {
+        if (Input.GetKeyDown(KeyCode.F) && _objectsNear.Count != 0) {
           ShaderEvents.RemoveColor(_objectsNear[_objectsNear.Count - 1]);
         }
     }
