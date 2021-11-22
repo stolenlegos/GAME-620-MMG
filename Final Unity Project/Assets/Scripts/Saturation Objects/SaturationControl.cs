@@ -54,7 +54,7 @@ public class SaturationControl : MonoBehaviour {
           EnergyEvents.SubtractEnergy(1);
         } else if (!colored && energyLevel < MaxEnergy) {
           EnergyEvents.AddEnergy(1);
-          Debug.Log("This is your issue");
+          //adjust observer to pass energy level through so it is limited
         }
       }
     }
