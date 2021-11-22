@@ -7,7 +7,6 @@ public class AllowMovement : MonoBehaviour {
   [SerializeField]
   private Rigidbody2D rb;
 
-
   void Start() {
     colored = false;
     ShaderEvents.SaturationChange += BoolChange;
