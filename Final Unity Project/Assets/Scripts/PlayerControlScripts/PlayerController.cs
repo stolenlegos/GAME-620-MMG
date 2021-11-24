@@ -8,6 +8,7 @@ public enum CharacterState
     IDLE,
     WALKING,
     JUMPING,
+    EXAMINE,
     DEAD
 }
 
@@ -29,12 +30,14 @@ public class PlayerController : MonoBehaviour
     private bool _bPlayerStateChanged = false;
 
     private bool _bInputsDisabled = false;
+    private bool _bMovementDisabled = false;
     private bool _bLeftDirectionInputsDisabled = false;
     private bool _bRightDirectionInputsDisabled = false;
 
     private bool _bPlayerInvincible = false;
 
     private SoundManager _mSoundManager;
+    private CameraManager _mCameraManager;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +46,7 @@ public class PlayerController : MonoBehaviour
         _mAnimatorComponent.runtimeAnimatorController = mIdleController;
 
         _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        _mCameraManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraManager>();
     }
 
     // Update is called once per frame
@@ -53,79 +57,105 @@ public class PlayerController : MonoBehaviour
 
             _bPlayerStateChanged = false;
             // check state changes
-            if (mPlayerState == CharacterState.IDLE)
+            if (!_bMovementDisabled)
             {
-                _bLeftDirectionInputsDisabled = false;
-                _bRightDirectionInputsDisabled = false;
-                if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A)))
+                if (mPlayerState == CharacterState.IDLE)
                 {
-                    _bPlayerStateChanged = true;
-                    mPlayerState = CharacterState.WALKING;
+                    _bLeftDirectionInputsDisabled = false;
+                    _bRightDirectionInputsDisabled = false;
+                    if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A)))
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.WALKING;
+                        if (Input.GetKey(KeyCode.D))
+                        {
+                            _bIsGoingRight = true;
+                        }
+                        else
+                        {
+                            _bIsGoingRight = false;
+                        }
+                    }
+                    else if (Input.GetKey(KeyCode.Space))
+                    {
+                        //_mSoundManager.Play();
+                        gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.JUMPING;
+                        StartCoroutine("CheckGrounded");
+                    }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.EXAMINE;
+                        Debug.Log("PlayerStateChangedExamine");
+                    }
+                }
+                else if (mPlayerState == CharacterState.WALKING)
+                {
+                    _bLeftDirectionInputsDisabled = false;
+                    _bRightDirectionInputsDisabled = false;
+                    if (Input.GetKey(KeyCode.Space))
+                    {
+                        //_mSoundManager.Play();
+                        gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.JUMPING;
+                        StartCoroutine("CheckGrounded");
+                    }
+                    else if (!Input.GetKey(KeyCode.D) && (!Input.GetKey(KeyCode.A)))
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.IDLE;
+                    }
+                }
+
+
+
+                if (/*mPlayerState == CharacterState.JUMPING || */mPlayerState == CharacterState.WALKING)
+                {
                     if (Input.GetKey(KeyCode.D))
                     {
                         _bIsGoingRight = true;
+                        transform.Translate(transform.right * Time.deltaTime * mSpeed);
                     }
-                    else
+                    else if (Input.GetKey(KeyCode.A))
                     {
                         _bIsGoingRight = false;
+                        transform.Translate(-transform.right * Time.deltaTime * mSpeed);
                     }
                 }
-                else if (Input.GetKey(KeyCode.Space))
+                if (mPlayerState == CharacterState.JUMPING)
                 {
-                    //_mSoundManager.Play();
-                    gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
-                    _bPlayerStateChanged = true;
-                    mPlayerState = CharacterState.JUMPING;
-                    StartCoroutine("CheckGrounded");
+                    if (Input.GetKey(KeyCode.D) && !_bRightDirectionInputsDisabled)
+                    {
+                        _bIsGoingRight = true;
+                        transform.Translate(transform.right * Time.deltaTime * mSpeed);
+                        _bLeftDirectionInputsDisabled = true;
+                    }
+                    else if (Input.GetKey(KeyCode.A) && !_bLeftDirectionInputsDisabled)
+                    {
+                        _bIsGoingRight = false;
+                        transform.Translate(-transform.right * Time.deltaTime * mSpeed);
+                        _bRightDirectionInputsDisabled = true;
+                    }
                 }
             }
-            else if (mPlayerState == CharacterState.WALKING)
+            if (mPlayerState == CharacterState.EXAMINE)
             {
-                _bLeftDirectionInputsDisabled = false;
-                _bRightDirectionInputsDisabled = false;
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetMouseButtonDown(1))
                 {
-                    //_mSoundManager.Play();
-                    gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
-                    _bPlayerStateChanged = true;
-                    mPlayerState = CharacterState.JUMPING;
-                    StartCoroutine("CheckGrounded");
+                    _bMovementDisabled = true;
+                    _mCameraManager.PlayerExamineStart();
+                    Debug.Log("PlayerExamining");
                 }
-                else if (!Input.GetKey(KeyCode.D) && (!Input.GetKey(KeyCode.A)))
+                if(Input.GetMouseButtonUp(1))
                 {
+                    _mCameraManager.PlayerExamineEnd();
                     _bPlayerStateChanged = true;
                     mPlayerState = CharacterState.IDLE;
-                }
-            }
-
-
-
-            if (/*mPlayerState == CharacterState.JUMPING || */mPlayerState == CharacterState.WALKING)
-            {
-                if (Input.GetKey(KeyCode.D))
-                {
-                    _bIsGoingRight = true;
-                    transform.Translate(transform.right * Time.deltaTime * mSpeed);
-                }
-                else if (Input.GetKey(KeyCode.A))
-                {
-                    _bIsGoingRight = false;
-                    transform.Translate(-transform.right * Time.deltaTime * mSpeed);
-                }
-            }
-            if (mPlayerState == CharacterState.JUMPING)
-            {
-                if (Input.GetKey(KeyCode.D) && !_bRightDirectionInputsDisabled)
-                {
-                    _bIsGoingRight = true;
-                    transform.Translate(transform.right * Time.deltaTime * mSpeed);
-                    _bLeftDirectionInputsDisabled = true;
-                }
-                else if (Input.GetKey(KeyCode.A) && !_bLeftDirectionInputsDisabled)
-                {
-                    _bIsGoingRight = false;
-                    transform.Translate(-transform.right * Time.deltaTime * mSpeed);
-                    _bRightDirectionInputsDisabled = true;
+                    _bMovementDisabled = false;
+                    Debug.Log("PlayerEndExamining");
                 }
             }
 
