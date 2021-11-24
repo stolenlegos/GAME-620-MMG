@@ -9,7 +9,7 @@ public class PlayerSatControl : MonoBehaviour {
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.F) && _objectsNear.Count != 0) {
-          ShaderEvents.RemoveColor(_objectsNear[_objectsNear.Count - 1]);
+          EnergyEvents.ChangeColor(_objectsNear[_objectsNear.Count - 1]);
         }
     }
 

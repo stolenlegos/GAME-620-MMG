@@ -4,32 +4,28 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
-  private int energyLevel;
   [SerializeField]
   private Text energyLevelText;
+  private int currentEnergy;
+  private int maxEnergy;
 
 
   void Start() {
-    energyLevel = 3;
-    EnergyEvents.addEnergy += IncreaseEnergy;
-    EnergyEvents.subtractEnergy += DecreaseEnergy;
+    EnergyEvents.EnergyUIChange += ChangeEnergyLevels;
+    maxEnergy = 3;
+    currentEnergy = maxEnergy;
     ChangeUI();
   }
 
 
   private void ChangeUI() {
-    energyLevelText.text = "Energy: " + energyLevel.ToString();
+    energyLevelText.text = "Energy: " + currentEnergy.ToString();
   }
 
 
-  private void IncreaseEnergy(int num) {
-    energyLevel += num;
-    ChangeUI();
-  }
-
-
-  private void DecreaseEnergy(int num) {
-    energyLevel -= num;
+  private void ChangeEnergyLevels(int current, int max) {
+    currentEnergy = current;
+    maxEnergy = max;
     ChangeUI();
   }
 }

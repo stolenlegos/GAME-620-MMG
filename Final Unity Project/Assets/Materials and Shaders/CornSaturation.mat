@@ -36,6 +36,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Saturation: -0.004069492
+    - _Saturation: -0.00016231582
     m_Colors: []
   m_BuildTextureStacks: []
