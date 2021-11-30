@@ -6,6 +6,9 @@ TagManager:
   tags:
   - SoundManager
   - Terrain
+  - box_Big
+  - box_Small
+  - button_small
   layers:
   - Default
   - TransparentFX
