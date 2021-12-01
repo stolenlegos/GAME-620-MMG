@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!_bInputsDisabled)
         {
-
+            Debug.Log("PlayerState: " + mPlayerState);
             _bPlayerStateChanged = false;
             // check state changes
             if (!_bMovementDisabled)
@@ -191,16 +191,17 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator CheckGrounded()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.0f);
 
         while (true)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position - Vector3.up * 1f, -Vector2.up, 0.05f);
             if(hit.collider != null)
             {
-                if(hit.transform.tag == "Terrain")
+                if(hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
                 {
-                    if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+                    Debug.Log("Hitting");
+                    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
                     {
                         mPlayerState = CharacterState.WALKING;
                     }
@@ -212,7 +213,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.45f);
         }
 
         ChangeAnimator();
@@ -272,9 +273,9 @@ public class PlayerController : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * directions[i], transform.right * directions[i], 0.05f);
             if(hit.collider != null)
             {
-                if(hit.transform.tag == "Terrain")
+                if(hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big")
                 {
-                    transform.Translate(-1f * transform.right * directions[i] * 0.025f);
+                    transform.Translate(-.00000001f * transform.right * directions[i] * 0.025f);
                 }
             }
         }
