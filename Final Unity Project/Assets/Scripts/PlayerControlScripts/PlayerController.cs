@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private SoundManager _mSoundManager;
     private CameraManager _mCameraManager;
+    private Rigidbody2D rb2D;
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +48,8 @@ public class PlayerController : MonoBehaviour
 
         _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         _mCameraManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraManager>();
+
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -117,12 +120,14 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetKey(KeyCode.D))
                     {
                         _bIsGoingRight = true;
-                        transform.Translate(transform.right * Time.deltaTime * mSpeed);
+                        //transform.Translate(transform.right * Time.deltaTime * mSpeed);
+                        rb2D.MovePosition(rb2D.position + mSpeed * Time.deltaTime);
                     }
                     else if (Input.GetKey(KeyCode.A))
                     {
                         _bIsGoingRight = false;
-                        transform.Translate(-transform.right * Time.deltaTime * mSpeed);
+                        //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
+                        rb2D.MovePosition(rb2D.position - mSpeed * Time.deltaTime);
                     }
                 }
                 if (mPlayerState == CharacterState.JUMPING)
