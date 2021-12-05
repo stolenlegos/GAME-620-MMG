@@ -8,6 +8,8 @@ public enum CharacterState
     IDLE,
     WALKING,
     JUMPING,
+    FALLING,
+    CARRYING,
     EXAMINE,
     DEAD
 }
@@ -17,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private CharacterState mPlayerState = CharacterState.IDLE;
 
     //Movement Settings
-    public float mSpeed = 2.0f;
+    public float mSpeed = 1.0f;
     public float mJumpStrength = 7.0f;
 
     //State Animation Controller
@@ -40,6 +42,9 @@ public class PlayerController : MonoBehaviour
     private CameraManager _mCameraManager;
     private Rigidbody2D rb2D;
 
+    private float moveHorizontal;
+    private float moveVertical;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,9 +60,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        moveHorizontal = Input.GetAxis("Horizontal");
+        moveVertical = Input.GetAxis("Vertical");
         if (!_bInputsDisabled)
         {
             Debug.Log("PlayerState: " + mPlayerState);
+            Debug.Log("Movement: " + _bMovementDisabled);
             _bPlayerStateChanged = false;
             // check state changes
             if (!_bMovementDisabled)
@@ -93,6 +101,11 @@ public class PlayerController : MonoBehaviour
                         mPlayerState = CharacterState.EXAMINE;
                         Debug.Log("PlayerStateChangedExamine");
                     }
+                    else if (Input.GetMouseButtonDown(0))
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.CARRYING;
+                    }
                 }
                 else if (mPlayerState == CharacterState.WALKING)
                 {
@@ -111,23 +124,49 @@ public class PlayerController : MonoBehaviour
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.IDLE;
                     }
+                    else if (Input.GetMouseButtonDown(0))
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.CARRYING;
+                    }
                 }
 
-
-
-                if (/*mPlayerState == CharacterState.JUMPING || */mPlayerState == CharacterState.WALKING)
+                else if (mPlayerState == CharacterState.CARRYING)
                 {
+                    _bMovementDisabled = false;
                     if (Input.GetKey(KeyCode.D))
                     {
                         _bIsGoingRight = true;
                         //transform.Translate(transform.right * Time.deltaTime * mSpeed);
-                        rb2D.MovePosition(rb2D.position + mSpeed * Time.deltaTime);
+                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
                     }
                     else if (Input.GetKey(KeyCode.A))
                     {
                         _bIsGoingRight = false;
                         //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
-                        rb2D.MovePosition(rb2D.position - mSpeed * Time.deltaTime);
+                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
+                    }
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.IDLE;
+                    }
+                }
+
+                if (/*mPlayerState == CharacterState.JUMPING || */mPlayerState == CharacterState.WALKING)
+                {
+                    _bMovementDisabled = false;
+                    if (Input.GetKey(KeyCode.D))
+                    {
+                        _bIsGoingRight = true;
+                        //transform.Translate(transform.right * Time.deltaTime * mSpeed);
+                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
+                    }
+                    else if (Input.GetKey(KeyCode.A))
+                    {
+                        _bIsGoingRight = false;
+                        //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
+                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
                     }
                 }
                 if (mPlayerState == CharacterState.JUMPING)
@@ -135,15 +174,21 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetKey(KeyCode.D) && !_bRightDirectionInputsDisabled)
                     {
                         _bIsGoingRight = true;
-                        transform.Translate(transform.right * Time.deltaTime * mSpeed);
+                        //transform.Translate(transform.right * Time.deltaTime * mSpeed);
+                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
                         _bLeftDirectionInputsDisabled = true;
                     }
                     else if (Input.GetKey(KeyCode.A) && !_bLeftDirectionInputsDisabled)
                     {
                         _bIsGoingRight = false;
-                        transform.Translate(-transform.right * Time.deltaTime * mSpeed);
+                        //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
+                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
                         _bRightDirectionInputsDisabled = true;
                     }
+                }
+                if (mPlayerState == CharacterState.FALLING)
+                {
+                    StartCoroutine("CheckGrounded");
                 }
             }
             if (mPlayerState == CharacterState.EXAMINE)
@@ -171,7 +216,10 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        CheckWall();
+        if (mPlayerState == CharacterState.WALKING || mPlayerState == CharacterState.JUMPING)
+        {
+            CheckWall();
+        }
     }
 
     public void ChangeAnimator()
@@ -205,10 +253,18 @@ public class PlayerController : MonoBehaviour
             {
                 if(hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
                 {
-                    Debug.Log("Hitting");
+                    //Debug.Log("Hitting");
                     if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
                     {
+                        Debug.Log("Running");
+                        _bMovementDisabled = false;
+                        _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.WALKING;
+                    }
+                    else if (mPlayerState == CharacterState.FALLING)
+                    {
+                        _bMovementDisabled = false;
+                        mPlayerState = CharacterState.IDLE;
                     }
                     else
                     {
@@ -271,18 +327,52 @@ public class PlayerController : MonoBehaviour
 
     public void CheckWall()
     {
-        List<float> directions = new List<float> { -1, 1 };
+        List<float> directions = new List<float> { -.2375f, .2375f };
+
+        float distance = 0.005f;
 
         for (int i = 0; i < directions.Count; i++)
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * directions[i], transform.right * directions[i], 0.05f);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * directions[i], transform.right * directions[i], distance);
+            Debug.DrawRay(transform.position + transform.right * directions[i], transform.right  * directions[i], Color.green, 45.0f);
             if(hit.collider != null)
             {
                 if(hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big")
                 {
-                    transform.Translate(-.00000001f * transform.right * directions[i] * 0.025f);
+                    transform.Translate(-.0000000000001f * transform.right * directions[i] * 0.025f);
+                    if(hit.collider.tag == "Terrain" && mPlayerState == CharacterState.JUMPING)
+                    {
+                        //Debug.Log("Wall Hit");
+                        _bMovementDisabled = true;
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.FALLING;
+                    }
+                    else if (hit.collider.tag == "Terrain" && mPlayerState == CharacterState.WALKING)
+                    {
+
+                    }
+                    else if(hit.collider.tag == "Terrain" && mPlayerState == CharacterState.IDLE)
+                    {
+                        Debug.Log("Reset");
+                        _bMovementDisabled = false;
+                    }
                 }
             }
         }
     }
+    /*public void OnCollisionEnter2D(Collision collision)
+    {
+        if (collision.transform.tag == "Terrain")
+        {
+            Debug.Log("Colliding");
+            if (mPlayerState == CharacterState.JUMPING)
+            {
+                _bInputsDisabled = true;
+            }
+            else
+            {
+                _bInputsDisabled = false;
+            }
+        }
+    }*/
 }
