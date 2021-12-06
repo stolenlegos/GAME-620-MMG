@@ -260,7 +260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c2772aa96b90c64e8a09bd6284ac437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  setTimer: 2
 --- !u!1 &119930442
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,6 +467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   door: {fileID: 108872523}
+  timer: 2
 --- !u!1001 &260552919
 PrefabInstance:
   m_ObjectHideFlags: 0
