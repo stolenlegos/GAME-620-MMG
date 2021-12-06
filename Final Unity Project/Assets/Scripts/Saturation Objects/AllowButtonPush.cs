@@ -18,7 +18,7 @@ public class AllowButtonPush : MonoBehaviour {
 
 
   void Update() {
-    if (colored && Input.GetMouseButtonDown(0) && playerNear) {
+    if (colored && Input.GetKeyDown(KeyCode.E) && playerNear) {
       PlayerActions.ButtonPushed(door);
       Debug.Log("PUSHED THE BUTTON");
     }

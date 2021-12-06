@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colored: 0
-  material: {fileID: 2100000, guid: c619e36f6a5bcc24d971d6e6b1d072bb, type: 2}
+  material: {fileID: 2100000, guid: e6fee31a106fa574b89a5316996976f4, type: 2}
 --- !u!114 &1728165120425618933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,4 +176,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e5009d6392a7143a072b07917c44a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grabbable: 0
   rb: {fileID: 9122164496577469397}
