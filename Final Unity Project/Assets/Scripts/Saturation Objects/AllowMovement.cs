@@ -23,17 +23,6 @@ public class AllowMovement : MonoBehaviour {
         {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
-      //  else if (colored && Input.GetMouseButtonDown(0))
-      //  {
-          //  rb.constraints = RigidbodyConstraints2D.None;
-          //  rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-          //  this.transform.parent = player.transform;
-      //  }
-      //  else if (colored && Input.GetMouseButtonUp(0))
-      //  {
-          //  this.transform.parent = null;
-          //  rb.constraints = RigidbodyConstraints2D.FreezeAll;
-      //  }
   }
 
 
