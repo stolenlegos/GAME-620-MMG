@@ -14,7 +14,6 @@ public static event PlayerAction Drop;
       Grab(obj);
     }
   }
-//butts
 
   public static void ObjectRelease(GameObject obj) {
     if (Release != null) {

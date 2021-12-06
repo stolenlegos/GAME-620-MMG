@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         if (!_bInputsDisabled)
         {
             Debug.Log("PlayerState: " + mPlayerState);
-            Debug.Log("Movement: " + _bMovementDisabled);
+            //Debug.Log("Movement: " + _bMovementDisabled);
             _bPlayerStateChanged = false;
             // check state changes
             if (!_bMovementDisabled)
@@ -360,19 +360,4 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    /*public void OnCollisionEnter2D(Collision collision)
-    {
-        if (collision.transform.tag == "Terrain")
-        {
-            Debug.Log("Colliding");
-            if (mPlayerState == CharacterState.JUMPING)
-            {
-                _bInputsDisabled = true;
-            }
-            else
-            {
-                _bInputsDisabled = false;
-            }
-        }
-    }*/
 }
