@@ -6,6 +6,7 @@ public class AllowMovement : MonoBehaviour {
   private bool colored;
   private GameObject player;
   private bool grabbable;
+  private Vector3 offset;
   [SerializeField]
   private Rigidbody2D rb;
 
@@ -25,6 +26,10 @@ public class AllowMovement : MonoBehaviour {
         {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
+        if (grabbable)
+        {
+            this.transform.position = player.transform.position - offset;
+        }
     }
 
 
@@ -37,17 +42,22 @@ public class AllowMovement : MonoBehaviour {
 
   private void GrabObject (GameObject obj) {
     if (obj == this.gameObject && colored) {
-      rb.constraints = RigidbodyConstraints2D.None;
-      rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-      this.transform.parent = player.transform;
-    }
+            grabbable = true;
+            this.transform.parent = player.transform;
+            offset = player.transform.position - this.transform.position;
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            this.transform.position = player.transform.position - offset;
+            this.transform.parent = player.transform;
+        }
   }
 
 
   private void ReleaseObject (GameObject obj) {
-    if (obj == this.gameObject && colored) {
-      this.transform.parent = null;
-      rb.constraints = RigidbodyConstraints2D.FreezeAll;
+    if (obj == this.gameObject) {
+            grabbable = false;
+            this.transform.parent = null;
+            //rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
   }
     private void DroppedObject(GameObject obj)
@@ -59,6 +69,7 @@ public class AllowMovement : MonoBehaviour {
     {
         yield return new WaitForSeconds(2.0f);
 
+        this.transform.parent = null;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
 }
