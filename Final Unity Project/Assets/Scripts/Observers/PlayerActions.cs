@@ -17,7 +17,6 @@ public static event PlayerAction PushButton;
     }
   }
 
-
   public static void ObjectRelease(GameObject obj) {
     if (Release != null) {
       Debug.Log(obj);

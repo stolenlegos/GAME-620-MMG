@@ -260,7 +260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c2772aa96b90c64e8a09bd6284ac437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sat: {fileID: 108872527}
 --- !u!1 &119930442
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,7 +829,7 @@ PrefabInstance:
     - target: {fileID: 4812672517776415260, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c619e36f6a5bcc24d971d6e6b1d072bb, type: 2}
+      objectReference: {fileID: 2100000, guid: 89f81c7252fa9ab44aa59f14a4b67590, type: 2}
     - target: {fileID: 6280361386891205936, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
       propertyPath: m_Name
       value: box_Big 1
@@ -838,6 +837,10 @@ PrefabInstance:
     - target: {fileID: 6280361386891205936, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9122164496577469397, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1981800716279561321, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
@@ -1510,6 +1513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e5009d6392a7143a072b07917c44a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grabbable: 0
   rb: {fileID: 872093009}
 --- !u!50 &872093009
 Rigidbody2D:
@@ -3430,6 +3434,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1728165120425618933, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4402855181577664190, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -3744,6 +3752,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1728165120425618933, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4402855181577664190, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
       propertyPath: m_RootOrder
       value: 17

@@ -5,7 +5,7 @@ using UnityEngine;
 public class AllowMovement : MonoBehaviour {
   private bool colored;
   private GameObject player;
-  private bool grabbable;
+  public bool grabbable;
   private Vector3 offset;
   [SerializeField]
   private Rigidbody2D rb;
@@ -43,6 +43,7 @@ public class AllowMovement : MonoBehaviour {
   private void GrabObject (GameObject obj) {
     if (obj == this.gameObject && colored) {
             grabbable = true;
+            rb.mass = 20;
             this.transform.parent = player.transform;
             offset = player.transform.position - this.transform.position;
             rb.constraints = RigidbodyConstraints2D.None;
@@ -56,20 +57,39 @@ public class AllowMovement : MonoBehaviour {
   private void ReleaseObject (GameObject obj) {
     if (obj == this.gameObject) {
             grabbable = false;
+            rb.mass = 1000;
             this.transform.parent = null;
             //rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
   }
     private void DroppedObject(GameObject obj)
     {
-        StartCoroutine("FreezeObject");
+        if (obj == this.gameObject)
+        {
+            StartCoroutine("FreezeObject");
+        }
     }
 
     IEnumerator FreezeObject()
     {
-        yield return new WaitForSeconds(2.0f);
+        //Debug.Log("Coroutine Started");
+        yield return new WaitForSeconds(1.0f);
 
-        this.transform.parent = null;
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        while (true)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position - Vector3.up * 1f, -Vector2.up, 0.05f);
+            Debug.DrawRay(transform.position - Vector3.up * 1, -Vector2.up - new Vector2(0, 1f), Color.green, 45.0f);
+            if (hit.collider != null)
+            {
+                if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
+                {
+                    this.transform.parent = null;
+                    rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    break;
+                }
+            }
+
+            yield return new WaitForSeconds(0.45f);
+        }
     }
 }
