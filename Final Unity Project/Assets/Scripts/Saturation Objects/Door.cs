@@ -7,6 +7,7 @@ public class Door : MonoBehaviour {
   private SpriteRenderer sprite;
   private bool open;
 
+
   void Start() {
     col = GetComponent<Collider2D>();
     sprite = GetComponent<SpriteRenderer>();

@@ -467,6 +467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   door: {fileID: 108872523}
+  timer: 2
 --- !u!1001 &260552919
 PrefabInstance:
   m_ObjectHideFlags: 0

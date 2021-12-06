@@ -7,6 +7,7 @@ public class AllowButtonPush : MonoBehaviour {
   private GameObject player;
   private bool playerNear;
   [SerializeField] private GameObject door;
+  [SerializeField] private float timer;
 
 
   void Start() {
@@ -20,6 +21,7 @@ public class AllowButtonPush : MonoBehaviour {
   void Update() {
     if (colored && Input.GetKeyDown(KeyCode.E) && playerNear) {
       PlayerActions.ButtonPushed(door);
+      StartCoroutine("ButtonTimer");
       Debug.Log("PUSHED THE BUTTON");
     }
   }
@@ -45,4 +47,13 @@ public class AllowButtonPush : MonoBehaviour {
       playerNear = false;
     }
   }
+
+
+  IEnumerator ButtonTimer() {
+    yield return new WaitForSeconds(timer);
+
+    PlayerActions.ButtonPushed(door);
+    EnergyEvents.ChangeColor(this.gameObject);
+  }
+
 }
