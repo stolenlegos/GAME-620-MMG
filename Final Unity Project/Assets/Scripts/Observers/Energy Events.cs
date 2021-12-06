@@ -11,7 +11,7 @@ public class EnergyEvents  {
 
 
     public static void ChangeColor (GameObject obj) {
-      if (checkEnergy != null) {
+      if (checkEnergy != null && obj.tag != "Door") {
         checkEnergy(obj);
       }
     }
