@@ -26,6 +26,7 @@ public class PlayerSatControl : MonoBehaviour {
     }
 
     void OnTriggerExit2D (Collider2D other) {
-      _objectsNear.Remove(other.gameObject);
+        PlayerActions.ObjectDropped(_objectsNear[_objectsNear.Count - 1]);
+        _objectsNear.Remove(other.gameObject);
     }
 }

@@ -6,6 +6,7 @@ public class PlayerActions {
 public delegate void PlayerAction (GameObject obj);
 public static event PlayerAction Grab;
 public static event PlayerAction Release;
+public static event PlayerAction Drop;
 
   public static void ObjectGrab(GameObject obj) {
     if (Grab != null) {
@@ -21,4 +22,12 @@ public static event PlayerAction Release;
       Release(obj);
     }
   }
+  public static void ObjectDropped(GameObject obj)
+    {
+        if (Drop != null)
+        {
+            Debug.Log(obj);
+            Drop(obj);
+        }
+    }
 }

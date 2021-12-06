@@ -5,6 +5,7 @@ using UnityEngine;
 public class AllowMovement : MonoBehaviour {
   private bool colored;
   private GameObject player;
+  private bool grabbable;
   [SerializeField]
   private Rigidbody2D rb;
 
@@ -15,6 +16,7 @@ public class AllowMovement : MonoBehaviour {
         ShaderEvents.SaturationChange += BoolChange;
         PlayerActions.Grab += GrabObject;
         PlayerActions.Release += ReleaseObject;
+        PlayerActions.Drop += DroppedObject;
     }
 
 
@@ -23,7 +25,7 @@ public class AllowMovement : MonoBehaviour {
         {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
-  }
+    }
 
 
   private void BoolChange (GameObject obj) {
@@ -48,4 +50,15 @@ public class AllowMovement : MonoBehaviour {
       rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
   }
+    private void DroppedObject(GameObject obj)
+    {
+        StartCoroutine("FreezeObject");
+    }
+
+    IEnumerator FreezeObject()
+    {
+        yield return new WaitForSeconds(2.0f);
+
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
 }
