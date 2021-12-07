@@ -10,6 +10,7 @@ public enum CharacterState
     JUMPING,
     FALLING,
     CARRYING,
+    JUMPCARRYING,
     EXAMINE,
     DEAD
 }
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
         if (!_bInputsDisabled)
         {
             Debug.Log("PlayerState: " + mPlayerState);
+            Debug.Log("ChildCount: " + this.gameObject.transform.childCount);
             //Debug.Log("Movement: " + _bMovementDisabled);
             _bPlayerStateChanged = false;
             // check state changes
@@ -134,6 +136,10 @@ public class PlayerController : MonoBehaviour
                 else if (mPlayerState == CharacterState.CARRYING)
                 {
                     _bMovementDisabled = false;
+                    _bLeftDirectionInputsDisabled = false;
+                    _bRightDirectionInputsDisabled = false;
+
+
                     if (Input.GetKey(KeyCode.D))
                     {
                         _bIsGoingRight = true;
@@ -146,12 +152,22 @@ public class PlayerController : MonoBehaviour
                         //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
                     }
-                    if (Input.GetMouseButtonUp(0))
+                    if (this.gameObject.transform.childCount > 0)
+                    {
+                        if (Input.GetKey(KeyCode.Space) && this.gameObject.transform.GetChild(0).tag == "box_Small")
+                        {
+                            gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * (mJumpStrength - 1.5f);
+                            _bPlayerStateChanged = true;
+                            mPlayerState = CharacterState.JUMPCARRYING;
+                            StartCoroutine("CheckGrounded");
+                        }
+                    }
+                    if (Input.GetMouseButtonUp(0) || this.gameObject.transform.childCount == 0)
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.IDLE;
                     }
-                }
+                } 
 
                 if (/*mPlayerState == CharacterState.JUMPING || */mPlayerState == CharacterState.WALKING)
                 {
@@ -171,6 +187,12 @@ public class PlayerController : MonoBehaviour
                 }
                 if (mPlayerState == CharacterState.JUMPING)
                 {
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.FALLING;
+                        //this.gameObject.transform.childCount - 1;
+                    }
                     if (Input.GetKey(KeyCode.D) && !_bRightDirectionInputsDisabled)
                     {
                         _bIsGoingRight = true;
@@ -183,6 +205,23 @@ public class PlayerController : MonoBehaviour
                         _bIsGoingRight = false;
                         //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
+                        _bRightDirectionInputsDisabled = true;
+                    }
+                }
+                if (mPlayerState == CharacterState.JUMPCARRYING)
+                {
+                    if (Input.GetKey(KeyCode.D) && !_bRightDirectionInputsDisabled)
+                    {
+                        _bIsGoingRight = true;
+                        //transform.Translate(transform.right * Time.deltaTime * mSpeed);
+                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
+                        _bLeftDirectionInputsDisabled = true;
+                    }
+                    else if (Input.GetKey(KeyCode.A) && !_bLeftDirectionInputsDisabled)
+                    {
+                        _bIsGoingRight = false;
+                        //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
+                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
                         _bRightDirectionInputsDisabled = true;
                     }
                 }
@@ -244,7 +283,14 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator CheckGrounded()
     {
-        yield return new WaitForSeconds(1.0f);
+        if (mPlayerState == CharacterState.JUMPCARRYING)
+        {
+            yield return new WaitForSeconds(1.2f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1.0f);
+        }
 
         while (true)
         {
@@ -254,7 +300,7 @@ public class PlayerController : MonoBehaviour
                 if(hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
                 {
                     //Debug.Log("Hitting");
-                    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+                    if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && mPlayerState != CharacterState.JUMPCARRYING)
                     {
                         Debug.Log("Running");
                         _bMovementDisabled = false;
@@ -266,6 +312,10 @@ public class PlayerController : MonoBehaviour
                         _bMovementDisabled = false;
                         mPlayerState = CharacterState.IDLE;
                     }
+                    else if (mPlayerState == CharacterState.JUMPCARRYING)
+                    {
+                        mPlayerState = CharacterState.CARRYING;
+                    }
                     else
                     {
                         mPlayerState = CharacterState.IDLE; 
@@ -273,8 +323,8 @@ public class PlayerController : MonoBehaviour
                     break;
                 }
             }
-
-            yield return new WaitForSeconds(0.45f);
+                yield return new WaitForSeconds(0.45f);
+          
         }
 
         ChangeAnimator();

@@ -12,14 +12,14 @@ public static event PlayerAction PushButton;
 
   public static void ObjectGrab(GameObject obj) {
     if (Grab != null) {
-      Debug.Log(obj);
+      //Debug.Log(obj);
       Grab(obj);
     }
   }
 
   public static void ObjectRelease(GameObject obj) {
     if (Release != null) {
-      Debug.Log(obj);
+      //Debug.Log(obj);
       Release(obj);
     }
   }
@@ -27,7 +27,7 @@ public static event PlayerAction PushButton;
 
   public static void ObjectDropped(GameObject obj) {
     if (Drop != null) {
-      Debug.Log(obj);
+      //Debug.Log(obj);
       Drop(obj);
     }
   }
@@ -35,7 +35,7 @@ public static event PlayerAction PushButton;
 
   public static void ButtonPushed(GameObject obj) {
     if (PushButton != null) {
-      Debug.Log(obj);
+      //Debug.Log(obj);
       PushButton(obj);
     }
   }

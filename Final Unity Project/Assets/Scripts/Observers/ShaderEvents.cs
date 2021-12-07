@@ -8,7 +8,7 @@ public class ShaderEvents  {
 
     public static void ChangeColor(GameObject obj) {
       if (SaturationChange != null) {
-        Debug.Log(obj);
+        //Debug.Log(obj);
         SaturationChange(obj);
       }
     }
