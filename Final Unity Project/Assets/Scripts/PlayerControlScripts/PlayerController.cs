@@ -152,9 +152,9 @@ public class PlayerController : MonoBehaviour
                         //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
                     }
-                    if (this.gameObject.transform.childCount > 0)
+                    if (this.gameObject.transform.childCount > 1)
                     {
-                        if (Input.GetKey(KeyCode.Space) && this.gameObject.transform.GetChild(0).tag == "box_Small")
+                        if (Input.GetKey(KeyCode.Space) && this.gameObject.transform.GetChild(1).tag == "box_Small")
                         {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * (mJumpStrength - 1.5f);
                             _bPlayerStateChanged = true;
