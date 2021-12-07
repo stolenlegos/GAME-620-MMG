@@ -8,9 +8,9 @@ public class CameraManager : MonoBehaviour
     public Vector3 offset;
 
     private Camera cam;
-    private float zoomMultiplier = 2;
-    private float defaultFov = 90;
-    private float zoomDuration = 2;
+    public int normalview = 30;
+    public int zoomBackTimer;
+    private float smooth = 2;
     private bool _followPlayer = true;
     // Start is called before the first frame update
     void Start()
@@ -29,17 +29,29 @@ public class CameraManager : MonoBehaviour
     public void PlayerExamineStart()
     {
         _followPlayer = false;
-        ZoomCamera(defaultFov * zoomMultiplier);
-        Debug.Log("ZoomOUtStart");
+        Debug.Log("ZoomOutStart");
+        ZoomCameraOut();
     }
     public void PlayerExamineEnd()
     {
-        ZoomCamera(defaultFov);
         _followPlayer = true;
+        ZoomCameraOut();
     }
-    private void ZoomCamera(float target)
+    private void ZoomCameraOut()
     {
-        float angle = Mathf.Abs((defaultFov / zoomMultiplier) - defaultFov);
-        cam.fieldOfView = Mathf.MoveTowards(cam.fieldOfView, target, angle / zoomDuration * Time.deltaTime);
+        if (!_followPlayer)
+        {
+            zoomBackTimer = 550;
+            Debug.Log("Normalview: " + zoomBackTimer);
+            GetComponent<Camera>().fieldOfView = Mathf.Lerp(GetComponent<Camera>().fieldOfView, normalview * 3, Time.deltaTime * smooth);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(player.position.x + offset.x + 10, player.position.y + offset.y + 5, offset.z), Time.deltaTime * smooth);
+        }
+        else if (_followPlayer)
+        {
+            zoomBackTimer = zoomBackTimer - 1;
+            Debug.Log("Normalview: " + zoomBackTimer);
+            GetComponent<Camera>().fieldOfView = Mathf.Lerp(GetComponent<Camera>().fieldOfView, normalview, Time.deltaTime * smooth);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(player.position.x + offset.x, player.position.y + offset.y, offset.z), Time.deltaTime * smooth);
+        }
     }
 }

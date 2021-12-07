@@ -37,7 +37,8 @@ public class PlayerController : MonoBehaviour
     private bool _bLeftDirectionInputsDisabled = false;
     private bool _bRightDirectionInputsDisabled = false;
 
-    private bool _bPlayerInvincible = false;
+    //private bool _bPlayerInvincible = false;
+    private bool _bPlayerCanExamine = false;
 
     private SoundManager _mSoundManager;
     private CameraManager _mCameraManager;
@@ -97,7 +98,7 @@ public class PlayerController : MonoBehaviour
                         mPlayerState = CharacterState.JUMPING;
                         StartCoroutine("CheckGrounded");
                     }
-                    else if (Input.GetMouseButtonDown(1))
+                    else if (Input.GetMouseButtonDown(1) && _bPlayerCanExamine)
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.EXAMINE;
@@ -232,15 +233,15 @@ public class PlayerController : MonoBehaviour
             }
             if (mPlayerState == CharacterState.EXAMINE)
             {
-                if (Input.GetMouseButtonDown(1))
-                {
-                    _bMovementDisabled = true;
-                    _mCameraManager.PlayerExamineStart();
-                    Debug.Log("PlayerExamining");
-                }
+              _bMovementDisabled = true;
+              _mCameraManager.PlayerExamineStart();
+              Debug.Log("PlayerExamining");
                 if(Input.GetMouseButtonUp(1))
                 {
-                    _mCameraManager.PlayerExamineEnd();
+                    while (_mCameraManager.zoomBackTimer > 0)
+                    {
+                        _mCameraManager.PlayerExamineEnd();
+                    }
                     _bPlayerStateChanged = true;
                     mPlayerState = CharacterState.IDLE;
                     _bMovementDisabled = false;
@@ -334,7 +335,7 @@ public class PlayerController : MonoBehaviour
     //Sent when an incoming collider makes contact with this object's
     // collider (2D physics only)
     // <param name="other"> The Collision2D data associated with this collision. </params>
-    private void OnCollisionEnter2D(Collision2D other)
+    /*private void OnCollisionEnter2D(Collision2D other)
     {
         if(other.transform.tag == "Monster" && !_bPlayerInvincible)
         {
@@ -346,7 +347,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine("Coroutine_SetPlayerInvincible");
 
         }
-    }
+    }*/
 
     IEnumerator Coroutine_BlockPlayerInputs()
     {
@@ -358,10 +359,10 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Coroutine_SetPlayerInvincible()
     {
-        _bPlayerInvincible = true;
+        //_bPlayerInvincible = true;
         yield return new WaitForSeconds(1.5f);
 
-        _bPlayerInvincible = false;
+        //_bPlayerInvincible = false;
         yield return null;
     }
 
@@ -370,10 +371,10 @@ public class PlayerController : MonoBehaviour
         _bInputsDisabled = true;
     }
 
-    public void SetStatePlayerInvincible(bool newState)
+    /*public void SetStatePlayerInvincible(bool newState)
     {
         _bPlayerInvincible = newState;
-    }
+    }*/
 
     public void CheckWall()
     {
@@ -408,6 +409,20 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "Examiner")
+        {
+            _bPlayerCanExamine = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Examiner")
+        {
+            _bPlayerCanExamine = false;
         }
     }
 }

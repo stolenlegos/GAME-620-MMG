@@ -9,6 +9,7 @@ TagManager:
   - box_Big
   - box_Small
   - button_small
+  - Examiner
   layers:
   - Default
   - TransparentFX
