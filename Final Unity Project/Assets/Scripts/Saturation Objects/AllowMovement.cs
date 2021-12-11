@@ -81,7 +81,13 @@ public class AllowMovement : MonoBehaviour {
             Debug.DrawRay(transform.position - Vector3.up * 1, -Vector2.up - new Vector2(0, 1f), Color.green, 45.0f);
             if (hit.collider != null)
             {
-                if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
+                if (hit.transform.tag == "Terrain")// || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
+                {
+                    this.transform.parent = null;
+                    rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    break;
+                }
+                if (hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
                 {
                     this.transform.parent = null;
                     rb.constraints = RigidbodyConstraints2D.FreezeAll;

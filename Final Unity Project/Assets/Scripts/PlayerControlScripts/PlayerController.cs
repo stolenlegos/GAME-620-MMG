@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     //Movement Settings
     public float mSpeed = 1.0f;
     public float mJumpStrength = 7.0f;
+    private int playerCollisionCount;
 
     //State Animation Controller
     public RuntimeAnimatorController mIdleController;
@@ -36,6 +37,8 @@ public class PlayerController : MonoBehaviour
     private bool _bMovementDisabled = false;
     private bool _bLeftDirectionInputsDisabled = false;
     private bool _bRightDirectionInputsDisabled = false;
+    private bool _bGrounded = true;
+    private bool _bcancelJumpCarry = false;
 
     //private bool _bPlayerInvincible = false;
     private bool _bPlayerCanExamine = false;
@@ -64,10 +67,21 @@ public class PlayerController : MonoBehaviour
     {
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
+        playerCollisionCount = GameObject.FindGameObjectWithTag("Player").GetComponent<playerCollisionCounter>().collisionCount;
+        if (playerCollisionCount >= 1)
+        {
+            _bGrounded = true;
+        }
+        else
+        {
+            _bGrounded = false;
+        }
+        Debug.Log ("CollisionCount: " + playerCollisionCount);
         if (!_bInputsDisabled)
         {
             Debug.Log("PlayerState: " + mPlayerState);
-            Debug.Log("ChildCount: " + this.gameObject.transform.childCount);
+            Debug.Log("Grounded: " + _bGrounded);
+            //Debug.Log("ChildCount: " + this.gameObject.transform.childCount);
             //Debug.Log("Movement: " + _bMovementDisabled);
             _bPlayerStateChanged = false;
             // check state changes
@@ -109,12 +123,22 @@ public class PlayerController : MonoBehaviour
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.CARRYING;
                     }
+                    else if (_bGrounded == false)
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.FALLING;
+                    }
                 }
                 else if (mPlayerState == CharacterState.WALKING)
                 {
                     _bLeftDirectionInputsDisabled = false;
                     _bRightDirectionInputsDisabled = false;
-                    if (Input.GetKey(KeyCode.Space))
+                    if (_bGrounded == false)
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.FALLING;
+                    }
+                    else if (Input.GetKey(KeyCode.Space))
                     {
                         //_mSoundManager.Play();
                         gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
@@ -141,13 +165,13 @@ public class PlayerController : MonoBehaviour
                     _bRightDirectionInputsDisabled = false;
 
 
-                    if (Input.GetKey(KeyCode.D))
+                    if (Input.GetKey(KeyCode.D) && _bcancelJumpCarry == false)
                     {
                         _bIsGoingRight = true;
                         //transform.Translate(transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
                     }
-                    else if (Input.GetKey(KeyCode.A))
+                    else if (Input.GetKey(KeyCode.A) && _bcancelJumpCarry == false)
                     {
                         _bIsGoingRight = false;
                         //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
@@ -155,7 +179,7 @@ public class PlayerController : MonoBehaviour
                     }
                     if (this.gameObject.transform.childCount > 1)
                     {
-                        if (Input.GetKey(KeyCode.Space) && this.gameObject.transform.GetChild(1).tag == "box_Small")
+                        if (Input.GetKey(KeyCode.Space) && this.gameObject.transform.GetChild(1).tag == "box_Small" && _bcancelJumpCarry == false)
                         {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * (mJumpStrength - 1.5f);
                             _bPlayerStateChanged = true;
@@ -300,7 +324,14 @@ public class PlayerController : MonoBehaviour
             {
                 if(hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
                 {
-                    //Debug.Log("Hitting");
+                    if(hit.transform.tag == "box_Small")
+                    {
+                        _bcancelJumpCarry = true;
+                    }
+                    else
+                    {
+                        _bcancelJumpCarry = false;
+                    }
                     if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && mPlayerState != CharacterState.JUMPCARRYING)
                     {
                         Debug.Log("Running");
