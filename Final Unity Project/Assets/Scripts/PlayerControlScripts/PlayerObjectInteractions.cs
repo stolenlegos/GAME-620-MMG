@@ -13,7 +13,7 @@ public class PlayerObjectInteractions : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.F) && _objectsNear.Count != 0) {
+        if (Input.GetKeyDown(KeyCode.F) && _objectsNear.Count != 0 && !Input.GetMouseButton(0)) {
           EnergyEvents.ChangeColor(_objectsNear[_objectsNear.Count - 1]);
         }
 
