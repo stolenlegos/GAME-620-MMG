@@ -5,14 +5,19 @@ using UnityEngine;
 public class PlayerObjectInteractions : MonoBehaviour {
   [SerializeField]
   private List<GameObject> _objectsNear = new List<GameObject>();
+    private PlayerController playerController;
 
+    private void Awake()
+    {
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+    }
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.F) && _objectsNear.Count != 0) {
           EnergyEvents.ChangeColor(_objectsNear[_objectsNear.Count - 1]);
         }
 
-        if (Input.GetMouseButtonDown(0) && _objectsNear.Count != 0) {
+        if (Input.GetMouseButtonDown(0) && _objectsNear.Count != 0 && playerController.mPlayerState != CharacterState.JUMPING) {
           PlayerActions.ObjectGrab(_objectsNear[_objectsNear.Count - 1]);
         }
 

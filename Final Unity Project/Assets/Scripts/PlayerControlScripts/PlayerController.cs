@@ -17,7 +17,7 @@ public enum CharacterState
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterState mPlayerState = CharacterState.IDLE;
+    public CharacterState mPlayerState = CharacterState.IDLE;
 
     //Movement Settings
     public float mSpeed = 1.0f;
