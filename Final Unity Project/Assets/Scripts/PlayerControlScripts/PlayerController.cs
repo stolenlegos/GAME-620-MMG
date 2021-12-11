@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.IDLE;
                     }
-                } 
+                }
 
                 if (/*mPlayerState == CharacterState.JUMPING || */mPlayerState == CharacterState.WALKING)
                 {
@@ -350,13 +350,13 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        mPlayerState = CharacterState.IDLE; 
+                        mPlayerState = CharacterState.IDLE;
                     }
                     break;
                 }
             }
                 yield return new WaitForSeconds(0.45f);
-          
+
         }
 
         ChangeAnimator();
