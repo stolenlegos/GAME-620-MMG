@@ -1205,7 +1205,6 @@ GameObject:
   - component: {fileID: 713405012}
   - component: {fileID: 713405017}
   - component: {fileID: 713405019}
-  - component: {fileID: 713405018}
   - component: {fileID: 713405020}
   m_Layer: 0
   m_Name: Player
@@ -1229,9 +1228,8 @@ MonoBehaviour:
   mPlayerState: 0
   mSpeed: 2
   mJumpStrength: 7
-  mIdleController: {fileID: 0}
-  mWalkingController: {fileID: 0}
-  mJumpingController: {fileID: 0}
+  _mAnimatorComponent: {fileID: 1686661833}
+  rend: {fileID: 1686661834}
 --- !u!212 &713405013
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1358,25 +1356,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectsNear: []
---- !u!95 &713405018
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 713405011}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8ac9c8066b4b0da40bcb5c954801bc93, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &713405019
 MonoBehaviour:
   m_ObjectHideFlags: 0

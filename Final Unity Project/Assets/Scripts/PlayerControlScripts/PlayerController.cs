@@ -25,11 +25,12 @@ public class PlayerController : MonoBehaviour
     private int playerCollisionCount;
 
     //State Animation Controller
-    public RuntimeAnimatorController mIdleController;
-    public RuntimeAnimatorController mWalkingController;
-    public RuntimeAnimatorController mJumpingController;
+  //  public RuntimeAnimatorController mIdleController;
+  //  public RuntimeAnimatorController mWalkingController;
+  //  public RuntimeAnimatorController mJumpingController;
 
-    private Animator _mAnimatorComponent;
+    public Animator _mAnimatorComponent;
+    public SpriteRenderer rend;
     private bool _bIsGoingRight = true;
     private bool _bPlayerStateChanged = false;
 
@@ -53,8 +54,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _mAnimatorComponent = gameObject.GetComponent<Animator>();
-        _mAnimatorComponent.runtimeAnimatorController = mIdleController;
+      //  _mAnimatorComponent.runtimeAnimatorController = mIdleController;
+        _mAnimatorComponent = gameObject.transform.GetChild(0).gameObject.GetComponent<Animator>();
 
         _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         _mCameraManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraManager>();
@@ -63,11 +64,14 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
         playerCollisionCount = GameObject.FindGameObjectWithTag("Player").GetComponent<playerCollisionCounter>().collisionCount;
+
+        UpdateWalkingAnimation();
+
         if (playerCollisionCount >= 1)
         {
             _bGrounded = true;
@@ -76,11 +80,11 @@ public class PlayerController : MonoBehaviour
         {
             _bGrounded = false;
         }
+
         Debug.Log ("CollisionCount: " + playerCollisionCount);
         if (!_bInputsDisabled)
         {
             Debug.Log("PlayerState: " + mPlayerState);
-            Debug.Log("Grounded: " + _bGrounded);
             //Debug.Log("ChildCount: " + this.gameObject.transform.childCount);
             //Debug.Log("Movement: " + _bMovementDisabled);
             _bPlayerStateChanged = false;
@@ -89,6 +93,8 @@ public class PlayerController : MonoBehaviour
             {
                 if (mPlayerState == CharacterState.IDLE)
                 {
+                    _mAnimatorComponent.SetBool("isGrounded_b", true);
+                    _mAnimatorComponent.SetFloat("Speed_f", 0f);
                     _bLeftDirectionInputsDisabled = false;
                     _bRightDirectionInputsDisabled = false;
                     if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A)))
@@ -131,6 +137,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (mPlayerState == CharacterState.WALKING)
                 {
+                    _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _bLeftDirectionInputsDisabled = false;
                     _bRightDirectionInputsDisabled = false;
                     if (_bGrounded == false)
@@ -160,6 +167,7 @@ public class PlayerController : MonoBehaviour
 
                 else if (mPlayerState == CharacterState.CARRYING)
                 {
+                    _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _bMovementDisabled = false;
                     _bLeftDirectionInputsDisabled = false;
                     _bRightDirectionInputsDisabled = false;
@@ -196,6 +204,8 @@ public class PlayerController : MonoBehaviour
 
                 if (/*mPlayerState == CharacterState.JUMPING || */mPlayerState == CharacterState.WALKING)
                 {
+                    _mAnimatorComponent.SetBool("isGrounded_b", true);
+                    _mAnimatorComponent.SetFloat("Speed_f", 1f);
                     _bMovementDisabled = false;
                     if (Input.GetKey(KeyCode.D))
                     {
@@ -212,6 +222,7 @@ public class PlayerController : MonoBehaviour
                 }
                 if (mPlayerState == CharacterState.JUMPING)
                 {
+                    _mAnimatorComponent.SetBool("isGrounded_b", false);
                     if (Input.GetMouseButtonUp(0))
                     {
                         _bPlayerStateChanged = true;
@@ -235,6 +246,7 @@ public class PlayerController : MonoBehaviour
                 }
                 if (mPlayerState == CharacterState.JUMPCARRYING)
                 {
+                    _mAnimatorComponent.SetBool("isGrounded_b", false);
                     if (Input.GetKey(KeyCode.D) && !_bRightDirectionInputsDisabled)
                     {
                         _bIsGoingRight = true;
@@ -252,11 +264,13 @@ public class PlayerController : MonoBehaviour
                 }
                 if (mPlayerState == CharacterState.FALLING)
                 {
+                    _mAnimatorComponent.SetBool("isGrounded_b", false);
                     StartCoroutine("CheckGrounded");
                 }
             }
             if (mPlayerState == CharacterState.EXAMINE)
             {
+              _mAnimatorComponent.SetBool("isGrounded_b", true);
               _bMovementDisabled = true;
               _mCameraManager.PlayerExamineStart();
               Debug.Log("PlayerExamining");
@@ -276,7 +290,7 @@ public class PlayerController : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().flipX = !_bIsGoingRight;
             if (_bPlayerStateChanged)
             {
-                ChangeAnimator();
+                //ChangeAnimator();
             }
         }
 
@@ -286,7 +300,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ChangeAnimator()
+    private void UpdateWalkingAnimation() {
+      if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)){
+        _mAnimatorComponent.SetFloat("Speed_f", 1);
+        if (Input.GetKey(KeyCode.A)) {
+          rend.flipX = true;
+        } else {
+          rend.flipX = false;
+        }
+      } else {
+        _mAnimatorComponent.SetFloat("Speed_f", 0);
+      }
+    }
+
+    /*public void ChangeAnimator()
     {
         RuntimeAnimatorController newAnimator = mIdleController;
 
@@ -304,7 +331,7 @@ public class PlayerController : MonoBehaviour
         }
 
         gameObject.GetComponent<Animator>().runtimeAnimatorController = newAnimator;
-    }
+    }*/
 
     IEnumerator CheckGrounded()
     {
@@ -359,7 +386,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        ChangeAnimator();
+        //ChangeAnimator();
         yield return null;
     }
 
