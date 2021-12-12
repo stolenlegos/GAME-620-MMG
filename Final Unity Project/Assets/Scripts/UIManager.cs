@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour {
   [SerializeField]
   private Text energyLevelText;
+    [SerializeField]
+    private Slider bar;
   private int currentEnergy;
   private int maxEnergy;
 
@@ -15,6 +17,7 @@ public class UIManager : MonoBehaviour {
     maxEnergy = 3;
     currentEnergy = maxEnergy;
     ChangeUI();
+    ChangeSlider();
   }
 
 
@@ -27,5 +30,12 @@ public class UIManager : MonoBehaviour {
     currentEnergy = current;
     maxEnergy = max;
     ChangeUI();
+    ChangeSlider();
   }
+
+    //Added by Ilia
+    private void ChangeSlider()
+    {
+        bar.value =  currentEnergy;
+    }
 }
