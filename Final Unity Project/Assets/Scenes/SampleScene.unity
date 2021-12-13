@@ -231,74 +231,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 690479119}
     m_Modifications:
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: InitialModule.rotation3D
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 0.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: ShapeModule.radiusThickness
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.17274237
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: InitialModule.startColor.minColor.b
-      value: 0.13876057
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: InitialModule.startColor.minColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: InitialModule.startColor.minColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: TrailModule.colorOverTrail.maxColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: TrailModule.colorOverTrail.maxColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: TrailModule.colorOverTrail.maxColor.r
-      value: 0.28707504
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: TrailModule.colorOverLifetime.maxColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: TrailModule.colorOverLifetime.maxColor.g
-      value: 0.7307989
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: TrailModule.colorOverLifetime.maxColor.r
-      value: 0.6839622
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: TrailModule.colorOverLifetime.minColor.b
-      value: 0.28661028
-      objectReference: {fileID: 0}
-    - target: {fileID: 1709363668924857477, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
-      propertyPath: TrailModule.colorOverLifetime.minColor.r
-      value: 0.7176471
-      objectReference: {fileID: 0}
     - target: {fileID: 1709363668924857478, guid: 7672efddc9f71d24e8fec7e2318821a1, type: 3}
       propertyPath: m_Name
       value: CW
@@ -5060,8 +4992,7 @@ VFXRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5090,7 +5021,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1854318860}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 1003b0069e280574780230f3a1028780, type: 3}
+  m_Asset: {fileID: 0}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
