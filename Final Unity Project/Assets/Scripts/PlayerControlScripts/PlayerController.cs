@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     //Movement Settings
     public float mSpeed = 1.0f;
-    public float mJumpStrength = 7.0f;
+    public float mJumpStrength = 7.1f;
     private int playerCollisionCount;
 
     //State Animation Controller
@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private bool _bRightDirectionInputsDisabled = false;
     private bool _bGrounded = true;
     private bool _bcancelJumpCarry = false;
+    private bool _bcancelPush = false;
 
     //private bool _bPlayerInvincible = false;
     private bool _bPlayerCanExamine = false;
@@ -84,7 +85,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log ("CollisionCount: " + playerCollisionCount);
         if (!_bInputsDisabled)
         {
-            Debug.Log("PlayerState: " + mPlayerState);
+            //Debug.Log("PlayerState: " + mPlayerState);
             //Debug.Log("ChildCount: " + this.gameObject.transform.childCount);
             //Debug.Log("Movement: " + _bMovementDisabled);
             _bPlayerStateChanged = false;
@@ -173,13 +174,13 @@ public class PlayerController : MonoBehaviour
                     _bRightDirectionInputsDisabled = false;
 
 
-                    if (Input.GetKey(KeyCode.D) && _bcancelJumpCarry == false)
+                    if (Input.GetKey(KeyCode.D) && _bcancelJumpCarry == false && !_bcancelPush)
                     {
                         _bIsGoingRight = true;
                         //transform.Translate(transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
                     }
-                    else if (Input.GetKey(KeyCode.A) && _bcancelJumpCarry == false)
+                    else if (Input.GetKey(KeyCode.A) && _bcancelJumpCarry == false && !_bcancelPush)
                     {
                         _bIsGoingRight = false;
                         //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
@@ -358,6 +359,14 @@ public class PlayerController : MonoBehaviour
                     else
                     {
                         _bcancelJumpCarry = false;
+                    }
+                    if (hit.transform.tag == "box_Big")
+                    {
+                        _bcancelPush = true;
+                    }
+                    else
+                    {
+                        _bcancelPush = false;
                     }
                     if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && mPlayerState != CharacterState.JUMPCARRYING)
                     {

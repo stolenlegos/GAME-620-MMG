@@ -164,6 +164,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabbable: 0
   rb: {fileID: 83003686304771535}
+  layerMask1:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &2608615221684223935
 MonoBehaviour:
   m_ObjectHideFlags: 0

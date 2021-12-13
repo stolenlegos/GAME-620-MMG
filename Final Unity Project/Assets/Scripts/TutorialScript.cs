@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TutorialScript : MonoBehaviour
 {
-    private int count;
+    private int count = 0;
     public GameObject popup;
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,7 @@ public class TutorialScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player" && count <3)
+        if (other.tag == "Player" && count < 100)
         {
             popup.SetActive(true);
             count++;

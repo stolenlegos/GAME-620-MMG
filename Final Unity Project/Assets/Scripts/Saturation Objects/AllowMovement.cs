@@ -9,8 +9,9 @@ public class AllowMovement : MonoBehaviour {
   private Vector3 offset;
   [SerializeField]
   private Rigidbody2D rb;
+  public LayerMask layerMask1;
 
-  void Start()
+    void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         colored = false;
@@ -44,6 +45,7 @@ public class AllowMovement : MonoBehaviour {
     if (obj == this.gameObject && colored) {
             grabbable = true;
             rb.mass = 20;
+            this.transform.parent = null;
             this.transform.parent = player.transform;
             offset = player.transform.position - this.transform.position;
             rb.constraints = RigidbodyConstraints2D.None;
@@ -77,20 +79,24 @@ public class AllowMovement : MonoBehaviour {
 
         while (true)
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position - Vector3.up * 1f, -Vector2.up, 0.05f);
-            Debug.DrawRay(transform.position - Vector3.up * 1, -Vector2.up - new Vector2(0, 1f), Color.green, 45.0f);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position - Vector3.up * 1f, -Vector2.up, 0.05f, layerMask1);
+            Debug.DrawRay(transform.position - Vector3.up * 1f, -Vector2.up /*- new Vector2(0, 1f)*/, Color.green, 45.0f);
             if (hit.collider != null)
             {
                 if (hit.transform.tag == "Terrain")// || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
                 {
                     this.transform.parent = null;
                     rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    Debug.Log("Terrain");
                     break;
                 }
                 if (hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
                 {
                     this.transform.parent = null;
-                    rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    this.transform.parent = hit.transform;
+                    //rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+                    rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    Debug.Log("Box");
                     break;
                 }
             }

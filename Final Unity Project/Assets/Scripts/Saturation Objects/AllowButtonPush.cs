@@ -25,9 +25,9 @@ public class AllowButtonPush : MonoBehaviour {
       PlayerActions.ButtonPushed(door);
       doorOpen = true;
       StartCoroutine("ButtonTimer");
-      Debug.Log("PUSHED THE BUTTON");
+      //Debug.Log("PUSHED THE BUTTON");
     }
-    Debug.Log("Door open is: " + doorOpen.ToString());
+    //Debug.Log("Door open is: " + doorOpen.ToString());
   }
 
 
