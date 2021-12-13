@@ -221,8 +221,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.44555253, g: 0, b: 0.7169812, a: 1}
-      maxColor: {r: 1, g: 0.5792025, b: 0, a: 1}
+      minColor: {r: 1, g: 0, b: 0.13876057, a: 1}
+      maxColor: {r: 0, g: 0.17274237, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -602,7 +602,7 @@ ParticleSystem:
     randomizeRotationDirection: 0
     maxNumParticles: 1000
     size3D: 0
-    rotation3D: 0
+    rotation3D: 1
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
@@ -663,7 +663,7 @@ ParticleSystem:
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0.21
+    radiusThickness: 0.75
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -746,7 +746,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1.48
+      value: 0.57
       mode: 0
       spread: 0
       speed:
@@ -4005,8 +4005,8 @@ ParticleSystem:
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.44705886, g: 0, b: 0.7176471, a: 1}
-      maxColor: {r: 1, g: 0.5803922, b: 0, a: 1}
+      minColor: {r: 0.7176471, g: 0, b: 0.28661028, a: 1}
+      maxColor: {r: 0.6839622, g: 0.7307989, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4122,7 +4122,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.56867325, b: 0, a: 1}
+      maxColor: {r: 0.28707504, g: 0, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
