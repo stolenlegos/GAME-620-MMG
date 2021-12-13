@@ -5,34 +5,35 @@ using UnityEngine.UI;
 
 public class TutorialScript : MonoBehaviour
 {
-   // [SerializeField] private GameObject button;
+    private int count;
     public GameObject popup;
-    private bool on;
     // Start is called before the first frame update
     void Start()
     {
-        //on = false;
         popup.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-       // if (!on)
-      //  {
-     //       popup.SetActive(false);
-      //  }
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-       // on = true;
-        popup.SetActive(true);
+        if (other.tag == "Player" && count <3)
+        {
+            popup.SetActive(true);
+            count++;
+        }
+
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-       // on = false;
-        popup.SetActive(false);
+        if (other.tag == "Player")
+        {
+            popup.SetActive(false);
+        }
     }
 }
