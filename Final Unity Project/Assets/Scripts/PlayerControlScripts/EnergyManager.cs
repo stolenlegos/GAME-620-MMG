@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnergyManager : MonoBehaviour {
-  private int maxEnergy = 3;
-  private int currentEnergy;
+  public int maxEnergy = 4;
+  public int currentEnergy;
   private bool objColored;
 
 

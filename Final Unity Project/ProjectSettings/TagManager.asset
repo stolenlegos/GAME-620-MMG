@@ -10,6 +10,7 @@ TagManager:
   - box_Small
   - button_small
   - Examiner
+  - Spiral
   layers:
   - Default
   - TransparentFX

@@ -32,13 +32,18 @@ public class PlayerObjectInteractions : MonoBehaviour {
     }
 
     void OnTriggerEnter2D (Collider2D other) {
-      _objectsNear.Add(other.gameObject);
+        if (other.tag != "Spiral" || other.tag != "Examiner") {
+            _objectsNear.Add(other.gameObject);
+        }
     }
 
-    void OnTriggerExit2D (Collider2D other) {
-        //Debug.Log("Dropped");
-        PlayerActions.ObjectDropped(_objectsNear[_objectsNear.Count - 1]);
+    void OnTriggerExit2D(Collider2D other) {
+        if (other.tag == "box_Big" || other.tag == "box_Small") { 
+        //Debug.Log("Dropped" + other);
+        PlayerActions.ObjectDropped(other.gameObject);
+    }
         _objectsNear.Remove(other.gameObject);
+
     }
 
 }

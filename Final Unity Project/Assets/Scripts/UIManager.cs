@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour {
 
   void Start() {
     EnergyEvents.EnergyUIChange += ChangeEnergyLevels;
-    maxEnergy = 3;
+    maxEnergy = 4;
     currentEnergy = maxEnergy;
     ChangeUI();
     bar.maxValue = maxEnergy;

@@ -8,7 +8,7 @@ public enum CharacterState
     IDLE,
     WALKING,
     JUMPING,
-    FALLING,
+    //FALLING,
     CARRYING,
     JUMPCARRYING,
     EXAMINE,
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public CharacterState mPlayerState = CharacterState.IDLE;
 
     //Movement Settings
-    public float mSpeed = 1.0f;
+    public float mSpeed = 3.0f;
     public float mJumpStrength = 7.1f;
     private int playerCollisionCount;
 
@@ -36,8 +36,8 @@ public class PlayerController : MonoBehaviour
 
     private bool _bInputsDisabled = false;
     private bool _bMovementDisabled = false;
-    private bool _bLeftDirectionInputsDisabled = false;
-    private bool _bRightDirectionInputsDisabled = false;
+    //private bool _bLeftDirectionInputsDisabled = false;
+    //private bool _bRightDirectionInputsDisabled = false;
     private bool _bGrounded = true;
     private bool _bcancelJumpCarry = false;
     private bool _bcancelPush = false;
@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private SoundManager _mSoundManager;
     private CameraManager _mCameraManager;
+    private EnergyManager _mEnergyManager;
     private Rigidbody2D rb2D;
 
     private float moveHorizontal;
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
 
         _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         _mCameraManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraManager>();
+        _mEnergyManager = GetComponent<EnergyManager>();
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
     }
@@ -81,7 +83,30 @@ public class PlayerController : MonoBehaviour
         {
             _bGrounded = false;
         }
-
+        /*if(_mEnergyManager.currentEnergy == (_mEnergyManager.maxEnergy - 1))
+        {
+            Debug.Log("less fast");
+            mSpeed = mSpeed * .75f;
+            mJumpStrength = mJumpStrength * .75f;
+        }
+        else if (_mEnergyManager.currentEnergy == (_mEnergyManager.maxEnergy - 2))
+        {
+            Debug.Log("more less fast");
+            mSpeed = mSpeed * .5f;
+            mJumpStrength = mJumpStrength * .5f;
+        }
+        else if (_mEnergyManager.currentEnergy == (_mEnergyManager.maxEnergy - 3))
+        {
+            Debug.Log("the slowest of the fast");
+            mSpeed = mSpeed * .25f;
+            mJumpStrength = mJumpStrength * .25f;
+        }
+        else
+        {
+            Debug.Log("Fast");
+            mSpeed = 1.0f;
+            mJumpStrength = 7.1f;
+        }*/
         Debug.Log ("CollisionCount: " + playerCollisionCount);
         if (!_bInputsDisabled)
         {
@@ -96,8 +121,6 @@ public class PlayerController : MonoBehaviour
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _mAnimatorComponent.SetFloat("Speed_f", 0f);
-                    _bLeftDirectionInputsDisabled = false;
-                    _bRightDirectionInputsDisabled = false;
                     if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A)))
                     {
                         _bPlayerStateChanged = true;
@@ -111,7 +134,7 @@ public class PlayerController : MonoBehaviour
                             _bIsGoingRight = false;
                         }
                     }
-                    else if (Input.GetKey(KeyCode.Space))
+                    else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         //_mSoundManager.Play();
                         gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
@@ -132,21 +155,14 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (_bGrounded == false)
                     {
-                        _bPlayerStateChanged = true;
-                        mPlayerState = CharacterState.FALLING;
+                        //_bPlayerStateChanged = true;
+                        //mPlayerState = CharacterState.FALLING;
                     }
                 }
                 else if (mPlayerState == CharacterState.WALKING)
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
-                    _bLeftDirectionInputsDisabled = false;
-                    _bRightDirectionInputsDisabled = false;
-                    if (_bGrounded == false)
-                    {
-                        _bPlayerStateChanged = true;
-                        mPlayerState = CharacterState.FALLING;
-                    }
-                    else if (Input.GetKey(KeyCode.Space))
+                    if (Input.GetKeyDown(KeyCode.Space))
                     {
                         //_mSoundManager.Play();
                         gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
@@ -170,20 +186,16 @@ public class PlayerController : MonoBehaviour
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _bMovementDisabled = false;
-                    _bLeftDirectionInputsDisabled = false;
-                    _bRightDirectionInputsDisabled = false;
 
 
                     if (Input.GetKey(KeyCode.D) && _bcancelJumpCarry == false && !_bcancelPush)
                     {
                         _bIsGoingRight = true;
-                        //transform.Translate(transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
                     }
                     else if (Input.GetKey(KeyCode.A) && _bcancelJumpCarry == false && !_bcancelPush)
                     {
                         _bIsGoingRight = false;
-                        //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
                     }
                     if (this.gameObject.transform.childCount > 1)
@@ -203,7 +215,7 @@ public class PlayerController : MonoBehaviour
                     }
                 }
 
-                if (/*mPlayerState == CharacterState.JUMPING || */mPlayerState == CharacterState.WALKING)
+                if (mPlayerState == CharacterState.WALKING)
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _mAnimatorComponent.SetFloat("Speed_f", 1f);
@@ -211,13 +223,11 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetKey(KeyCode.D))
                     {
                         _bIsGoingRight = true;
-                        //transform.Translate(transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
                     }
                     else if (Input.GetKey(KeyCode.A))
                     {
                         _bIsGoingRight = false;
-                        //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
                     }
                 }
@@ -226,48 +236,40 @@ public class PlayerController : MonoBehaviour
                     _mAnimatorComponent.SetBool("isGrounded_b", false);
                     if (Input.GetMouseButtonUp(0))
                     {
-                        _bPlayerStateChanged = true;
-                        mPlayerState = CharacterState.FALLING;
+                        //_bPlayerStateChanged = true;
+                       //mPlayerState = CharacterState.FALLING;
                         //this.gameObject.transform.childCount - 1;
                     }
-                    if (Input.GetKey(KeyCode.D) && !_bRightDirectionInputsDisabled)
+                    if (Input.GetKey(KeyCode.D))
                     {
                         _bIsGoingRight = true;
-                        //transform.Translate(transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                        _bLeftDirectionInputsDisabled = true;
                     }
-                    else if (Input.GetKey(KeyCode.A) && !_bLeftDirectionInputsDisabled)
+                    else if (Input.GetKey(KeyCode.A))
                     {
                         _bIsGoingRight = false;
-                        //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                        _bRightDirectionInputsDisabled = true;
                     }
                 }
                 if (mPlayerState == CharacterState.JUMPCARRYING)
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", false);
-                    if (Input.GetKey(KeyCode.D) && !_bRightDirectionInputsDisabled)
+                    if (Input.GetKey(KeyCode.D))
                     {
                         _bIsGoingRight = true;
-                        //transform.Translate(transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
-                        _bLeftDirectionInputsDisabled = true;
                     }
-                    else if (Input.GetKey(KeyCode.A) && !_bLeftDirectionInputsDisabled)
+                    else if (Input.GetKey(KeyCode.A))
                     {
                         _bIsGoingRight = false;
-                        //transform.Translate(-transform.right * Time.deltaTime * mSpeed);
                         transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * (mSpeed - .9f);
-                        _bRightDirectionInputsDisabled = true;
                     }
                 }
-                if (mPlayerState == CharacterState.FALLING)
+                /*if (mPlayerState == CharacterState.FALLING)
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", false);
-                    StartCoroutine("CheckGrounded");
-                }
+                    StartCoroutine("CheckGrounded"); 
+                }*/
             }
             if (mPlayerState == CharacterState.EXAMINE)
             {
@@ -370,16 +372,16 @@ public class PlayerController : MonoBehaviour
                     }
                     if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && mPlayerState != CharacterState.JUMPCARRYING)
                     {
-                        Debug.Log("Running");
+                        //Debug.Log("Running");
                         _bMovementDisabled = false;
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.WALKING;
                     }
-                    else if (mPlayerState == CharacterState.FALLING)
+                    /*else if (mPlayerState == CharacterState.FALLING)
                     {
                         _bMovementDisabled = false;
                         mPlayerState = CharacterState.IDLE;
-                    }
+                    }*/
                     else if (mPlayerState == CharacterState.JUMPCARRYING)
                     {
                         mPlayerState = CharacterState.CARRYING;
@@ -398,23 +400,6 @@ public class PlayerController : MonoBehaviour
         //ChangeAnimator();
         yield return null;
     }
-
-    //Sent when an incoming collider makes contact with this object's
-    // collider (2D physics only)
-    // <param name="other"> The Collision2D data associated with this collision. </params>
-    /*private void OnCollisionEnter2D(Collision2D other)
-    {
-        if(other.transform.tag == "Monster" && !_bPlayerInvincible)
-        {
-            //_mSoundManager.Play();
-            Vector3 heading = other.transform.position - transform.position;
-            float magnitude = heading.magnitude;
-            gameObject.GetComponent<Rigidbody2D>().velocity = -10f * heading / magnitude;
-            StartCoroutine("Coroutine_BlaockPlayerInputs");
-            StartCoroutine("Coroutine_SetPlayerInvincible");
-
-        }
-    }*/
 
     IEnumerator Coroutine_BlockPlayerInputs()
     {
@@ -438,11 +423,6 @@ public class PlayerController : MonoBehaviour
         _bInputsDisabled = true;
     }
 
-    /*public void SetStatePlayerInvincible(bool newState)
-    {
-        _bPlayerInvincible = newState;
-    }*/
-
     public void CheckWall()
     {
         List<float> directions = new List<float> { -.2375f, .2375f };
@@ -461,9 +441,9 @@ public class PlayerController : MonoBehaviour
                     if(hit.collider.tag == "Terrain" && mPlayerState == CharacterState.JUMPING)
                     {
                         //Debug.Log("Wall Hit");
-                        _bMovementDisabled = true;
-                        _bPlayerStateChanged = true;
-                        mPlayerState = CharacterState.FALLING;
+                        //_bMovementDisabled = true;
+                        //_bPlayerStateChanged = true;
+                        //mPlayerState = CharacterState.FALLING;
                     }
                     else if (hit.collider.tag == "Terrain" && mPlayerState == CharacterState.WALKING)
                     {
