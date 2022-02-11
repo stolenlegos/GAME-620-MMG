@@ -6,6 +6,7 @@ public class AllowMovement : MonoBehaviour {
   private bool colored;
   public bool falling;
   public bool stacked;
+  public bool detected;
   private GameObject player;
   public bool grabbed;
   private Vector3 offset;
@@ -61,13 +62,13 @@ public class AllowMovement : MonoBehaviour {
 
 
   private void GrabObject (GameObject obj) {
-    if (obj == this.gameObject && colored) {
+    if (obj == this.gameObject && colored && detected) {
             grabbed = true;
             stacked = false;
             falling = false;
             if (grabbed == true && Input.GetMouseButtonDown(0) == true)
             {
-                rb.mass = 20;
+                //rb.mass = 20;
                 this.transform.parent = null;
                 this.transform.parent = player.transform;
                 offset = player.transform.position - this.transform.position;
@@ -85,6 +86,7 @@ public class AllowMovement : MonoBehaviour {
             //Debug.Log("ReleaseObject");
             grabbed = false;
             this.transform.parent = null;
+            this.transform.position = this.transform.position + Vector3.up * .01f; 
             falling = true;
             //FallUntilCollisionDetected();
         }
@@ -132,7 +134,7 @@ public class AllowMovement : MonoBehaviour {
     {
         if (collision != null)
         {
-            Debug.Log("Collided With: " + collision.gameObject);
+            //Debug.Log("Collided With: " + collision.gameObject);
             if (collision.collider.tag == "StackPoint" && !grabbed)
             {
                 falling = false;
@@ -155,5 +157,15 @@ public class AllowMovement : MonoBehaviour {
         else{
             Debug.Log("FailedTofALL");
         }
+    }
+    private void OnMouseOver()
+    {
+        detected = true;
+        Debug.Log("MouseOver " + this);
+    }
+    private void OnMouseExit()
+    {
+        detected = false;
+        Debug.Log("MouseEnd " + this);
     }
 }
