@@ -23,7 +23,7 @@ public class SaturationControl : MonoBehaviour {
         IncreaseSat();
       }
 
-      material.SetFloat("_Saturation", saturationLevel);
+      //material.SetFloat("_Saturation", saturationLevel);
     }
 
 
