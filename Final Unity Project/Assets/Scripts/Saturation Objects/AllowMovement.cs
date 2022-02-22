@@ -12,8 +12,6 @@ public class AllowMovement : MonoBehaviour {
     public bool grabbed;
     private Vector3 offset;
     private Rigidbody2D rb;
-    private Material material;
-    private float saturationLevel;
     [SerializeField]
   //private Rigidbody2D rb;
   //public LayerMask layerMask1;
@@ -26,8 +24,6 @@ public class AllowMovement : MonoBehaviour {
         stacked = false;
         rb = gameObject.GetComponent<Rigidbody2D>();
         ShaderEvents.SaturationChange += BoolChange;
-        ShaderEvents.SaturationChange += ReduceSat;
-        ShaderEvents.SaturationChange += IncreaseSat;
         PlayerActions.Grab += GrabObject;
         PlayerActions.Release += ReleaseObject;
         PlayerActions.Drop += DroppedObject;
@@ -52,7 +48,6 @@ public class AllowMovement : MonoBehaviour {
             rb.constraints = RigidbodyConstraints2D.None;
         }
 
-        //material.SetFloat("_Saturation", saturationLevel);
     }
 
 
@@ -61,20 +56,6 @@ public class AllowMovement : MonoBehaviour {
       colored = !colored;
     }
   }
-    private void ReduceSat(GameObject obj)
-    {
-            if (saturationLevel < 1)
-            {
-                saturationLevel += 0.5f * Time.deltaTime;
-            }
-    }
-    private void IncreaseSat(GameObject obj)
-    {
-            if (saturationLevel > 0)
-            {
-                saturationLevel -= 0.5f * Time.deltaTime;
-            }
-    }
 
 
     private void GrabObject (GameObject obj) {
@@ -84,7 +65,6 @@ public class AllowMovement : MonoBehaviour {
             falling = false;
             if (grabbed == true && Input.GetMouseButtonDown(0) == true)
             {
-                //rb.mass = 20;
                 this.transform.parent = null;
                 this.transform.parent = player.transform;
                 offset = player.transform.position - this.transform.position;
@@ -99,7 +79,6 @@ public class AllowMovement : MonoBehaviour {
 
   private void ReleaseObject (GameObject obj) {
     if (obj == this.gameObject) {
-            //Debug.Log("ReleaseObject");
             grabbed = false;
             this.transform.parent = null;
             this.transform.position = this.transform.position + Vector3.up * .01f;
@@ -108,13 +87,12 @@ public class AllowMovement : MonoBehaviour {
                 this.transform.GetChild(1).position = this.transform.GetChild(1).position + Vector3.up * -.01f;
             }
             falling = true;
-            //FallUntilCollisionDetected();
         }
   }
     private void DroppedObject(GameObject obj){
         if (obj == this.gameObject)
         {
-            //Debug.Log("DroppedObject");
+
         }
     }
 
@@ -122,24 +100,19 @@ public class AllowMovement : MonoBehaviour {
     {
         if (collision != null)
         {
-            //Debug.Log("Collided With: " + collision.gameObject);
             if (collision.collider.tag == "StackPoint" && !grabbed)
             {
                 falling = false;
                 stacked = true;
                 this.transform.parent = null;
                 this.transform.parent = collision.transform;
-                //offset = player.transform.position - this.transform.position;
-                //this.transform.position = this.transform.parent.position - offset;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                //Debug.Log("Box");
             }
             if (collision.collider.tag == "Terrain" && !grabbed)
             {
                 falling = false;
                 this.transform.parent = null;
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
-                //Debug.Log("Terrain");
             }
         }
         else{
@@ -150,24 +123,19 @@ public class AllowMovement : MonoBehaviour {
     {
         if (collision != null)
         {
-            //Debug.Log("Collided With: " + collision.gameObject);
             if (collision.collider.tag == "StackPoint" && !grabbed)
             {
                 falling = false;
                 stacked = true;
                 this.transform.parent = null;
                 this.transform.parent = collision.transform;
-                //offset = player.transform.position - this.transform.position;
-                //this.transform.position = this.transform.parent.position - offset;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                //Debug.Log("Box");
             }
             if (collision.collider.tag == "Terrain" && !grabbed)
             {
                 falling = false;
                 this.transform.parent = null;
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
-                //Debug.Log("Terrain");
             }
         }
         else
@@ -178,23 +146,10 @@ public class AllowMovement : MonoBehaviour {
     private void OnMouseOver()
     {
         detected = true;
-        if (!colored)
-        {
-            if (saturationLevel < 1 || saturationLevel == 0)
-            {
-                IncreaseSat(this.gameObject);
-            }
-            else if (saturationLevel == 1 || saturationLevel > 0)
-            {
-                ReduceSat(this.gameObject);
-            }
-        }
-        //Debug.Log("MouseOver " + this);
     }
     private void OnMouseExit()
     {
         detected = false;
-        //Debug.Log("MouseEnd " + this);
     }
     /*private void FallUntilCollisionDetected()
    {

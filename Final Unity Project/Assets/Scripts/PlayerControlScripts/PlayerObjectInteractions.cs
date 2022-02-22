@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerObjectInteractions : MonoBehaviour {
   [SerializeField]
-  private List<GameObject> _objectsNear = new List<GameObject>();
+  public List<GameObject> _objectsNear = new List<GameObject>();
     private PlayerController playerController;
 
     private void Awake()
@@ -31,7 +31,7 @@ public class PlayerObjectInteractions : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D (Collider2D other) {
+    /*void OnTriggerEnter2D (Collider2D other) {
         if (other.tag != "Spiral" || other.tag != "Examiner") {
             _objectsNear.Add(other.gameObject);
         }
@@ -39,11 +39,10 @@ public class PlayerObjectInteractions : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other) {
         if (other.tag == "box_Big" || other.tag == "box_Small") { 
-        //Debug.Log("Dropped" + other);
         PlayerActions.ObjectDropped(other.gameObject);
     }
         _objectsNear.Remove(other.gameObject);
 
-    }
+    }*/
 
 }

@@ -2950,7 +2950,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mPlayerState: 0
-  mSpeed: 2
+  mSpeed: 3
   mJumpStrength: 7
   _mAnimatorComponent: {fileID: 1686661833}
   rend: {fileID: 1686661834}

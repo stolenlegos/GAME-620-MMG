@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class SaturationControl : MonoBehaviour {
   public bool colored;
-  [SerializeField]
+    private bool hovered;
+    private bool swap;
+    private PlayerObjectInteractions POI;
+    [SerializeField]
   private Material material;
   private float saturationLevel;
 
 
     void Start() {
+        POI = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerObjectInteractions>();
         colored = false;
         ShaderEvents.SaturationChange += BoolChange;
         saturationLevel = 1;
@@ -17,13 +21,13 @@ public class SaturationControl : MonoBehaviour {
 
 
     void Update() {
-      if (!colored) {
+      if (!colored && !hovered) {
         ReduceSat();
       } else if (colored) {
         IncreaseSat();
       }
 
-      //material.SetFloat("_Saturation", saturationLevel);
+      material.SetFloat("_Saturation", saturationLevel);
     }
 
 
@@ -46,4 +50,47 @@ public class SaturationControl : MonoBehaviour {
         colored = !colored;
       }
     }
+    private void OnMouseOver()
+    {
+        hovered = true;
+        if (!colored && hovered)
+        {
+            if (saturationLevel > 0 && !swap)
+            {
+                IncreaseSat();
+                if (saturationLevel <= 0f)
+                {
+                    swap = true;
+                }
+            }
+            else if (saturationLevel < 1 && swap)
+            {
+                ReduceSat();
+                if (saturationLevel >= 1f)
+                {
+                    swap = false;
+                }
+            }
+        }
+    }
+    private void OnMouseEnter()
+    {
+        if (this.tag != "Spiral" || this.tag != "Examiner")
+        {
+            POI._objectsNear.Add(this.gameObject);
+        }
+    }
+    private void OnMouseExit()
+    {
+        hovered = false;
+        if (!colored)
+        {
+            saturationLevel = 1;
+        }
+        PlayerActions.ObjectDropped(this.gameObject);
+
+        POI._objectsNear.Remove(this.gameObject);
+    }
+
+
 }
