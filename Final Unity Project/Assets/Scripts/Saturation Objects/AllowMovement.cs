@@ -65,13 +65,26 @@ public class AllowMovement : MonoBehaviour {
             falling = false;
             if (grabbed == true && Input.GetMouseButtonDown(0) == true)
             {
-                this.transform.parent = null;
-                this.transform.parent = player.transform;
-                offset = player.transform.position - this.transform.position;
-                rb.constraints = RigidbodyConstraints2D.None;
-                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                this.transform.position = player.transform.position - offset;
-                this.transform.parent = player.transform;
+                if (this.gameObject.tag == "box_Small")
+                {
+                    this.transform.parent = null;
+                    this.gameObject.transform.parent = player.gameObject.transform;
+                    offset.Set(player.gameObject.transform.position.x -.5f, player.gameObject.transform.position.y, player.gameObject.transform.position.z);
+                    rb.constraints = RigidbodyConstraints2D.None;
+                    rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    this.gameObject.transform.position = player.gameObject.transform.position - offset;
+                    this.transform.parent = player.transform;
+                }
+                else
+                {
+                    this.transform.parent = null;
+                    this.gameObject.transform.parent = player.gameObject.transform;
+                    offset = player.gameObject.transform.position - this.gameObject.transform.position;
+                    rb.constraints = RigidbodyConstraints2D.None;
+                    rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    this.gameObject.transform.position = player.gameObject.transform.position - offset;
+                    this.transform.parent = player.transform;
+                }
             }
         }
   }

@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
     private bool _bGrounded = true;
     private bool _bCarrying = false;
     private bool _bcancelJumpCarry = false;
-    private bool _bcancelPush = false;
 
     //private bool _bPlayerInvincible = false;
     private bool _bPlayerCanExamine = false;
@@ -84,11 +83,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log ("CollisionCount: " + playerCollisionCount);
         if (!_bInputsDisabled)
         {
-            //Debug.Log("PlayerState: " + mPlayerState);
-            //Debug.Log("ChildCount: " + this.gameObject.transform.childCount);
-            //Debug.Log("Movement: " + _bMovementDisabled);
-            Debug.Log("Speed: " + mSpeed);
-            Debug.Log("Jump: " + mJumpStrength);
+            Debug.Log("Carrying: " + _bCarrying);
             _bPlayerStateChanged = false;
             // check state changes
             if (!_bMovementDisabled)
@@ -99,21 +94,47 @@ public class PlayerController : MonoBehaviour
                     _mAnimatorComponent.SetFloat("Speed_f", 0f);
                     if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A)))
                     {
-                        _bPlayerStateChanged = true;
-                        mPlayerState = CharacterState.WALKING;
-                        if (Input.GetKey(KeyCode.D))
+                        if (!_bcancelJumpCarry || (_bcancelJumpCarry && !_bCarrying))
                         {
-                            _bIsGoingRight = true;
+                            _bPlayerStateChanged = true;
+                            mPlayerState = CharacterState.WALKING;
+                            if (Input.GetKey(KeyCode.D))
+                            {
+                                _bIsGoingRight = true;
+                            }
+                            else
+                            {
+                                _bIsGoingRight = false;
+                            }
                         }
-                        else
+                        else if (_bcancelJumpCarry && _bCarrying)
                         {
-                            _bIsGoingRight = false;
+                            if (this.gameObject.transform.childCount > 1)
+                            {
+                                if (this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount <= 2)
+                                {
+                                    _bPlayerStateChanged = true;
+                                    mPlayerState = CharacterState.WALKING;
+                                    if (Input.GetKey(KeyCode.D))
+                                    {
+                                        _bIsGoingRight = true;
+                                    }
+                                    else
+                                    {
+                                        _bIsGoingRight = false;
+                                    }
+                                }
+                                else if ((this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount > 2) || this.gameObject.transform.GetChild(1).tag == "box_Big")
+                                {
+
+                                }
+                            }
                         }
                     }
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         //_mSoundManager.Play();
-                        if (!_bCarrying || (_bCarrying && this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount == 2)) {
+                        if (!_bCarrying || (_bCarrying && this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount == 2 && !_bcancelJumpCarry)) {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                             _bPlayerStateChanged = true;
                             mPlayerState = CharacterState.JUMPING;
@@ -132,11 +153,10 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (_bGrounded == false)
                     {
-                        //_bPlayerStateChanged = true;
-                        //mPlayerState = CharacterState.FALLING;
+
                     }
                 }
-                else if (mPlayerState == CharacterState.WALKING)
+                /*else if (mPlayerState == CharacterState.WALKING)
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     if (Input.GetKeyDown(KeyCode.Space))
@@ -158,24 +178,71 @@ public class PlayerController : MonoBehaviour
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.IDLE;
                     }
-                }
+                }*/
 
                 if (mPlayerState == CharacterState.WALKING)
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _mAnimatorComponent.SetFloat("Speed_f", 1f);
                     _bMovementDisabled = false;
-                    if (Input.GetKey(KeyCode.D))
+                    if (!_bcancelJumpCarry || (_bcancelJumpCarry && !_bCarrying))
                     {
-                        _bIsGoingRight = true;
-                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                        StartCoroutine("CheckGrounded");
+                        if (Input.GetKey(KeyCode.D))
+                        {
+                            _bIsGoingRight = true;
+                            transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
+                            StartCoroutine("CheckGrounded");
+                        }
+                        else if (Input.GetKey(KeyCode.A))
+                        {
+                            _bIsGoingRight = false;
+                            transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
+                            StartCoroutine("CheckGrounded");
+                        }
                     }
-                    else if (Input.GetKey(KeyCode.A))
+                    else if (_bcancelJumpCarry && _bCarrying)
                     {
-                        _bIsGoingRight = false;
-                        transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                        StartCoroutine("CheckGrounded");
+                        if (this.gameObject.transform.childCount > 1)
+                        {
+                            if (this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount <= 2)
+                            {
+                                if (Input.GetKey(KeyCode.D))
+                                {
+                                    _bIsGoingRight = true;
+                                    transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
+                                    StartCoroutine("CheckGrounded");
+                                }
+                                else if (Input.GetKey(KeyCode.A))
+                                {
+                                    _bIsGoingRight = false;
+                                    transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
+                                    StartCoroutine("CheckGrounded");
+                                }
+                            }
+                            else if ((this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount > 2) || this.gameObject.transform.GetChild(1).tag == "box_Big")
+                            {
+
+                            }
+                        }
+                    }
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        if (!_bCarrying || (_bCarrying && this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount == 2 && !_bcancelJumpCarry))
+                        {
+                            gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
+                            _bPlayerStateChanged = true;
+                            mPlayerState = CharacterState.JUMPING;
+                            StartCoroutine("CheckGrounded");
+                        }
+                        else if (_bCarrying)
+                        {
+
+                        }
+                    }
+                    else if (!Input.GetKey(KeyCode.D) && (!Input.GetKey(KeyCode.A)))
+                    {
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.IDLE;
                     }
                 }
                 if (mPlayerState == CharacterState.JUMPING)
@@ -278,21 +345,13 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Landed " + hit.collider.tag);
                 if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
                 {
-                    if(hit.transform.tag == "box_Small")
+                    if(hit.transform.tag == "box_Small" || hit.transform.tag == "box_Big")
                     {
                         _bcancelJumpCarry = true;
                     }
                     else
                     {
                         _bcancelJumpCarry = false;
-                    }
-                    if (hit.transform.tag == "box_Big")
-                    {
-                        _bcancelPush = true;
-                    }
-                    else
-                    {
-                        _bcancelPush = false;
                     }
                     if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)))
                     {
@@ -362,7 +421,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else if(hit.collider.tag == "Terrain" && mPlayerState == CharacterState.IDLE)
                     {
-                        Debug.Log("Reset");
+                        //Debug.Log("Reset");
                         _bMovementDisabled = false;
                     }
                 }
@@ -387,25 +446,25 @@ public class PlayerController : MonoBehaviour
     {
       if(currentEnergy == (maxEnergy - 1))
       {
-          Debug.Log("less fast");
+          //Debug.Log("less fast");
           mSpeed = 3.0f * .75f;
           mJumpStrength = 7.1f * .75f;
       }
       else if (currentEnergy == (maxEnergy - 2))
       {
-          Debug.Log("more less fast");
+          //Debug.Log("more less fast");
           mSpeed = 3.0f * .5f;
           mJumpStrength = 7.1f * .5f;
       }
       else if (currentEnergy == (maxEnergy - 3))
       {
-          Debug.Log("the slowest of the fast");
+         //Debug.Log("the slowest of the fast");
           mSpeed = 3.0f * .25f;
           mJumpStrength = 7.1f * .25f;
       }
       else if (currentEnergy == maxEnergy)
       {
-          Debug.Log("Fast");
+          //Debug.Log("Fast");
           mSpeed = 3.0f;
           mJumpStrength = 7.1f;
       }
