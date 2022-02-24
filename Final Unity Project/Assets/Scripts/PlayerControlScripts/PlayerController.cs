@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
     private bool _bMovementDisabled = false;
     private bool _bGrounded = true;
     private bool _bCarrying = false;
-    private bool _bcancelJumpCarry = false;
 
     //private bool _bPlayerInvincible = false;
     private bool _bPlayerCanExamine = false;
@@ -51,7 +50,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      //  _mAnimatorComponent.runtimeAnimatorController = mIdleController;
+        //_mAnimatorComponent.runtimeAnimatorController = mIdleController;
         _mAnimatorComponent = gameObject.transform.GetChild(0).gameObject.GetComponent<Animator>();
 
         _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
@@ -69,7 +68,7 @@ public class PlayerController : MonoBehaviour
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
         playerCollisionCount = GameObject.FindGameObjectWithTag("Player").GetComponent<playerCollisionCounter>().collisionCount;
-
+        Debug.DrawLine(transform.position, transform.forward * 5, Color.red);
         UpdateWalkingAnimation();
 
         if (playerCollisionCount >= 1)
@@ -94,8 +93,6 @@ public class PlayerController : MonoBehaviour
                     _mAnimatorComponent.SetFloat("Speed_f", 0f);
                     if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A)))
                     {
-                        if (!_bcancelJumpCarry || (_bcancelJumpCarry && !_bCarrying))
-                        {
                             _bPlayerStateChanged = true;
                             mPlayerState = CharacterState.WALKING;
                             if (Input.GetKey(KeyCode.D))
@@ -106,46 +103,15 @@ public class PlayerController : MonoBehaviour
                             {
                                 _bIsGoingRight = false;
                             }
-                        }
-                        else if (_bcancelJumpCarry && _bCarrying)
-                        {
-                            if (this.gameObject.transform.childCount > 1)
-                            {
-                                if (this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount <= 2)
-                                {
-                                    _bPlayerStateChanged = true;
-                                    mPlayerState = CharacterState.WALKING;
-                                    if (Input.GetKey(KeyCode.D))
-                                    {
-                                        _bIsGoingRight = true;
-                                    }
-                                    else
-                                    {
-                                        _bIsGoingRight = false;
-                                    }
-                                }
-                                else if ((this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount > 2) || this.gameObject.transform.GetChild(1).tag == "box_Big")
-                                {
-
-                                }
-                            }
-                        }
                     }
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
-                        //_mSoundManager.Play();
-                        if (!_bCarrying || (_bCarrying && this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount == 2 && !_bcancelJumpCarry)) {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                             _bPlayerStateChanged = true;
                             mPlayerState = CharacterState.JUMPING;
                             StartCoroutine("CheckGrounded");
-                        }
-                        else if (_bCarrying)
-                        {
-
-                        }
                     }
-                    else if (Input.GetMouseButtonDown(1) && _bPlayerCanExamine)
+                    else if (Input.GetMouseButtonDown(2) && _bPlayerCanExamine)
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.EXAMINE;
@@ -156,37 +122,12 @@ public class PlayerController : MonoBehaviour
 
                     }
                 }
-                /*else if (mPlayerState == CharacterState.WALKING)
-                {
-                    _mAnimatorComponent.SetBool("isGrounded_b", true);
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        if (!_bCarrying || (_bCarrying && this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount <= 1))
-                        {
-                            gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
-                            _bPlayerStateChanged = true;
-                            mPlayerState = CharacterState.JUMPING;
-                            StartCoroutine("CheckGrounded");
-                        }
-                        else if (_bCarrying)
-                        {
-
-                        }
-                    }
-                    else if (!Input.GetKey(KeyCode.D) && (!Input.GetKey(KeyCode.A)))
-                    {
-                        _bPlayerStateChanged = true;
-                        mPlayerState = CharacterState.IDLE;
-                    }
-                }*/
 
                 if (mPlayerState == CharacterState.WALKING)
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _mAnimatorComponent.SetFloat("Speed_f", 1f);
                     _bMovementDisabled = false;
-                    if (!_bcancelJumpCarry || (_bcancelJumpCarry && !_bCarrying))
-                    {
                         if (Input.GetKey(KeyCode.D))
                         {
                             _bIsGoingRight = true;
@@ -199,45 +140,12 @@ public class PlayerController : MonoBehaviour
                             transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
                             StartCoroutine("CheckGrounded");
                         }
-                    }
-                    else if (_bcancelJumpCarry && _bCarrying)
-                    {
-                        if (this.gameObject.transform.childCount > 1)
-                        {
-                            if (this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount <= 2)
-                            {
-                                if (Input.GetKey(KeyCode.D))
-                                {
-                                    _bIsGoingRight = true;
-                                    transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                                    StartCoroutine("CheckGrounded");
-                                }
-                                else if (Input.GetKey(KeyCode.A))
-                                {
-                                    _bIsGoingRight = false;
-                                    transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                                    StartCoroutine("CheckGrounded");
-                                }
-                            }
-                            else if ((this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount > 2) || this.gameObject.transform.GetChild(1).tag == "box_Big")
-                            {
-
-                            }
-                        }
-                    }
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
-                        if (!_bCarrying || (_bCarrying && this.gameObject.transform.GetChild(1).tag == "box_Small" && this.gameObject.transform.childCount == 2 && !_bcancelJumpCarry))
-                        {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                             _bPlayerStateChanged = true;
                             mPlayerState = CharacterState.JUMPING;
                             StartCoroutine("CheckGrounded");
-                        }
-                        else if (_bCarrying)
-                        {
-
-                        }
                     }
                     else if (!Input.GetKey(KeyCode.D) && (!Input.GetKey(KeyCode.A)))
                     {
@@ -284,14 +192,7 @@ public class PlayerController : MonoBehaviour
             {
                 //ChangeAnimator();
             }
-            if (this.gameObject.transform.childCount > 1)
-            {
-                _bCarrying = true;
-            }
-            else
-            {
-                _bCarrying = false;
-            }
+            Debug.Log("going right: " + _bIsGoingRight);
         }
 
         if (mPlayerState == CharacterState.WALKING || mPlayerState == CharacterState.JUMPING)
@@ -340,18 +241,22 @@ public class PlayerController : MonoBehaviour
         while (true)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position - Vector3.up * 1f, -Vector2.up, 0.05f);
-            if(hit.collider != null)
+            /*float extensionHeight = .02f;
+            RaycastHit2D hit = Physics2D.Raycast(this.GetComponent<CapsuleCollider2D>().bounds.center, Vector2.down, this.GetComponent<CapsuleCollider2D>().bounds.extents.y + extensionHeight);
+            Debug.DrawRay(this.GetComponent<CapsuleCollider2D>().bounds.center, Vector2.down * (this.GetComponent<CapsuleCollider2D>().bounds.extents.y + extensionHeight));
+            Physics2D.IgnoreLayerCollision(8, 8);*/
+            if (hit.collider != null)
             {
                 Debug.Log("Landed " + hit.collider.tag);
                 if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
                 {
                     if(hit.transform.tag == "box_Small" || hit.transform.tag == "box_Big")
                     {
-                        _bcancelJumpCarry = true;
+                        //_bcancelJumpCarry = true;
                     }
                     else
                     {
-                        _bcancelJumpCarry = false;
+                        //_bcancelJumpCarry = false;
                     }
                     if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)))
                     {
@@ -405,7 +310,7 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < directions.Count; i++)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * directions[i], transform.right * directions[i], distance);
-            Debug.DrawRay(transform.position + transform.right * directions[i], transform.right  * directions[i], Color.green, 45.0f);
+            //Debug.DrawRay(transform.position + transform.right * directions[i], transform.right  * directions[i], Color.green, 45.0f);
             if(hit.collider != null)
             {
                 if(hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big")

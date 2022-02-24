@@ -44,6 +44,23 @@ public class SaturationControl : MonoBehaviour {
       }
     }
 
+    private void ReduceSat2()
+    {
+        if (saturationLevel < 1)
+        {
+            saturationLevel += 0.8f * Time.deltaTime;
+        }
+    }
+
+
+    private void IncreaseSat2()
+    {
+        if (saturationLevel > 0)
+        {
+            saturationLevel -= 0.8f * Time.deltaTime;
+        }
+    }
+
 
     private void BoolChange (GameObject obj) {
       if (obj == this.gameObject) {
@@ -57,7 +74,7 @@ public class SaturationControl : MonoBehaviour {
         {
             if (saturationLevel > 0 && !swap)
             {
-                IncreaseSat();
+                IncreaseSat2();
                 if (saturationLevel <= 0f)
                 {
                     swap = true;
@@ -65,7 +82,7 @@ public class SaturationControl : MonoBehaviour {
             }
             else if (saturationLevel < 1 && swap)
             {
-                ReduceSat();
+                ReduceSat2();
                 if (saturationLevel >= 1f)
                 {
                     swap = false;

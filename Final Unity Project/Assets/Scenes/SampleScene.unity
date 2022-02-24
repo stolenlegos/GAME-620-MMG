@@ -1871,11 +1871,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6515535255756199999, guid: 8f8c9907ca99fd34482fb656bb1db36b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.9579046
+      value: -15.455704
       objectReference: {fileID: 0}
     - target: {fileID: 6515535255756199999, guid: 8f8c9907ca99fd34482fb656bb1db36b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.4516935
+      value: -0.6378063
       objectReference: {fileID: 0}
     - target: {fileID: 6515535255756199999, guid: 8f8c9907ca99fd34482fb656bb1db36b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2930,7 +2930,7 @@ GameObject:
   - component: {fileID: 713405019}
   - component: {fileID: 713405020}
   - component: {fileID: 713405018}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2950,8 +2950,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mPlayerState: 0
-  mSpeed: 3
-  mJumpStrength: 7
   _mAnimatorComponent: {fileID: 1686661833}
   rend: {fileID: 1686661834}
 --- !u!212 &713405013
@@ -3017,6 +3015,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_Children:
   - {fileID: 1686661832}
+  - {fileID: 873724598}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3856,6 +3855,36 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.78
+--- !u!1 &873724597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 873724598}
+  m_Layer: 8
+  m_Name: BoxHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &873724598
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873724597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.254002, y: 0.10049999, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 713405014}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &877186997
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7441,7 +7470,7 @@ GameObject:
   - component: {fileID: 1686661832}
   - component: {fileID: 1686661834}
   - component: {fileID: 1686661833}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

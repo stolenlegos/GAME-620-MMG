@@ -9,8 +9,11 @@ public class AllowMovement : MonoBehaviour {
     public bool stacked;
     public bool detected;
     private GameObject player;
+    private GameObject boxHolder;
     public bool grabbed;
-    private Vector3 offset;
+    private bool grabbable;
+    private Vector3 stackPosition;
+    private Vector3 stackedBox;
     private Rigidbody2D rb;
     [SerializeField]
   //private Rigidbody2D rb;
@@ -19,9 +22,11 @@ public class AllowMovement : MonoBehaviour {
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        boxHolder = GameObject.Find("BoxHolder");
         colored = false;
         falling = true;
         stacked = false;
+        grabbable = false;
         rb = gameObject.GetComponent<Rigidbody2D>();
         ShaderEvents.SaturationChange += BoolChange;
         PlayerActions.Grab += GrabObject;
@@ -39,11 +44,23 @@ public class AllowMovement : MonoBehaviour {
         {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
-        if (grabbed)
+        if (grabbed == true)
         {
-            this.transform.position = player.transform.position - offset;
+            if(this.gameObject.tag == "box_Small")
+            {
+                this.transform.position = boxHolder.transform.position;
+            }
+            else if(this.gameObject.tag == "box_Big")
+            {
+                rb.constraints = RigidbodyConstraints2D.None;
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
         }
-        else if (falling && !detected)
+        else if (stacked)
+        {
+            this.transform.position = stackedBox - stackPosition;
+        }
+        else if (falling && !grabbed)
         {
             rb.constraints = RigidbodyConstraints2D.None;
         }
@@ -59,11 +76,16 @@ public class AllowMovement : MonoBehaviour {
 
 
     private void GrabObject (GameObject obj) {
-    if (obj == this.gameObject && colored && detected) {
+    if (obj == this.gameObject && colored && detected && grabbable) {
             grabbed = true;
             stacked = false;
             falling = false;
-            if (grabbed == true && Input.GetMouseButtonDown(0) == true)
+            transform.parent = null;
+            if (this.gameObject.tag == "box_Small")
+            {
+                rb.isKinematic = true;
+            }
+            /*if (grabbed == true && Input.GetMouseButtonDown(0) == true)
             {
                 if (this.gameObject.tag == "box_Small")
                 {
@@ -77,15 +99,16 @@ public class AllowMovement : MonoBehaviour {
                 }
                 else
                 {
-                    this.transform.parent = null;
-                    this.gameObject.transform.parent = player.gameObject.transform;
-                    offset = player.gameObject.transform.position - this.gameObject.transform.position;
-                    rb.constraints = RigidbodyConstraints2D.None;
-                    rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                    this.gameObject.transform.position = player.gameObject.transform.position - offset;
-                    this.transform.parent = player.transform;
+                //Debug.Log("Continuing");
+                this.transform.parent = null;
+                this.transform.parent = player.transform;
+                offset = player.transform.position - this.transform.position;
+                rb.constraints = RigidbodyConstraints2D.None;
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                this.transform.position = player.transform.position - offset;
+                this.transform.parent = player.transform;
                 }
-            }
+            }*/
         }
   }
 
@@ -93,11 +116,9 @@ public class AllowMovement : MonoBehaviour {
   private void ReleaseObject (GameObject obj) {
     if (obj == this.gameObject) {
             grabbed = false;
-            this.transform.parent = null;
-            this.transform.position = this.transform.position + Vector3.up * .01f;
-            if (this.transform.childCount == 2)
+            if(this.gameObject.tag == "box_Small")
             {
-                this.transform.GetChild(1).position = this.transform.GetChild(1).position + Vector3.up * -.01f;
+                rb.isKinematic = false;
             }
             falling = true;
         }
@@ -119,6 +140,9 @@ public class AllowMovement : MonoBehaviour {
                 stacked = true;
                 this.transform.parent = null;
                 this.transform.parent = collision.transform;
+                stackedBox = collision.transform.position;
+                stackPosition = stackedBox - this.transform.position;
+                this.transform.position = stackedBox - stackPosition;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
             if (collision.collider.tag == "Terrain" && !grabbed)
@@ -156,6 +180,34 @@ public class AllowMovement : MonoBehaviour {
             Debug.Log("FailedTofALL");
         }
     }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision != null)
+        {
+            if (collision.tag == "Player")
+            {
+                grabbable = true;
+            }
+            else
+            {
+
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision != null)
+        {
+            if (collision.tag == "Player")
+            {
+                grabbable = false;
+            }
+            else
+            {
+
+            }
+        }
+    }
     private void OnMouseOver()
     {
         detected = true;
@@ -164,35 +216,4 @@ public class AllowMovement : MonoBehaviour {
     {
         detected = false;
     }
-    /*private void FallUntilCollisionDetected()
-   {
-
-       RaycastHit2D hit = Physics2D.Raycast(this.transform.position - Vector3.up * 1f, -Vector2.up, 0.05f, layerMask1);
-       Debug.DrawRay(this.transform.position - Vector3.up * 1f, -Vector2.up, Color.green, 45.0f);
-       if (hit.transform != null){
-           if (hit.transform.tag == "Terrain"){
-               falling = false;
-               this.transform.parent = null;
-               rb.constraints = RigidbodyConstraints2D.FreezeAll;
-               Debug.Log("Terrain");
-           }
-           if (hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small") {
-               falling = false;
-               stacked = true;
-               this.transform.parent = null;
-               this.transform.parent = hit.transform;
-               //offset = player.transform.position - this.transform.position;
-               //this.transform.position = this.transform.parent.position - offset;
-               rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-               Debug.Log("Box");
-           }
-           else
-           {
-               Debug.Log("Failed1");
-           }
-       }
-       else if (hit.transform == null){
-           Debug.Log("Failed2");
-       }
-   }*/
 }
