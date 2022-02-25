@@ -36,11 +36,16 @@ public class AllowMovement : MonoBehaviour {
 
 
   void Update() {
-        if (!colored)
+        if (!colored && !stacked)
         {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
-        else if (colored && grabbed == false && falling == false)
+        else if (stacked && (colored || !colored))
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            this.transform.position = stackedBox - stackPosition;
+        }
+        else if (colored && !grabbed && !falling && !stacked)
         {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
@@ -55,10 +60,6 @@ public class AllowMovement : MonoBehaviour {
                 rb.constraints = RigidbodyConstraints2D.None;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
-        }
-        else if (stacked)
-        {
-            this.transform.position = stackedBox - stackPosition;
         }
         else if (falling && !grabbed)
         {
@@ -166,6 +167,7 @@ public class AllowMovement : MonoBehaviour {
                 stacked = true;
                 this.transform.parent = null;
                 this.transform.parent = collision.transform;
+                rb.constraints = RigidbodyConstraints2D.None;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
             if (collision.collider.tag == "Terrain" && !grabbed)

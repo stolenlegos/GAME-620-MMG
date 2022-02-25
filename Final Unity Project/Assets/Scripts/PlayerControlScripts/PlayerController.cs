@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
         playerCollisionCount = GameObject.FindGameObjectWithTag("Player").GetComponent<playerCollisionCounter>().collisionCount;
-        Debug.DrawLine(transform.position, transform.forward * 5, Color.red);
+        Debug.DrawRay(transform.position, transform.forward * 5, Color.red);
         UpdateWalkingAnimation();
 
         if (playerCollisionCount >= 1)
@@ -120,6 +120,14 @@ public class PlayerController : MonoBehaviour
                     else if (_bGrounded == false)
                     {
 
+                    }
+                    if (_bIsGoingRight)
+                    {
+                        rend.flipX = true;
+                    }
+                    else if (!_bIsGoingRight)
+                    {
+                        rend.flipX = false;
                     }
                 }
 
@@ -187,11 +195,19 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            gameObject.GetComponent<SpriteRenderer>().flipX = !_bIsGoingRight;
+            if (_bIsGoingRight)
+            /*{
+                this.gameObject.transform.position = new Vector3 
+            }
+            else if (!_bIsGoingRight)
+            {
+
+            }
+
             if (_bPlayerStateChanged)
             {
                 //ChangeAnimator();
-            }
+            }*/
             Debug.Log("going right: " + _bIsGoingRight);
         }
 
@@ -353,19 +369,19 @@ public class PlayerController : MonoBehaviour
       {
           //Debug.Log("less fast");
           mSpeed = 3.0f * .75f;
-          mJumpStrength = 7.1f * .75f;
+          mJumpStrength = 7.1f * .85f;
       }
       else if (currentEnergy == (maxEnergy - 2))
       {
           //Debug.Log("more less fast");
           mSpeed = 3.0f * .5f;
-          mJumpStrength = 7.1f * .5f;
+          mJumpStrength = 7.1f * .75f;
       }
       else if (currentEnergy == (maxEnergy - 3))
       {
          //Debug.Log("the slowest of the fast");
           mSpeed = 3.0f * .25f;
-          mJumpStrength = 7.1f * .25f;
+          mJumpStrength = 7.1f * .65f;
       }
       else if (currentEnergy == maxEnergy)
       {
