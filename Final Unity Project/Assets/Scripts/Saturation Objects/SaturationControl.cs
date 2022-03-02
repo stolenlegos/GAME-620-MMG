@@ -65,6 +65,15 @@ public class SaturationControl : MonoBehaviour {
     private void BoolChange (GameObject obj) {
       if (obj == this.gameObject) {
         colored = !colored;
+            if (colored)
+            {
+                EnergyEvents.objectsColored.Add(this.gameObject);
+            }
+            if (!colored)
+            {
+                //EnergyEvents.objectsColored.Remove(this.gameObject);
+            }
+            Debug.Log("Ran");
       }
     }
     private void OnMouseOver()

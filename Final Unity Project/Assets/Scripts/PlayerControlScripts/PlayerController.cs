@@ -79,10 +79,10 @@ public class PlayerController : MonoBehaviour
         {
             _bGrounded = false;
         }
-        Debug.Log ("CollisionCount: " + playerCollisionCount);
+        //Debug.Log ("CollisionCount: " + playerCollisionCount);
         if (!_bInputsDisabled)
         {
-            Debug.Log("Carrying: " + _bCarrying);
+            //Debug.Log("Carrying: " + _bCarrying);
             _bPlayerStateChanged = false;
             // check state changes
             if (!_bMovementDisabled)
@@ -195,7 +195,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            if (_bIsGoingRight)
+            //if (_bIsGoingRight)
             /*{
                 this.gameObject.transform.position = new Vector3 
             }
@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour
             {
                 //ChangeAnimator();
             }*/
-            Debug.Log("going right: " + _bIsGoingRight);
+            //Debug.Log("going right: " + _bIsGoingRight);
         }
 
         if (mPlayerState == CharacterState.WALKING || mPlayerState == CharacterState.JUMPING)
@@ -264,7 +264,7 @@ public class PlayerController : MonoBehaviour
             if (hit.collider != null)
             {
                 Debug.Log("Landed " + hit.collider.tag);
-                if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small")
+                if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small" || hit.transform.tag == "Platform")
                 {
                     if(hit.transform.tag == "box_Small" || hit.transform.tag == "box_Big")
                     {

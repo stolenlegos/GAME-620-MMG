@@ -13,8 +13,22 @@ public class EnergyManager : MonoBehaviour {
     EnergyEvents.checkEnergy += CheckEnergy;
   }
 
-
-  private void CheckEnergy(GameObject obj) {
+    private void Update()
+    {
+        if (currentEnergy == maxEnergy - 4)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                foreach (GameObject gameObject in EnergyEvents.objectsColored)
+                {
+                    EnergyEvents.ChangeColor(gameObject);
+                }
+                EnergyEvents.objectsColored.Clear();
+                currentEnergy = maxEnergy;
+            }
+        }
+    }
+    private void CheckEnergy(GameObject obj) {
     objColored = obj.GetComponent<SaturationControl>().colored;
 
     if (objColored) {
