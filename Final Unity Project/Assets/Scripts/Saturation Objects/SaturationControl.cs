@@ -68,6 +68,7 @@ public class SaturationControl : MonoBehaviour {
             if (colored)
             {
                 EnergyEvents.objectsColored.Add(this.gameObject);
+                Debug.Log(EnergyEvents.objectsColored);
             }
             if (!colored)
             {

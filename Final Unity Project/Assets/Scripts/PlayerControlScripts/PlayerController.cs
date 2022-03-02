@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     public Animator _mAnimatorComponent;
     public SpriteRenderer rend;
-    private bool _bIsGoingRight = true;
+    public bool _bIsGoingRight = true;
     private bool _bPlayerStateChanged = false;
 
     private bool _bInputsDisabled = false;
@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
 
     private float moveHorizontal;
     private float moveVertical;
+    public Vector3 previousPos;
+    public Vector3 amountMoved;
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviour
         _mCameraManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraManager>();
         //_mEnergyManager = GetComponent<EnergyManager>();
 
+        previousPos = transform.position;
         rb2D = gameObject.GetComponent<Rigidbody2D>();
 
         EnergyEvents.EnergyUIChange += energyCheck;
@@ -120,14 +123,6 @@ public class PlayerController : MonoBehaviour
                     else if (_bGrounded == false)
                     {
 
-                    }
-                    if (_bIsGoingRight)
-                    {
-                        rend.flipX = true;
-                    }
-                    else if (!_bIsGoingRight)
-                    {
-                        rend.flipX = false;
                     }
                 }
 
@@ -194,37 +189,32 @@ public class PlayerController : MonoBehaviour
                     Debug.Log("PlayerEndExamining");
                 }
             }
-
-            //if (_bIsGoingRight)
-            /*{
-                this.gameObject.transform.position = new Vector3 
-            }
-            else if (!_bIsGoingRight)
+            if (_bIsGoingRight)
             {
-
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
-
-            if (_bPlayerStateChanged)
+            if (!_bIsGoingRight)
             {
-                //ChangeAnimator();
-            }*/
-            //Debug.Log("going right: " + _bIsGoingRight);
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
         }
 
         if (mPlayerState == CharacterState.WALKING || mPlayerState == CharacterState.JUMPING)
         {
             CheckWall();
         }
+        amountMoved = transform.position - previousPos;
+        previousPos = transform.position;
     }
 
     private void UpdateWalkingAnimation() {
       if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)){
         _mAnimatorComponent.SetFloat("Speed_f", 1);
         if (Input.GetKey(KeyCode.A)) {
-          rend.flipX = true;
-        } else {
-          rend.flipX = false;
-        }
+          //rend.flipX = true;
+            } else {
+          //rend.flipX = false;
+            }
       } else {
         _mAnimatorComponent.SetFloat("Speed_f", 0);
       }

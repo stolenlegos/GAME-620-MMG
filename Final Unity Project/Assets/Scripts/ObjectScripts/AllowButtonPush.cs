@@ -34,7 +34,7 @@ public class AllowButtonPush : MonoBehaviour {
   private void BoolChange (GameObject obj) {
     if (obj == this.gameObject) {
       colored = !colored;
-      ShaderEvents.ChangeColor(door);
+            ShaderEvents.ChangeColor(door);
     }
   }
 

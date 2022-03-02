@@ -59,6 +59,14 @@ public class AllowMovement : MonoBehaviour {
             {
                 rb.constraints = RigidbodyConstraints2D.None;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x < this.gameObject.transform.position.x)
+                {
+                    this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                }
+                if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x > this.gameObject.transform.position.x)
+                {
+                    this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                }
             }
         }
         else if (falling && !grabbed)
@@ -86,30 +94,6 @@ public class AllowMovement : MonoBehaviour {
             {
                 rb.isKinematic = true;
             }
-            /*if (grabbed == true && Input.GetMouseButtonDown(0) == true)
-            {
-                if (this.gameObject.tag == "box_Small")
-                {
-                    this.transform.parent = null;
-                    this.gameObject.transform.parent = player.gameObject.transform;
-                    offset.Set(player.gameObject.transform.position.x -.5f, player.gameObject.transform.position.y, player.gameObject.transform.position.z);
-                    rb.constraints = RigidbodyConstraints2D.None;
-                    rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                    this.gameObject.transform.position = player.gameObject.transform.position - offset;
-                    this.transform.parent = player.transform;
-                }
-                else
-                {
-                //Debug.Log("Continuing");
-                this.transform.parent = null;
-                this.transform.parent = player.transform;
-                offset = player.transform.position - this.transform.position;
-                rb.constraints = RigidbodyConstraints2D.None;
-                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                this.transform.position = player.transform.position - offset;
-                this.transform.parent = player.transform;
-                }
-            }*/
         }
   }
 
