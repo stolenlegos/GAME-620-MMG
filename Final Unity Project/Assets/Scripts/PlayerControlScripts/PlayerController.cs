@@ -256,7 +256,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Landed " + hit.collider.tag);
                 if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small" || hit.transform.tag == "Platform")
                 {
-                    if(hit.transform.tag == "box_Small" || hit.transform.tag == "box_Big")
+                    if (hit.transform.tag == "box_Small" || hit.transform.tag == "box_Big")
                     {
                         //_bcancelJumpCarry = true;
                     }
@@ -339,6 +339,14 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Platform")
+        {
+            Debug.Log("Triggered");
+            this.transform.parent = other.gameObject.transform;
+        }
+    }
     private void OnTriggerStay2D(Collider2D other)
     {
         if(other.gameObject.tag == "Examiner")
@@ -351,6 +359,10 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Examiner")
         {
             _bPlayerCanExamine = false;
+        }
+        if (other.gameObject.tag == "Platform")
+        {
+            this.transform.parent = null;
         }
     }
     private void energyCheck(int currentEnergy, int maxEnergy)
