@@ -15,6 +15,7 @@ public class AllowMovement : MonoBehaviour {
     private Vector3 stackPosition;
     private Vector3 stackedBox;
     private Rigidbody2D rb;
+    private Transform belowBox;
     [SerializeField]
   //private Rigidbody2D rb;
   //public LayerMask layerMask1;
@@ -36,22 +37,27 @@ public class AllowMovement : MonoBehaviour {
 
 
   void Update() {
-        if (!colored && !stacked)
+        if (!colored && !stacked && !falling)
         {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
         else if (stacked && (colored || !colored))
         {
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            this.transform.position = stackedBox - stackPosition;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            //this.transform.parent = belowBox;
         }
         else if (colored && !grabbed && !falling && !stacked)
         {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
-        if (grabbed == true)
+        else if (grabbed && !colored)
         {
-            if(this.gameObject.tag == "box_Small")
+            grabbed = false;
+            this.transform.parent = null;
+        }
+        else if (grabbed == true)
+        {
+            if (this.gameObject.tag == "box_Small")
             {
                 this.transform.position = boxHolder.transform.position;
             }
@@ -59,26 +65,39 @@ public class AllowMovement : MonoBehaviour {
             {
                 rb.constraints = RigidbodyConstraints2D.None;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x < this.gameObject.transform.position.x)
+                if (player.transform.position.y <= this.gameObject.transform.position.y)
                 {
-                    this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x < this.gameObject.transform.position.x)
+                    {
+                        this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                    }
+                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x > this.gameObject.transform.position.x)
+                    {
+                        this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                    }
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x < this.gameObject.transform.position.x)
+                    {
+                        this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                    }
+                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x > this.gameObject.transform.position.x)
+                    {
+                        this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                    }
                 }
-                if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x > this.gameObject.transform.position.x)
-                {
-                    this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
-                }
+                
             }
         }
         else if (falling && !grabbed)
         {
             rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
     }
 
 
   private void BoolChange (GameObject obj) {
-    if (obj == this.gameObject) {
+    if (obj == this.gameObject && !grabbed) {
       colored = !colored;
     }
   }
@@ -101,6 +120,7 @@ public class AllowMovement : MonoBehaviour {
   private void ReleaseObject (GameObject obj) {
     if (obj == this.gameObject) {
             grabbed = false;
+            Debug.Log("Ran");
             if(this.gameObject.tag == "box_Small")
             {
                 rb.isKinematic = false;
@@ -119,6 +139,7 @@ public class AllowMovement : MonoBehaviour {
     {
         if (collision != null)
         {
+            Debug.Log(collision.gameObject.tag);
             if (collision.collider.tag == "StackPoint" && !grabbed)
             {
                 falling = false;
@@ -130,7 +151,13 @@ public class AllowMovement : MonoBehaviour {
                 this.transform.position = stackedBox - stackPosition;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
-            if (collision.collider.tag == "Terrain" && !grabbed)
+            else if (collision.collider.tag == "Platform" && !grabbed)
+            {
+                falling = false;
+                this.transform.parent = null;
+                this.transform.parent = collision.transform;
+            }
+            else if (collision.collider.tag == "Terrain" && !grabbed)
             {
                 falling = false;
                 this.transform.parent = null;
@@ -150,7 +177,8 @@ public class AllowMovement : MonoBehaviour {
                 falling = false;
                 stacked = true;
                 this.transform.parent = null;
-                this.transform.parent = collision.transform;
+                belowBox = collision.transform;
+                this.transform.parent = belowBox;
                 rb.constraints = RigidbodyConstraints2D.None;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             }

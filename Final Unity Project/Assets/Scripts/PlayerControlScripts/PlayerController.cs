@@ -14,6 +14,8 @@ public enum CharacterState
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private LayerMask playerLayerMask;
+
     public CharacterState mPlayerState = CharacterState.IDLE;
 
     //Movement Settings
@@ -34,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private bool _bInputsDisabled = false;
     private bool _bMovementDisabled = false;
     private bool _bGrounded = true;
-    private bool _bCarrying = false;
+    private bool _bPushingOrPulling = false;
 
     //private bool _bPlayerInvincible = false;
     private bool _bPlayerCanExamine = false;
@@ -43,6 +45,8 @@ public class PlayerController : MonoBehaviour
     private CameraManager _mCameraManager;
     private EnergyManager _mEnergyManager;
     private Rigidbody2D rb2D;
+    private CapsuleCollider2D playerCollider;
+    private GameObject boxMovement;
 
     private float moveHorizontal;
     private float moveVertical;
@@ -57,10 +61,12 @@ public class PlayerController : MonoBehaviour
 
         _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         _mCameraManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraManager>();
+        
         //_mEnergyManager = GetComponent<EnergyManager>();
 
         previousPos = transform.position;
         rb2D = gameObject.GetComponent<Rigidbody2D>();
+        playerCollider = transform.GetComponent<CapsuleCollider2D>();
 
         EnergyEvents.EnergyUIChange += energyCheck;
     }
@@ -68,10 +74,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("PlayerState: " + mPlayerState);
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
         playerCollisionCount = GameObject.FindGameObjectWithTag("Player").GetComponent<playerCollisionCounter>().collisionCount;
-        Debug.DrawRay(transform.position, transform.forward * 5, Color.red);
         UpdateWalkingAnimation();
 
         if (playerCollisionCount >= 1)
@@ -85,11 +91,12 @@ public class PlayerController : MonoBehaviour
         //Debug.Log ("CollisionCount: " + playerCollisionCount);
         if (!_bInputsDisabled)
         {
-            //Debug.Log("Carrying: " + _bCarrying);
             _bPlayerStateChanged = false;
             // check state changes
             if (!_bMovementDisabled)
             {
+
+
                 if (mPlayerState == CharacterState.IDLE)
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
@@ -107,12 +114,12 @@ public class PlayerController : MonoBehaviour
                                 _bIsGoingRight = false;
                             }
                     }
-                    else if (Input.GetKeyDown(KeyCode.Space))
+                    else if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
                     {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                             _bPlayerStateChanged = true;
                             mPlayerState = CharacterState.JUMPING;
-                            StartCoroutine("CheckGrounded");
+                            //StartCoroutine("CheckGrounded");
                     }
                     else if (Input.GetMouseButtonDown(2) && _bPlayerCanExamine)
                     {
@@ -135,20 +142,20 @@ public class PlayerController : MonoBehaviour
                         {
                             _bIsGoingRight = true;
                             transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                            StartCoroutine("CheckGrounded");
+                            //StartCoroutine("CheckGrounded");
                         }
                         else if (Input.GetKey(KeyCode.A))
                         {
                             _bIsGoingRight = false;
                             transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                            StartCoroutine("CheckGrounded");
+                            //StartCoroutine("CheckGrounded");
                         }
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
                     {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                             _bPlayerStateChanged = true;
                             mPlayerState = CharacterState.JUMPING;
-                            StartCoroutine("CheckGrounded");
+                            //StartCoroutine("CheckGrounded");
                     }
                     else if (!Input.GetKey(KeyCode.D) && (!Input.GetKey(KeyCode.A)))
                     {
@@ -201,7 +208,7 @@ public class PlayerController : MonoBehaviour
 
         if (mPlayerState == CharacterState.WALKING || mPlayerState == CharacterState.JUMPING)
         {
-            CheckWall();
+            //CheckWall();
         }
         amountMoved = transform.position - previousPos;
         previousPos = transform.position;
@@ -220,124 +227,9 @@ public class PlayerController : MonoBehaviour
       }
     }
 
-    /*public void ChangeAnimator()
-    {
-        RuntimeAnimatorController newAnimator = mIdleController;
-
-        if(mPlayerState == CharacterState.WALKING || mPlayerState == CharacterState.JUMPING)
-        {
-            newAnimator = mWalkingController;
-            if(_bIsGoingRight)
-            {
-                gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            }
-            else
-            {
-                gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            }
-        }
-
-        gameObject.GetComponent<Animator>().runtimeAnimatorController = newAnimator;
-    }*/
-
-    IEnumerator CheckGrounded()
-    {
-            yield return new WaitForSeconds(1.0f);
-
-        while (true)
-        {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position - Vector3.up * 1f, -Vector2.up, 0.05f);
-            /*float extensionHeight = .02f;
-            RaycastHit2D hit = Physics2D.Raycast(this.GetComponent<CapsuleCollider2D>().bounds.center, Vector2.down, this.GetComponent<CapsuleCollider2D>().bounds.extents.y + extensionHeight);
-            Debug.DrawRay(this.GetComponent<CapsuleCollider2D>().bounds.center, Vector2.down * (this.GetComponent<CapsuleCollider2D>().bounds.extents.y + extensionHeight));
-            Physics2D.IgnoreLayerCollision(8, 8);*/
-            if (hit.collider != null)
-            {
-                Debug.Log("Landed " + hit.collider.tag);
-                if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small" || hit.transform.tag == "Platform")
-                {
-                    if (hit.transform.tag == "box_Small" || hit.transform.tag == "box_Big")
-                    {
-                        //_bcancelJumpCarry = true;
-                    }
-                    else
-                    {
-                        //_bcancelJumpCarry = false;
-                    }
-                    if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)))
-                    {
-                        _bMovementDisabled = false;
-                        _bPlayerStateChanged = true;
-                        mPlayerState = CharacterState.WALKING;
-                    }
-                    else
-                    {
-                        mPlayerState = CharacterState.IDLE;
-                    }
-                    break;
-                }
-            }
-                yield return new WaitForSeconds(0.45f);
-
-        }
-
-        //ChangeAnimator();
-        yield return null;
-    }
-
-    IEnumerator Coroutine_BlockPlayerInputs()
-    {
-        _bInputsDisabled = true;
-        yield return new WaitForSeconds(0.5f);
-        _bInputsDisabled = false;
-        yield return null;
-    }
-
-    IEnumerator Coroutine_SetPlayerInvincible()
-    {
-        //_bPlayerInvincible = true;
-        yield return new WaitForSeconds(1.5f);
-
-        //_bPlayerInvincible = false;
-        yield return null;
-    }
-
     public void BlockPlayerInputs()
     {
         _bInputsDisabled = true;
-    }
-
-    public void CheckWall()
-    {
-        List<float> directions = new List<float> { -.2375f, .2375f };
-
-        float distance = 0.005f;
-
-        for (int i = 0; i < directions.Count; i++)
-        {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * directions[i], transform.right * directions[i], distance);
-            //Debug.DrawRay(transform.position + transform.right * directions[i], transform.right  * directions[i], Color.green, 45.0f);
-            if(hit.collider != null)
-            {
-                if(hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big")
-                {
-                    transform.Translate(-.0000000000001f * transform.right * directions[i] * 0.025f);
-                    if(hit.collider.tag == "Terrain" && mPlayerState == CharacterState.JUMPING)
-                    {
-
-                    }
-                    else if (hit.collider.tag == "Terrain" && mPlayerState == CharacterState.WALKING)
-                    {
-
-                    }
-                    else if(hit.collider.tag == "Terrain" && mPlayerState == CharacterState.IDLE)
-                    {
-                        //Debug.Log("Reset");
-                        _bMovementDisabled = false;
-                    }
-                }
-            }
-        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -363,6 +255,33 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Platform")
         {
             this.transform.parent = null;
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.transform != null)
+        {
+            if ((collision.transform.tag == "Terrain" || collision.transform.tag == "box_Big" || collision.transform.tag == "box_Small" || collision.transform.tag == "Platform"))
+            {
+                if (collision.transform.tag == "box_Small" || collision.transform.tag == "box_Big")
+                {
+                    //_bcancelJumpCarry = true;
+                }
+                else
+                {
+                    //_bcancelJumpCarry = false;
+                }
+                if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && IsGrounded())
+                {
+                    _bMovementDisabled = false;
+                    _bPlayerStateChanged = true;
+                    mPlayerState = CharacterState.WALKING;
+                }
+                else if (IsGrounded())
+                {
+                    mPlayerState = CharacterState.IDLE;
+                }
+            }
         }
     }
     private void energyCheck(int currentEnergy, int maxEnergy)
@@ -396,4 +315,113 @@ public class PlayerController : MonoBehaviour
     {
         //if 
     }
+    private bool IsGrounded()
+    {
+        float extraHeightText = .01f;
+        RaycastHit2D raycastHit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.down, playerCollider.bounds.extents.y + extraHeightText, ~playerLayerMask);
+        Color rayColor;
+        if (raycastHit.collider != null)
+        {
+            rayColor = Color.green;
+        }
+        else
+        {
+            rayColor = Color.red;
+        }
+        Debug.DrawRay(playerCollider.bounds.center, Vector2.down * (playerCollider.bounds.extents.y + extraHeightText));
+        //Debug.Log(raycastHit.collider);
+        return raycastHit.collider != null;
+    }
+    /*public void ChangeAnimator()
+{
+    RuntimeAnimatorController newAnimator = mIdleController;
+
+    if(mPlayerState == CharacterState.WALKING || mPlayerState == CharacterState.JUMPING)
+    {
+        newAnimator = mWalkingController;
+        if(_bIsGoingRight)
+        {
+            gameObject.GetComponent<SpriteRenderer>().flipX = false;
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer>().flipX = true;
+        }
+    }
+
+    gameObject.GetComponent<Animator>().runtimeAnimatorController = newAnimator;
+}*/
+    /*public void CheckWall()
+    {
+        List<float> directions = new List<float> { -.2375f, .2375f };
+
+        float distance = 0.005f;
+
+        for (int i = 0; i < directions.Count; i++)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * directions[i], transform.right * directions[i], distance);
+            //Debug.DrawRay(transform.position + transform.right * directions[i], transform.right  * directions[i], Color.green, 45.0f);
+            if (hit.collider != null)
+            {
+                if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big")
+                {
+                    transform.Translate(-.0000000000001f * transform.right * directions[i] * 0.025f);
+                    if (hit.collider.tag == "Terrain" && mPlayerState == CharacterState.JUMPING)
+                    {
+
+                    }
+                    else if (hit.collider.tag == "Terrain" && mPlayerState == CharacterState.WALKING)
+                    {
+
+                    }
+                    else if (hit.collider.tag == "Terrain" && mPlayerState == CharacterState.IDLE)
+                    {
+                        //Debug.Log("Reset");
+                        _bMovementDisabled = false;
+                    }
+                }
+            }
+        }
+    }*/
+    /*IEnumerator CheckGrounded()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        while (true)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position - Vector3.up * 1f, -Vector2.up, 0.05f);
+            if (hit.collider != null)
+            {
+                Debug.Log("Landed " + hit.collider.tag);
+                if (hit.transform.tag == "Terrain" || hit.transform.tag == "box_Big" || hit.transform.tag == "box_Small" || hit.transform.tag == "Platform")
+                {
+                    if (hit.transform.tag == "box_Small" || hit.transform.tag == "box_Big")
+                    {
+                        //_bcancelJumpCarry = true;
+                    }
+                    else
+                    {
+                        //_bcancelJumpCarry = false;
+                    }
+                    if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)))
+                    {
+                        _bMovementDisabled = false;
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.WALKING;
+                    }
+                    else
+                    {
+                        mPlayerState = CharacterState.IDLE;
+                    }
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(0.45f);
+
+        }
+
+        //ChangeAnimator();
+        yield return null;
+    }*/
+
 }

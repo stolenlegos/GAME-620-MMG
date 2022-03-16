@@ -220,10 +220,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e5009d6392a7143a072b07917c44a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  falling: 0
+  stacked: 0
+  detected: 0
   grabbed: 0
-  layerMask1:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &2608615221684223935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,4 +237,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colored: 0
+  hovered: 0
   material: {fileID: 2100000, guid: d93bbe5d0dd8ebe4593aa8dfff1475c9, type: 2}

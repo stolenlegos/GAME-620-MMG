@@ -19,7 +19,7 @@ public class EnergyManager : MonoBehaviour {
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                foreach (GameObject gameObject in EnergyEvents.objectsColored/*.ToArray()*/)
+                foreach (GameObject gameObject in EnergyEvents.objectsColored.ToArray())
                 {
                     EnergyEvents.ChangeColor(gameObject);
                 }

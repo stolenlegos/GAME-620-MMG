@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SaturationControl : MonoBehaviour {
   public bool colored;
-    private bool hovered;
+    public bool hovered;
     private bool swap;
     private PlayerObjectInteractions POI;
     [SerializeField]
@@ -114,9 +114,10 @@ public class SaturationControl : MonoBehaviour {
         {
             saturationLevel = 1;
         }
-        PlayerActions.ObjectDropped(this.gameObject);
-
-        POI._objectsNear.Remove(this.gameObject);
+        if (!hovered) {
+            PlayerActions.ObjectDropped(this.gameObject);
+            POI._objectsNear.Remove(this.gameObject);
+        }
     }
 
 
