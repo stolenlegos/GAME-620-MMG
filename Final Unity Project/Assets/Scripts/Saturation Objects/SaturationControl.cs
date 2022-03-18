@@ -104,7 +104,12 @@ public class SaturationControl : MonoBehaviour {
     {
         if (this.tag != "Spiral" || this.tag != "Examiner")
         {
-            POI._objectsNear.Add(this.gameObject);
+            if (POI._objectsNear.Contains(this.gameObject))
+            {
+                POI._objectsNear.Remove(this.gameObject);
+                POI._objectsNear.Add(this.gameObject);
+            }
+            POI._objectsToColor.Add(this.gameObject);
         }
     }
     private void OnMouseExit()
@@ -116,7 +121,7 @@ public class SaturationControl : MonoBehaviour {
         }
         if (!hovered) {
             PlayerActions.ObjectDropped(this.gameObject);
-            POI._objectsNear.Remove(this.gameObject);
+            POI._objectsToColor.Remove(this.gameObject);
         }
     }
 

@@ -109,6 +109,10 @@ public class AllowMovement : MonoBehaviour {
             stacked = false;
             falling = false;
             transform.parent = null;
+            if(this.gameObject.tag == "box_Big")
+            {
+                player.GetComponent<PlayerController>()._bPushingOrPulling = true;
+            }
             if (this.gameObject.tag == "box_Small")
             {
                 rb.isKinematic = true;
@@ -124,6 +128,10 @@ public class AllowMovement : MonoBehaviour {
             if(this.gameObject.tag == "box_Small")
             {
                 rb.isKinematic = false;
+            }
+            if (this.gameObject.tag == "box_Big")
+            {
+                player.GetComponent<PlayerController>()._bPushingOrPulling = false;
             }
             falling = true;
         }
@@ -229,5 +237,6 @@ public class AllowMovement : MonoBehaviour {
     private void OnMouseExit()
     {
         detected = false;
+        Debug.Log("MouseExit");
     }
 }

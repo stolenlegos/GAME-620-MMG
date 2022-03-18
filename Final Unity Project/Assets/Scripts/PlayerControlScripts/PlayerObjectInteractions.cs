@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerObjectInteractions : MonoBehaviour {
   [SerializeField]
   public List<GameObject> _objectsNear = new List<GameObject>();
+    public List<GameObject> _objectsToColor = new List<GameObject>();
     private PlayerController playerController;
 
     private void Awake()
@@ -13,8 +14,8 @@ public class PlayerObjectInteractions : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.F) && _objectsNear.Count != 0 && !Input.GetMouseButton(0)) {
-          EnergyEvents.ChangeColor(_objectsNear[_objectsNear.Count - 1]);
+        if (Input.GetKeyDown(KeyCode.F) && _objectsToColor.Count != 0 && !Input.GetMouseButton(0)) {
+          EnergyEvents.ChangeColor(_objectsToColor[_objectsToColor.Count - 1]);
         }
 
         if (Input.GetMouseButtonDown(0) && _objectsNear.Count != 0 && playerController.mPlayerState != CharacterState.JUMPING) {
@@ -31,7 +32,7 @@ public class PlayerObjectInteractions : MonoBehaviour {
         }
     }
 
-    /*void OnTriggerEnter2D (Collider2D other) {
+    void OnTriggerEnter2D (Collider2D other) {
         if (other.tag != "Spiral" || other.tag != "Examiner") {
             _objectsNear.Add(other.gameObject);
         }
@@ -43,6 +44,6 @@ public class PlayerObjectInteractions : MonoBehaviour {
     }
         _objectsNear.Remove(other.gameObject);
 
-    }*/
+    }
 
 }

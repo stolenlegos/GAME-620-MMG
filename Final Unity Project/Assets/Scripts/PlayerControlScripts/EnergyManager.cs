@@ -15,7 +15,7 @@ public class EnergyManager : MonoBehaviour {
 
     private void Update()
     {
-        if (currentEnergy == maxEnergy - 4)
+        if (currentEnergy != maxEnergy)
         {
             if (Input.GetKeyDown(KeyCode.R))
             {

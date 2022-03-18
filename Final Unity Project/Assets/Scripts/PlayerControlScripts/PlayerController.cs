@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private bool _bInputsDisabled = false;
     private bool _bMovementDisabled = false;
     private bool _bGrounded = true;
-    private bool _bPushingOrPulling = false;
+    public bool _bPushingOrPulling = false;
 
     //private bool _bPlayerInvincible = false;
     private bool _bPlayerCanExamine = false;
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
                                 _bIsGoingRight = false;
                             }
                     }
-                    else if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+                    else if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && !_bPushingOrPulling)
                     {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                             _bPlayerStateChanged = true;
@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour
                             transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
                             //StartCoroutine("CheckGrounded");
                         }
-                    if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+                    if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && !_bPushingOrPulling)
                     {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                             _bPlayerStateChanged = true;
@@ -184,7 +184,7 @@ public class PlayerController : MonoBehaviour
               _bMovementDisabled = true;
               _mCameraManager.PlayerExamineStart();
               Debug.Log("PlayerExamining");
-                if(Input.GetMouseButtonUp(1))
+                if(Input.GetMouseButtonUp(2))
                 {
                     while (_mCameraManager.zoomBackTimer > 0)
                     {
@@ -244,6 +244,7 @@ public class PlayerController : MonoBehaviour
         if(other.gameObject.tag == "Examiner")
         {
             _bPlayerCanExamine = true;
+            Debug.Log("ExamineReady");
         }
     }
     private void OnTriggerExit2D(Collider2D other)
@@ -290,7 +291,7 @@ public class PlayerController : MonoBehaviour
       {
           //Debug.Log("less fast");
           mSpeed = 3.0f * .75f;
-          mJumpStrength = 7.1f * .85f;
+          mJumpStrength = 7.1f * .80f;
       }
       else if (currentEnergy == (maxEnergy - 2))
       {
