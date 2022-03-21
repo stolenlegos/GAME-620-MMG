@@ -16,6 +16,7 @@ public class AllowMovement : MonoBehaviour {
     private Vector3 stackedBox;
     private Rigidbody2D rb;
     private Transform belowBox;
+    private BoxCollider2D boxCollider;
     [SerializeField]
   //private Rigidbody2D rb;
   //public LayerMask layerMask1;
@@ -229,6 +230,23 @@ public class AllowMovement : MonoBehaviour {
 
             }
         }
+    }
+    private bool IsGrounded()
+    {
+        float extraHeightText = .01f;
+        RaycastHit2D raycastHit = Physics2D.Raycast(boxCollider.bounds.center, Vector2.down, boxCollider.bounds.extents.y + extraHeightText);
+        Color rayColor;
+        if (raycastHit.collider != null)
+        {
+            rayColor = Color.green;
+        }
+        else
+        {
+            rayColor = Color.red;
+        }
+        Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraHeightText));
+        Debug.Log(raycastHit.collider);
+        return raycastHit.collider != null;
     }
     private void OnMouseOver()
     {

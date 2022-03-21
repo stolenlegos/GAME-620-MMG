@@ -27,6 +27,10 @@ public class EnergyManager : MonoBehaviour {
                 currentEnergy = maxEnergy;
             }
         }
+        if (currentEnergy > maxEnergy)
+        {
+            currentEnergy = maxEnergy;
+        }
     }
     private void CheckEnergy(GameObject obj) {
     objColored = obj.GetComponent<SaturationControl>().colored;
