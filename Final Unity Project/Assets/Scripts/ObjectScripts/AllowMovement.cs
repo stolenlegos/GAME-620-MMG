@@ -8,6 +8,7 @@ public class AllowMovement : MonoBehaviour {
     public bool falling;
     public bool stacked;
     public bool detected;
+    public bool onPlatform;
     private GameObject player;
     private GameObject boxHolder;
     public bool grabbed;
@@ -17,6 +18,7 @@ public class AllowMovement : MonoBehaviour {
     private Rigidbody2D rb;
     private Transform belowBox;
     private BoxCollider2D boxCollider;
+    private BoxCollider2D stackCollider;
     [SerializeField]
   //private Rigidbody2D rb;
   //public LayerMask layerMask1;
@@ -25,10 +27,12 @@ public class AllowMovement : MonoBehaviour {
     {
         player = GameObject.FindGameObjectWithTag("Player");
         boxHolder = GameObject.Find("BoxHolder");
+        stackCollider = this.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>();
         colored = false;
         falling = true;
         stacked = false;
         grabbable = false;
+        onPlatform = false;
         rb = gameObject.GetComponent<Rigidbody2D>();
         ShaderEvents.SaturationChange += BoolChange;
         PlayerActions.Grab += GrabObject;
@@ -117,6 +121,8 @@ public class AllowMovement : MonoBehaviour {
             if (this.gameObject.tag == "box_Small")
             {
                 rb.isKinematic = true;
+                stackCollider.enabled = false;
+                this.transform.position = boxHolder.transform.position;
             }
         }
   }
@@ -125,10 +131,11 @@ public class AllowMovement : MonoBehaviour {
   private void ReleaseObject (GameObject obj) {
     if (obj == this.gameObject) {
             grabbed = false;
-            Debug.Log("Ran");
+            //Debug.Log("Ran");
             if(this.gameObject.tag == "box_Small")
             {
                 rb.isKinematic = false;
+                stackCollider.enabled = true;
             }
             if (this.gameObject.tag == "box_Big")
             {
@@ -148,7 +155,7 @@ public class AllowMovement : MonoBehaviour {
     {
         if (collision != null)
         {
-            Debug.Log(collision.gameObject.tag);
+            //Debug.Log(collision.gameObject.tag);
             if (collision.collider.tag == "StackPoint" && !grabbed)
             {
                 falling = false;
@@ -231,6 +238,15 @@ public class AllowMovement : MonoBehaviour {
             }
         }
     }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "StackPoint" && !grabbed)
+        {
+            this.transform.parent = null;
+            stacked = false;
+            falling = true;
+        }
+    }
     private bool IsGrounded()
     {
         float extraHeightText = .01f;
@@ -244,8 +260,8 @@ public class AllowMovement : MonoBehaviour {
         {
             rayColor = Color.red;
         }
-        Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraHeightText));
-        Debug.Log(raycastHit.collider);
+        //Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraHeightText));
+        //Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
     }
     private void OnMouseOver()
@@ -255,6 +271,6 @@ public class AllowMovement : MonoBehaviour {
     private void OnMouseExit()
     {
         detected = false;
-        Debug.Log("MouseExit");
+        //Debug.Log("MouseExit");
     }
 }

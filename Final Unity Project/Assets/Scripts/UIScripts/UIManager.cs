@@ -30,6 +30,10 @@ public class UIManager : MonoBehaviour {
   private void ChangeEnergyLevels(int current, int max) {
     currentEnergy = current;
     maxEnergy = max;
+        if(currentEnergy > maxEnergy)
+        {
+            currentEnergy = maxEnergy;
+        }
     ChangeUI();
     ChangeSlider();
   }

@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnergyManager : MonoBehaviour {
   public int maxEnergy = 4;
   public int currentEnergy;
-  private bool objColored;
+    //public List<GameObject> objectsColoredList = new List<GameObject>();
+    private bool objColored;
 
 
   void Start() {
@@ -15,6 +16,7 @@ public class EnergyManager : MonoBehaviour {
 
     private void Update()
     {
+        //objectsColoredList = EnergyEvents.objectsColored;
         if (currentEnergy != maxEnergy)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -38,10 +40,12 @@ public class EnergyManager : MonoBehaviour {
     if (objColored) {
       ShaderEvents.ChangeColor(obj);
       currentEnergy += 1;
+            Debug.Log("EnergyAdded");
     } else if (!objColored && currentEnergy > 0) {
       ShaderEvents.ChangeColor(obj);
       currentEnergy -= 1;
-    }
+            Debug.Log("EnergyRemoved");
+        }
 
     EnergyEvents.EnergyChange(currentEnergy, maxEnergy);
   }

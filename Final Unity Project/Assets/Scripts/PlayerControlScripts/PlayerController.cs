@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.EXAMINE;
-                        Debug.Log("PlayerStateChangedExamine");
+                       // Debug.Log("PlayerStateChangedExamine");
                     }
                     else if (_bGrounded == false)
                     {
@@ -183,7 +183,7 @@ public class PlayerController : MonoBehaviour
               _mAnimatorComponent.SetBool("isGrounded_b", true);
               _bMovementDisabled = true;
               _mCameraManager.PlayerExamineStart();
-              Debug.Log("PlayerExamining");
+              //Debug.Log("PlayerExamining");
                 if(Input.GetMouseButtonUp(2))
                 {
                     while (_mCameraManager.zoomBackTimer > 0)
@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
                     _bPlayerStateChanged = true;
                     mPlayerState = CharacterState.IDLE;
                     _bMovementDisabled = false;
-                    Debug.Log("PlayerEndExamining");
+                    //Debug.Log("PlayerEndExamining");
                 }
             }
             if (_bIsGoingRight)
@@ -235,16 +235,20 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Platform")
         {
-            Debug.Log("Triggered");
+            //Debug.Log("Triggered");
             this.transform.parent = other.gameObject.transform;
         }
+        /*if ((other.gameObject.tag == "StackPoint") && other.gameObject.GetComponentInParent<AllowMovement>().onPlatform == true)
+        {
+            this.transform.parent = other.gameObject.transform;
+        }*/
     }
     private void OnTriggerStay2D(Collider2D other)
     {
         if(other.gameObject.tag == "Examiner")
         {
             _bPlayerCanExamine = true;
-            Debug.Log("ExamineReady");
+            //Debug.Log("ExamineReady");
         }
     }
     private void OnTriggerExit2D(Collider2D other)
@@ -257,6 +261,10 @@ public class PlayerController : MonoBehaviour
         {
             this.transform.parent = null;
         }
+        /*if ((other.gameObject.tag == "StackPoint") && other.gameObject.GetComponentInParent<AllowMovement>().onPlatform == true)
+        {
+            this.transform.parent = null;
+        }*/
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -264,10 +272,14 @@ public class PlayerController : MonoBehaviour
         {
             if ((collision.transform.tag == "Terrain" || collision.transform.tag == "box_Big" || collision.transform.tag == "box_Small" || collision.transform.tag == "Platform"))
             {
-                if (collision.transform.tag == "box_Small" || collision.transform.tag == "box_Big")
+                if (collision.collider.tag == "StackPoint")
+                {
+                    this.transform.parent = collision.transform;
+                }
+                /*if (collision.transform.tag == "box_Small" || collision.transform.tag == "box_Big")
                 {
                     //_bcancelJumpCarry = true;
-                }
+                }*/
                 else
                 {
                     //_bcancelJumpCarry = false;
@@ -283,6 +295,13 @@ public class PlayerController : MonoBehaviour
                     mPlayerState = CharacterState.IDLE;
                 }
             }
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.collider.tag == "StackPoint")
+        {
+            this.transform.parent = null;
         }
     }
     private void energyCheck(int currentEnergy, int maxEnergy)
@@ -301,7 +320,7 @@ public class PlayerController : MonoBehaviour
       }
       else if (currentEnergy == (maxEnergy - 3))
       {
-         //Debug.Log("the slowest of the fast");
+          //Debug.Log("the slowest of the fast");
           mSpeed = 3.0f * .25f;
           mJumpStrength = 7.1f * .65f;
       }

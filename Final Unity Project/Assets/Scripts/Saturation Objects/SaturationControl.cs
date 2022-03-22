@@ -72,7 +72,7 @@ public class SaturationControl : MonoBehaviour {
             }
             if (!colored)
             {
-                //EnergyEvents.objectsColored.Remove(this.gameObject);
+                EnergyEvents.objectsColored.Remove(this.gameObject);
             }
             //Debug.Log("Ran");
       }
