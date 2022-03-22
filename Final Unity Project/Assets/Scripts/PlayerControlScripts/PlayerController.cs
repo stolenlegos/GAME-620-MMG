@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
                         mPlayerState = CharacterState.EXAMINE;
                        // Debug.Log("PlayerStateChangedExamine");
                     }
-                    else if (_bGrounded == false)
+                    else if (!_bGrounded)
                     {
 
                     }
@@ -238,10 +238,6 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("Triggered");
             this.transform.parent = other.gameObject.transform;
         }
-        /*if ((other.gameObject.tag == "StackPoint") && other.gameObject.GetComponentInParent<AllowMovement>().onPlatform == true)
-        {
-            this.transform.parent = other.gameObject.transform;
-        }*/
     }
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -261,10 +257,6 @@ public class PlayerController : MonoBehaviour
         {
             this.transform.parent = null;
         }
-        /*if ((other.gameObject.tag == "StackPoint") && other.gameObject.GetComponentInParent<AllowMovement>().onPlatform == true)
-        {
-            this.transform.parent = null;
-        }*/
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -276,10 +268,6 @@ public class PlayerController : MonoBehaviour
                 {
                     this.transform.parent = collision.transform;
                 }
-                /*if (collision.transform.tag == "box_Small" || collision.transform.tag == "box_Big")
-                {
-                    //_bcancelJumpCarry = true;
-                }*/
                 else
                 {
                     //_bcancelJumpCarry = false;
@@ -333,7 +321,7 @@ public class PlayerController : MonoBehaviour
     }
     private void energyPulse()
     {
-        //if 
+         
     }
     private bool IsGrounded()
     {
