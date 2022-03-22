@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class AllowMovement : MonoBehaviour {
 
@@ -19,6 +20,7 @@ public class AllowMovement : MonoBehaviour {
     private Transform belowBox;
     private BoxCollider2D boxCollider;
     private BoxCollider2D stackCollider;
+    public List<GameObject> groundedObject = new List<GameObject>();
     [SerializeField]
   //private Rigidbody2D rb;
   //public LayerMask layerMask1;
@@ -27,6 +29,7 @@ public class AllowMovement : MonoBehaviour {
     {
         player = GameObject.FindGameObjectWithTag("Player");
         boxHolder = GameObject.Find("BoxHolder");
+        boxCollider = transform.GetComponent<BoxCollider2D>();
         stackCollider = this.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>();
         colored = false;
         falling = true;
@@ -94,9 +97,11 @@ public class AllowMovement : MonoBehaviour {
         }
         else if (falling && !grabbed)
         {
+            IsGrounded();
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
+        //IsGrounded();
 
     }
 
@@ -110,6 +115,7 @@ public class AllowMovement : MonoBehaviour {
 
     private void GrabObject (GameObject obj) {
     if (obj == this.gameObject && colored && detected && grabbable) {
+            groundedObject.Clear();
             grabbed = true;
             stacked = false;
             falling = false;
@@ -156,7 +162,7 @@ public class AllowMovement : MonoBehaviour {
         if (collision != null)
         {
             //Debug.Log(collision.gameObject.tag);
-            if (collision.collider.tag == "StackPoint" && !grabbed)
+            if (collision.collider.tag == "StackPoint" && !grabbed && IsGrounded())
             {
                 falling = false;
                 stacked = true;
@@ -166,18 +172,21 @@ public class AllowMovement : MonoBehaviour {
                 stackPosition = stackedBox - this.transform.position;
                 this.transform.position = stackedBox - stackPosition;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                Debug.Log("StackPoint Collision");
             }
-            else if (collision.collider.tag == "Platform" && !grabbed)
+            else if (collision.collider.tag == "Platform" && !grabbed && IsGrounded())
             {
                 falling = false;
                 this.transform.parent = null;
                 this.transform.parent = collision.transform;
+                Debug.Log("Platform Collision");
             }
-            else if (collision.collider.tag == "Terrain" && !grabbed)
+            else if (collision.collider.tag == "Terrain" && !grabbed && IsGrounded())
             {
                 falling = false;
                 this.transform.parent = null;
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                Debug.Log("Terrain Collision");
             }
         }
         else{
@@ -188,7 +197,7 @@ public class AllowMovement : MonoBehaviour {
     {
         if (collision != null)
         {
-            if (collision.collider.tag == "StackPoint" && !grabbed)
+            if (collision.collider.tag == "StackPoint" && !grabbed && IsGrounded())
             {
                 falling = false;
                 stacked = true;
@@ -197,12 +206,14 @@ public class AllowMovement : MonoBehaviour {
                 this.transform.parent = belowBox;
                 rb.constraints = RigidbodyConstraints2D.None;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                Debug.Log("StackPoint CollisionStay");
             }
-            if (collision.collider.tag == "Terrain" && !grabbed)
+            if (collision.collider.tag == "Terrain" && !grabbed && IsGrounded())
             {
                 falling = false;
                 this.transform.parent = null;
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                Debug.Log("Terrain CollisionStay");
             }
         }
         else
@@ -249,20 +260,39 @@ public class AllowMovement : MonoBehaviour {
     }
     private bool IsGrounded()
     {
-        float extraHeightText = .01f;
-        RaycastHit2D raycastHit = Physics2D.Raycast(boxCollider.bounds.center, Vector2.down, boxCollider.bounds.extents.y + extraHeightText);
+        float extraHeightText = .05f;
+        RaycastHit2D[] raycastHits;
+        raycastHits = Physics2D.RaycastAll(boxCollider.bounds.center, Vector2.down, boxCollider.bounds.extents.y + extraHeightText);
         Color rayColor;
-        if (raycastHit.collider != null)
+        //Array.Sort(raycastHits, (RaycastHit2D))
+        for (int i = 0; i < raycastHits.Length; i++)
         {
-            rayColor = Color.green;
+            RaycastHit2D hit = raycastHits[i];
+            if (hit.collider.gameObject != this.gameObject)
+            {
+                groundedObject.Add(hit.collider.gameObject);
+                rayColor = Color.green;
+            }
+            else
+            {
+                rayColor = Color.red;
+            }
+            /*if (raycastHits[1] != false)
+            {
+                rayColor = Color.green;
+            }*/
+        }
+        Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraHeightText));
+        //Debug.Log(raycastHits[1].collider.tag);
+        //Debug.Log(raycastHits[0].collider.tag);
+        if (groundedObject.Count > 1)
+        {
+            return true;
         }
         else
         {
-            rayColor = Color.red;
+            return false;
         }
-        //Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraHeightText));
-        //Debug.Log(raycastHit.collider);
-        return raycastHit.collider != null;
     }
     private void OnMouseOver()
     {
