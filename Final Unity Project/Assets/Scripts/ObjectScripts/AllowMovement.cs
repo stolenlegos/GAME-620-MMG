@@ -97,7 +97,7 @@ public class AllowMovement : MonoBehaviour {
         }
         else if (falling && !grabbed)
         {
-            IsGrounded();
+            //IsGrounded();
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
@@ -172,21 +172,21 @@ public class AllowMovement : MonoBehaviour {
                 stackPosition = stackedBox - this.transform.position;
                 this.transform.position = stackedBox - stackPosition;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                Debug.Log("StackPoint Collision");
+                //Debug.Log("StackPoint Collision");
             }
             else if (collision.collider.tag == "Platform" && !grabbed && IsGrounded())
             {
                 falling = false;
                 this.transform.parent = null;
                 this.transform.parent = collision.transform;
-                Debug.Log("Platform Collision");
+                //Debug.Log("Platform Collision");
             }
             else if (collision.collider.tag == "Terrain" && !grabbed && IsGrounded())
             {
                 falling = false;
                 this.transform.parent = null;
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
-                Debug.Log("Terrain Collision");
+                //Debug.Log("Terrain Collision");
             }
         }
         else{
@@ -206,14 +206,14 @@ public class AllowMovement : MonoBehaviour {
                 this.transform.parent = belowBox;
                 rb.constraints = RigidbodyConstraints2D.None;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                Debug.Log("StackPoint CollisionStay");
+                //Debug.Log("StackPoint CollisionStay");
             }
             if (collision.collider.tag == "Terrain" && !grabbed && IsGrounded())
             {
                 falling = false;
                 this.transform.parent = null;
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
-                Debug.Log("Terrain CollisionStay");
+                //Debug.Log("Terrain CollisionStay");
             }
         }
         else
@@ -242,6 +242,7 @@ public class AllowMovement : MonoBehaviour {
             if (collision.tag == "Player")
             {
                 grabbable = false;
+                ReleaseObject(this.gameObject);
             }
             else
             {
@@ -264,14 +265,16 @@ public class AllowMovement : MonoBehaviour {
         RaycastHit2D[] raycastHits;
         raycastHits = Physics2D.RaycastAll(boxCollider.bounds.center, Vector2.down, boxCollider.bounds.extents.y + extraHeightText);
         Color rayColor;
-        //Array.Sort(raycastHits, (RaycastHit2D))
         for (int i = 0; i < raycastHits.Length; i++)
         {
             RaycastHit2D hit = raycastHits[i];
             if (hit.collider.gameObject != this.gameObject)
             {
-                groundedObject.Add(hit.collider.gameObject);
-                rayColor = Color.green;
+                if (groundedObject.Count != 1)
+                {
+                    groundedObject.Add(hit.collider.gameObject);
+                    rayColor = Color.green;
+                }
             }
             else
             {
@@ -285,7 +288,7 @@ public class AllowMovement : MonoBehaviour {
         Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraHeightText));
         //Debug.Log(raycastHits[1].collider.tag);
         //Debug.Log(raycastHits[0].collider.tag);
-        if (groundedObject.Count > 1)
+        if (groundedObject.Count == 1)
         {
             return true;
         }

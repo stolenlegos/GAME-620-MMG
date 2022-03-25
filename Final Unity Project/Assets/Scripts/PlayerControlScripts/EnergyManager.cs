@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnergyManager : MonoBehaviour {
   public int maxEnergy = 4;
   public int currentEnergy;
+    private float startTime = 0f;
+    private float holdTime = 3.0f;
     //public List<GameObject> objectsColoredList = new List<GameObject>();
     private bool objColored;
 
@@ -18,16 +20,28 @@ public class EnergyManager : MonoBehaviour {
     {
         //objectsColoredList = EnergyEvents.objectsColored;
         if (currentEnergy != maxEnergy)
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                foreach (GameObject gameObject in EnergyEvents.objectsColored.ToArray())
+        {                
+                Debug.Log("Phase1");
+                if (Input.GetKey(KeyCode.F))
                 {
-                    EnergyEvents.ChangeColor(gameObject);
-                }
-                EnergyEvents.objectsColored.Clear();
-                currentEnergy = maxEnergy;
-            }
+                    Debug.Log("Phase2");
+                    startTime += Time.deltaTime;
+                    Debug.Log(startTime);
+                    if (startTime > holdTime)
+                    {
+                        Debug.Log("Phase3");
+                        foreach (GameObject gameObject in EnergyEvents.objectsColored.ToArray())
+                        {
+                            EnergyEvents.ChangeColor(gameObject);
+                        }
+                        EnergyEvents.objectsColored.Clear();
+                        currentEnergy = maxEnergy;
+                    }
+                }           
+        }
+        else if(startTime > 0 && currentEnergy == maxEnergy)
+        {
+            startTime = 0;
         }
         if (currentEnergy > maxEnergy)
         {

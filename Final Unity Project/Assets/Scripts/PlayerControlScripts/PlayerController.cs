@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public enum CharacterState
 {
@@ -44,6 +45,7 @@ public class PlayerController : MonoBehaviour
     private SoundManager _mSoundManager;
     private CameraManager _mCameraManager;
     private EnergyManager _mEnergyManager;
+    private SaveManager _mSaveManager;
     private Rigidbody2D rb2D;
     private CapsuleCollider2D playerCollider;
     private GameObject boxMovement;
@@ -61,6 +63,8 @@ public class PlayerController : MonoBehaviour
 
         _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         _mCameraManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraManager>();
+        _mSaveManager = GameObject.FindGameObjectWithTag("SM").GetComponent<SaveManager>();
+        transform.position = _mSaveManager.lastCheckpointPos;
         
         //_mEnergyManager = GetComponent<EnergyManager>();
 
@@ -87,6 +91,10 @@ public class PlayerController : MonoBehaviour
         else
         {
             _bGrounded = false;
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         //Debug.Log ("CollisionCount: " + playerCollisionCount);
         if (!_bInputsDisabled)
@@ -318,10 +326,6 @@ public class PlayerController : MonoBehaviour
           mSpeed = 3.0f;
           mJumpStrength = 7.1f;
       }
-    }
-    private void energyPulse()
-    {
-         
     }
     private bool IsGrounded()
     {

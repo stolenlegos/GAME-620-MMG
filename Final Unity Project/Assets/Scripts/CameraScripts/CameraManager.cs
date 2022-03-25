@@ -12,10 +12,18 @@ public class CameraManager : MonoBehaviour
     public int zoomBackTimer;
     private float smooth = 2;
     private bool _followPlayer = true;
+    public GameObject[] smallBoxes;
+    public GameObject[] bigBoxes;
+    public GameObject[] buttons;
+    public GameObject[] platforms;
     // Start is called before the first frame update
     void Start()
     {
         cam = GetComponent<Camera> ();
+        smallBoxes = GameObject.FindGameObjectsWithTag("box_Small");
+        bigBoxes = GameObject.FindGameObjectsWithTag("box_Big");
+        buttons = GameObject.FindGameObjectsWithTag("Button");
+        platforms = GameObject.FindGameObjectsWithTag("Platform");
     }
     // Update is called once per frame
     void Update()
@@ -44,6 +52,22 @@ public class CameraManager : MonoBehaviour
             zoomBackTimer = 550;
             GetComponent<Camera>().fieldOfView = Mathf.Lerp(GetComponent<Camera>().fieldOfView, normalview * 3, Time.deltaTime * smooth);
             transform.position = Vector3.Lerp(transform.position, new Vector3(player.position.x + offset.x + 10, player.position.y + offset.y + 5, offset.z), Time.deltaTime * smooth);
+            foreach(GameObject gameObject in buttons)
+            {
+                gameObject.GetComponent<SaturationControl>().Pulse();
+            }
+            foreach (GameObject gameObject in bigBoxes)
+            {
+                gameObject.GetComponent<SaturationControl>().Pulse();
+            }
+            foreach (GameObject gameObject in smallBoxes)
+            {
+                gameObject.GetComponent<SaturationControl>().Pulse();
+            }
+            foreach (GameObject gameObject in platforms)
+            {
+                gameObject.GetComponent<SaturationControl>().Pulse();
+            }
         }
         else if (_followPlayer)
         {

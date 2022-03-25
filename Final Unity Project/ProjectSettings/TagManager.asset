@@ -13,6 +13,9 @@ TagManager:
   - Spiral
   - StackPoint
   - Platform
+  - Button
+  - Checkpoint
+  - SM
   layers:
   - Default
   - TransparentFX

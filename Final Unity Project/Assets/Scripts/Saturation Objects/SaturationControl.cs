@@ -124,6 +124,25 @@ public class SaturationControl : MonoBehaviour {
             POI._objectsToColor.Remove(this.gameObject);
         }
     }
+    public void Pulse()
+    {
+        if (saturationLevel > 0 && !swap)
+        {
+            IncreaseSat2();
+            if (saturationLevel <= 0f)
+            {
+                swap = true;
+            }
+        }
+        else if (saturationLevel < 1 && swap)
+        {
+            ReduceSat2();
+            if (saturationLevel >= 1f)
+            {
+                swap = false;
+            }
+        }
+    }
 
 
 }
