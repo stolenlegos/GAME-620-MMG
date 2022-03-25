@@ -23,7 +23,7 @@ public class Checkpoints : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Checkpoint!");
-            sm.lastCheckpointPos = transform.position;
+            sm.SavePositions();
         }
     }
 }

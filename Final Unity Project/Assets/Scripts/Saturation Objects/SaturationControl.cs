@@ -5,6 +5,7 @@ using UnityEngine;
 public class SaturationControl : MonoBehaviour {
   public bool colored;
     public bool hovered;
+    public Vector3 savedPosition;
     private bool swap;
     private PlayerObjectInteractions POI;
     [SerializeField]
@@ -142,6 +143,14 @@ public class SaturationControl : MonoBehaviour {
                 swap = false;
             }
         }
+    }
+    public void SaveCurrentState()
+    {
+        savedPosition = this.transform.position;
+    }
+    public void ResetState()
+    {
+        this.transform.position = savedPosition;
     }
 
 

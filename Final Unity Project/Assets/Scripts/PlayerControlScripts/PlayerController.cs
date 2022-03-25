@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
     private float moveVertical;
     public Vector3 previousPos;
     public Vector3 amountMoved;
+    public Vector3 savedPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +65,6 @@ public class PlayerController : MonoBehaviour
         _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         _mCameraManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraManager>();
         _mSaveManager = GameObject.FindGameObjectWithTag("SM").GetComponent<SaveManager>();
-        transform.position = _mSaveManager.lastCheckpointPos;
         
         //_mEnergyManager = GetComponent<EnergyManager>();
 
@@ -92,19 +92,16 @@ public class PlayerController : MonoBehaviour
         {
             _bGrounded = false;
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
         //Debug.Log ("CollisionCount: " + playerCollisionCount);
         if (!_bInputsDisabled)
         {
             _bPlayerStateChanged = false;
             // check state changes
+            if (Input.GetKeyDown(KeyCode.R)){
+                _mSaveManager.ResetPositions();
+            } 
             if (!_bMovementDisabled)
             {
-
-
                 if (mPlayerState == CharacterState.IDLE)
                 {
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
@@ -343,6 +340,14 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(playerCollider.bounds.center, Vector2.down * (playerCollider.bounds.extents.y + extraHeightText));
         //Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
+    }
+    public void SaveCurrentState()
+    {
+        savedPosition = this.transform.position;
+    }
+    public void ResetState()
+    {
+        this.transform.position = savedPosition;
     }
     /*public void ChangeAnimator()
 {

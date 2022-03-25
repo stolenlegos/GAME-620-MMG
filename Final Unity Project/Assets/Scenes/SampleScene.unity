@@ -427,23 +427,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 119930442}
   m_CullTransparentMesh: 1
---- !u!1 &128656799 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1565468586162125593, guid: 43bd51297db742f4d9ee24861dfabb1f, type: 3}
-  m_PrefabInstance: {fileID: 1897016925124898670}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &128656800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128656799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4df779473f8c6344580556a882cd0f3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &213623260
 GameObject:
   m_ObjectHideFlags: 0
@@ -2548,6 +2531,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colored: 0
   hovered: 0
+  savedPosition: {x: 0, y: 0, z: 0}
   material: {fileID: 2100000, guid: b5000be614d817545ae3b106c8e68afb, type: 2}
 --- !u!50 &872093009
 Rigidbody2D:
@@ -10986,7 +10970,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f79e7988db43240954e3a5ec5846d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastCheckpointPos: {x: -11.4, y: -14.21}
+  smallBoxes: []
+  bigBoxes: []
+  buttons: []
+  platforms: []
+  player: {fileID: 0}
 --- !u!1001 &1652511927
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11264,6 +11252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colored: 0
   hovered: 0
+  savedPosition: {x: 0, y: 0, z: 0}
   material: {fileID: 2100000, guid: dd252e7981abbc24183ef2321668a001, type: 2}
 --- !u!61 &1742145420
 BoxCollider2D:
