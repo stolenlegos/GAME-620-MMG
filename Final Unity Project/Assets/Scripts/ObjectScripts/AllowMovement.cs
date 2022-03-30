@@ -5,15 +5,27 @@ using System;
 
 public class AllowMovement : MonoBehaviour {
 
+    public LayerMask spirals;
+    // States
     private bool colored;
     public bool falling;
     public bool stacked;
-    public bool detected;
-    public bool onPlatform;
-    private GameObject player;
-    private GameObject boxHolder;
+    private bool detected;
+    private bool onPlatform;
     public bool grabbed;
     private bool grabbable;
+
+    //StatesToSave
+    private bool savedColored;
+    private bool savedFalling;
+    private bool savedStacked;
+    private bool savedDetected;
+    private bool savedOnPlatform;
+    private bool savedGrabbed;
+    private bool savedGrabbable;
+
+    private GameObject player;
+    private GameObject boxHolder;
     private Vector3 stackPosition;
     private Vector3 stackedBox;
     private Rigidbody2D rb;
@@ -21,6 +33,8 @@ public class AllowMovement : MonoBehaviour {
     private BoxCollider2D boxCollider;
     private BoxCollider2D stackCollider;
     public List<GameObject> groundedObject = new List<GameObject>();
+    public List<GameObject> wallObjectsRight = new List<GameObject>();
+    public List<GameObject> wallObjectsLeft = new List<GameObject>();
     [SerializeField]
   //private Rigidbody2D rb;
   //public LayerMask layerMask1;
@@ -65,31 +79,40 @@ public class AllowMovement : MonoBehaviour {
         }
         else if (grabbed == true)
         {
+            
             if (this.gameObject.tag == "box_Small")
             {
                 this.transform.position = boxHolder.transform.position;
             }
             else if(this.gameObject.tag == "box_Big")
             {
-                rb.constraints = RigidbodyConstraints2D.None;
-                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                //rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 if (player.transform.position.y <= this.gameObject.transform.position.y)
                 {
-                    if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x < this.gameObject.transform.position.x)
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x < this.gameObject.transform.position.x && !WallCheckLeft())
                     {
+                        Debug.Log("Running1");
                         this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                        wallObjectsRight.Clear();
                     }
-                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x > this.gameObject.transform.position.x)
+                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x > this.gameObject.transform.position.x && !WallCheckRight())
                     {
+                        Debug.Log("Running2");
                         this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                        wallObjectsLeft.Clear();
                     }
-                    if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x < this.gameObject.transform.position.x)
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x < this.gameObject.transform.position.x && !WallCheckRight())
                     {
+                        Debug.Log("Running3");
                         this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                        wallObjectsLeft.Clear();
                     }
-                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x > this.gameObject.transform.position.x)
+                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x > this.gameObject.transform.position.x && !WallCheckLeft())
                     {
+                        Debug.Log("Running4");
                         this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
+                        wallObjectsRight.Clear();
                     }
                 }
                 
@@ -97,11 +120,9 @@ public class AllowMovement : MonoBehaviour {
         }
         else if (falling && !grabbed)
         {
-            //IsGrounded();
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
-        //IsGrounded();
 
     }
 
@@ -116,6 +137,8 @@ public class AllowMovement : MonoBehaviour {
     private void GrabObject (GameObject obj) {
     if (obj == this.gameObject && colored && detected && grabbable) {
             groundedObject.Clear();
+            wallObjectsRight.Clear();
+            wallObjectsLeft.Clear();
             grabbed = true;
             stacked = false;
             falling = false;
@@ -137,14 +160,11 @@ public class AllowMovement : MonoBehaviour {
   private void ReleaseObject (GameObject obj) {
     if (obj == this.gameObject) {
             grabbed = false;
-            //Debug.Log("Ran");
-            if(this.gameObject.tag == "box_Small")
-            {
+            if(this.gameObject.tag == "box_Small"){
                 rb.isKinematic = false;
                 stackCollider.enabled = true;
             }
-            if (this.gameObject.tag == "box_Big")
-            {
+            if (this.gameObject.tag == "box_Big"){
                 player.GetComponent<PlayerController>()._bPushingOrPulling = false;
             }
             falling = true;
@@ -263,7 +283,7 @@ public class AllowMovement : MonoBehaviour {
     {
         float extraHeightText = .05f;
         RaycastHit2D[] raycastHits;
-        raycastHits = Physics2D.RaycastAll(boxCollider.bounds.center, Vector2.down, boxCollider.bounds.extents.y + extraHeightText);
+        raycastHits = Physics2D.RaycastAll(boxCollider.bounds.center, Vector2.down, boxCollider.bounds.extents.y + extraHeightText, ~spirals);
         Color rayColor;
         for (int i = 0; i < raycastHits.Length; i++)
         {
@@ -297,6 +317,57 @@ public class AllowMovement : MonoBehaviour {
             return false;
         }
     }
+    private bool WallCheckRight()
+    {
+        float extraHeightText = .05f;
+        RaycastHit2D[] raycastHits;
+        raycastHits = Physics2D.RaycastAll(boxCollider.bounds.center, Vector2.right, boxCollider.bounds.extents.y + extraHeightText, ~spirals);
+        Color rayColor;
+        for (int i = 0; i < raycastHits.Length; i++) {
+            RaycastHit2D hit = raycastHits[i];
+            if (hit.collider.gameObject != this.gameObject) {
+                if (wallObjectsRight.Count != 1) {
+                    if(hit.collider.gameObject.tag != "Player") {
+                        wallObjectsRight.Add(hit.collider.gameObject);
+                        rayColor = Color.green;
+                    }
+                }
+            }
+            else
+            {
+                rayColor = Color.red;
+            }
+        }
+        Debug.DrawRay(boxCollider.bounds.center, Vector2.right * (boxCollider.bounds.extents.y + extraHeightText));
+        if (wallObjectsRight.Count == 1) {
+            return true;
+        }
+        else { return false; }
+    }
+    private bool WallCheckLeft()
+    {
+        float extraHeightText = .05f;
+        RaycastHit2D[] raycastHits;
+        raycastHits = Physics2D.RaycastAll(boxCollider.bounds.center, Vector2.left, boxCollider.bounds.extents.y + extraHeightText, ~spirals);
+        Color rayColor;
+        for (int i = 0; i < raycastHits.Length; i++){
+            RaycastHit2D hit = raycastHits[i];
+            if (hit.collider.gameObject != this.gameObject){
+                if (wallObjectsLeft.Count != 1){
+                    if (hit.collider.gameObject.tag != "Player"){
+                        wallObjectsLeft.Add(hit.collider.gameObject);
+                        rayColor = Color.green;
+                    }
+                }
+            }
+            else{ rayColor = Color.red; }
+        }
+        Debug.DrawRay(boxCollider.bounds.center, Vector2.left * (boxCollider.bounds.extents.y + extraHeightText));
+        if (wallObjectsLeft.Count == 1) {
+            return true;
+        }
+        else { return false; }
+    }
     private void OnMouseOver()
     {
         detected = true;
@@ -304,6 +375,25 @@ public class AllowMovement : MonoBehaviour {
     private void OnMouseExit()
     {
         detected = false;
-        //Debug.Log("MouseExit");
+    }
+    public void SaveCurrentState()
+    {
+        savedColored = this.colored;
+        savedFalling = this.falling;
+        savedStacked = this.stacked;
+        savedDetected = this.detected;
+        savedOnPlatform = this.onPlatform;
+        savedGrabbed = this.grabbed;
+        savedGrabbable = this.grabbable;
+    }
+    public void ResetState()
+    {
+        this.colored = savedColored;
+        this.falling = savedFalling;
+        this.stacked = savedStacked;
+        this.detected = savedDetected;
+        this.onPlatform = savedOnPlatform;
+        this.grabbed = savedGrabbed;
+        this.grabbable = savedGrabbable;
     }
 }

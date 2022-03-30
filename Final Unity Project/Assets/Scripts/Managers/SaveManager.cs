@@ -10,6 +10,7 @@ public class SaveManager : MonoBehaviour
     public GameObject[] buttons;
     public GameObject[] platforms;
     public GameObject player;
+    public GameObject _mUIManager;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class SaveManager : MonoBehaviour
         buttons = GameObject.FindGameObjectsWithTag("Button");
         platforms = GameObject.FindGameObjectsWithTag("Platform");
         player = GameObject.FindGameObjectWithTag("Player");
+        _mUIManager = GameObject.FindGameObjectWithTag("UIManager");
     }
 
     // Update is called once per frame
@@ -44,17 +46,22 @@ public class SaveManager : MonoBehaviour
         foreach (GameObject gameObject in bigBoxes)
         {
             gameObject.GetComponent<SaturationControl>().SaveCurrentState();
+            gameObject.GetComponent<AllowMovement>().SaveCurrentState();
         }
         foreach (GameObject gameObject in smallBoxes)
         {
             gameObject.GetComponent<SaturationControl>().SaveCurrentState();
+            gameObject.GetComponent<AllowMovement>().SaveCurrentState();
         }
         foreach (GameObject gameObject in platforms)
         {
             gameObject.GetComponent<SaturationControl>().SaveCurrentState();
+            gameObject.GetComponent<PlatformMovement>().SaveCurrentState();
         }
         player.GetComponent<PlayerController>().SaveCurrentState();
-        
+        player.GetComponent<EnergyManager>().SaveCurrentState();
+        _mUIManager.GetComponent<UIManager>().SaveCurrentState();
+
     }
     public void ResetPositions()
     {
@@ -65,15 +72,20 @@ public class SaveManager : MonoBehaviour
         foreach (GameObject gameObject in bigBoxes)
         {
             gameObject.GetComponent<SaturationControl>().ResetState();
+            gameObject.GetComponent<AllowMovement>().ResetState();
         }
         foreach (GameObject gameObject in smallBoxes)
         {
             gameObject.GetComponent<SaturationControl>().ResetState();
+            gameObject.GetComponent<AllowMovement>().ResetState();
         }
         foreach (GameObject gameObject in platforms)
         {
             gameObject.GetComponent<SaturationControl>().ResetState();
+            gameObject.GetComponent<PlatformMovement>().ResetState();
         }
         player.GetComponent<PlayerController>().ResetState();
+        player.GetComponent<EnergyManager>().ResetState();
+        _mUIManager.GetComponent<UIManager>().ResetState();
     }
 }

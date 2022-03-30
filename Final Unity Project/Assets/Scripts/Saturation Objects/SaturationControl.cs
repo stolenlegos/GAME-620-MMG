@@ -6,6 +6,7 @@ public class SaturationControl : MonoBehaviour {
   public bool colored;
     public bool hovered;
     public Vector3 savedPosition;
+    public bool savedColorState;
     private bool swap;
     private PlayerObjectInteractions POI;
     [SerializeField]
@@ -45,19 +46,15 @@ public class SaturationControl : MonoBehaviour {
       }
     }
 
-    private void ReduceSat2()
-    {
-        if (saturationLevel < 1)
-        {
+    private void ReduceSat2(){
+        if (saturationLevel < 1){
             saturationLevel += 0.8f * Time.deltaTime;
         }
     }
 
 
-    private void IncreaseSat2()
-    {
-        if (saturationLevel > 0)
-        {
+    private void IncreaseSat2(){
+        if (saturationLevel > 0){
             saturationLevel -= 0.8f * Time.deltaTime;
         }
     }
@@ -66,58 +63,46 @@ public class SaturationControl : MonoBehaviour {
     private void BoolChange (GameObject obj) {
       if (obj == this.gameObject) {
         colored = !colored;
-            if (colored)
-            {
+            if (colored){
                 EnergyEvents.objectsColored.Add(this.gameObject);
                 //Debug.Log(EnergyEvents.objectsColored);
             }
-            if (!colored)
-            {
+            if (!colored){
                 EnergyEvents.objectsColored.Remove(this.gameObject);
             }
             //Debug.Log("Ran");
       }
     }
-    private void OnMouseOver()
-    {
+    private void OnMouseOver(){
         hovered = true;
-        if (!colored && hovered)
-        {
-            if (saturationLevel > 0 && !swap)
-            {
+        if (!colored && hovered){
+            if (saturationLevel > 0 && !swap){
                 IncreaseSat2();
-                if (saturationLevel <= 0f)
-                {
+                if (saturationLevel <= 0f){
                     swap = true;
                 }
             }
-            else if (saturationLevel < 1 && swap)
-            {
+            else if (saturationLevel < 1 && swap){
                 ReduceSat2();
-                if (saturationLevel >= 1f)
-                {
+                if (saturationLevel >= 1f){
                     swap = false;
                 }
             }
         }
     }
-    private void OnMouseEnter()
-    {
-        if (this.tag != "Spiral" || this.tag != "Examiner")
-        {
-            if (POI._objectsNear.Contains(this.gameObject))
-            {
+    private void OnMouseEnter(){
+        swap = false;
+        if (this.tag != "Spiral" || this.tag != "Examiner"){
+            if (POI._objectsNear.Contains(this.gameObject)){
                 POI._objectsNear.Remove(this.gameObject);
                 POI._objectsNear.Add(this.gameObject);
             }
             POI._objectsToColor.Add(this.gameObject);
         }
     }
-    private void OnMouseExit()
-    {
+    private void OnMouseExit(){
         hovered = false;
-        if (!colored)
-        {
+        if (!colored){
             saturationLevel = 1;
         }
         if (!hovered) {
@@ -125,33 +110,26 @@ public class SaturationControl : MonoBehaviour {
             POI._objectsToColor.Remove(this.gameObject);
         }
     }
-    public void Pulse()
-    {
-        if (saturationLevel > 0 && !swap)
-        {
+    public void Pulse(){
+        if (saturationLevel > 0 && !swap){
             IncreaseSat2();
-            if (saturationLevel <= 0f)
-            {
+            if (saturationLevel <= 0f){
                 swap = true;
             }
         }
-        else if (saturationLevel < 1 && swap)
-        {
+        else if (saturationLevel < 1 && swap){
             ReduceSat2();
-            if (saturationLevel >= 1f)
-            {
+            if (saturationLevel >= 1f){
                 swap = false;
             }
         }
     }
-    public void SaveCurrentState()
-    {
+    public void SaveCurrentState(){
         savedPosition = this.transform.position;
+        savedColorState = this.colored;
     }
-    public void ResetState()
-    {
+    public void ResetState(){
         this.transform.position = savedPosition;
+        this.colored = savedColorState;
     }
-
-
 }

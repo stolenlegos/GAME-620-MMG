@@ -8,6 +8,7 @@ public class PlatformMovement : MonoBehaviour
     public float speed;
     public Transform startPos;
     private bool colored;
+    private bool savedColored;
 
     Vector3 nextPos;
 
@@ -46,5 +47,13 @@ public class PlatformMovement : MonoBehaviour
         {
             colored = !colored;
         }
+    }
+    public void SaveCurrentState()
+    {
+        savedColored = this.colored;
+    }
+    public void ResetState()
+    {
+        this.colored = savedColored;
     }
 }

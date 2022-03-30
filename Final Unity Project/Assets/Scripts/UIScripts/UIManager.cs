@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour {
   private Slider bar;
   private int currentEnergy;
   private int maxEnergy;
+    private int savedCurrentEnergy;
+    private int savedMaxEnergy;
 
 
   void Start() {
@@ -42,5 +44,17 @@ public class UIManager : MonoBehaviour {
     private void ChangeSlider()
     {
         bar.value =  currentEnergy;
+    }
+    public void SaveCurrentState()
+    {
+        savedCurrentEnergy = this.currentEnergy;
+        savedMaxEnergy = this.maxEnergy;
+    }
+    public void ResetState()
+    {
+        this.currentEnergy = savedCurrentEnergy;
+        this.maxEnergy = savedMaxEnergy;
+
+        EnergyEvents.EnergyChange(savedCurrentEnergy, savedMaxEnergy);
     }
 }

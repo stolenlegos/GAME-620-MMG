@@ -5,9 +5,10 @@ using UnityEngine;
 public class EnergyManager : MonoBehaviour {
   public int maxEnergy = 4;
   public int currentEnergy;
+    public int savedCurrentEnergy;
+    public int savedMaxEnergy;
     private float startTime = 0f;
     private float holdTime = 3.0f;
-    //public List<GameObject> objectsColoredList = new List<GameObject>();
     private bool objColored;
 
 
@@ -18,18 +19,13 @@ public class EnergyManager : MonoBehaviour {
 
     private void Update()
     {
-        //objectsColoredList = EnergyEvents.objectsColored;
         if (currentEnergy != maxEnergy)
         {                
-                Debug.Log("Phase1");
                 if (Input.GetKey(KeyCode.F))
                 {
-                    Debug.Log("Phase2");
                     startTime += Time.deltaTime;
-                    Debug.Log(startTime);
                     if (startTime > holdTime)
                     {
-                        Debug.Log("Phase3");
                         foreach (GameObject gameObject in EnergyEvents.objectsColored.ToArray())
                         {
                             EnergyEvents.ChangeColor(gameObject);
@@ -47,6 +43,7 @@ public class EnergyManager : MonoBehaviour {
         {
             currentEnergy = maxEnergy;
         }
+        Debug.Log("Objects in colored list " + EnergyEvents.objectsColored.Count);
     }
     private void CheckEnergy(GameObject obj) {
     objColored = obj.GetComponent<SaturationControl>().colored;
@@ -63,4 +60,14 @@ public class EnergyManager : MonoBehaviour {
 
     EnergyEvents.EnergyChange(currentEnergy, maxEnergy);
   }
+    public void SaveCurrentState()
+    {
+        savedCurrentEnergy = this.currentEnergy;
+        savedMaxEnergy = this.maxEnergy;
+    }
+    public void ResetState()
+    {
+        this.currentEnergy = savedCurrentEnergy;
+        this.maxEnergy = savedMaxEnergy;
+    }
 }

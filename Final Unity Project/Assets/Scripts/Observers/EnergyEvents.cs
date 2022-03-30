@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnergyEvents  {
+public class EnergyEvents {
     public static List<GameObject> objectsColored = new List<GameObject>();
     public delegate void PlayerSatInput (GameObject obj);
     public static event PlayerSatInput checkEnergy;

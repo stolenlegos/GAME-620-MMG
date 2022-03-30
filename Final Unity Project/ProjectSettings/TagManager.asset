@@ -16,6 +16,8 @@ TagManager:
   - Button
   - Checkpoint
   - SM
+  - GameStart
+  - UIManager
   layers:
   - Default
   - TransparentFX
@@ -24,7 +26,7 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - Spirals
   - Player
   - 
   - 
