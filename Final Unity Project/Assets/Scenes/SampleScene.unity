@@ -2283,6 +2283,8 @@ MonoBehaviour:
     name: ???
     sentences:
     - Hey, how's it going?
+    - Hey, how's it going?
+    - Hey, how's it going?
 --- !u!1 &802931449
 GameObject:
   m_ObjectHideFlags: 0
@@ -12935,7 +12937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5937162383236334011, guid: a3ab8665d09949a40a78e74b562215b7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.94
+      value: 13.67
       objectReference: {fileID: 0}
     - target: {fileID: 5937162383236334011, guid: a3ab8665d09949a40a78e74b562215b7, type: 3}
       propertyPath: m_LocalPosition.y

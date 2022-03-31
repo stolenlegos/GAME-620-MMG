@@ -82,6 +82,8 @@ public class PlayerController : MonoBehaviour
         moveVertical = Input.GetAxis("Vertical");
         UpdateWalkingAnimation();
 
+        Debug.Log(_mAnimatorComponent.GetBool("isGrounded_b"));
+
         if (!_bInputsDisabled)
         {
             _bPlayerStateChanged = false;
@@ -198,8 +200,10 @@ public class PlayerController : MonoBehaviour
 
         if (mPlayerState == CharacterState.WALKING || mPlayerState == CharacterState.JUMPING)
         {
-            //CheckWall();
+            
         }
+
+        //pushing big boxes code
         amountMoved = transform.position - previousPos;
         previousPos = transform.position;
     }

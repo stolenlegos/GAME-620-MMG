@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Checkpoints : MonoBehaviour
 {
     private SaveManager sm;
-
+    public static event Action checkpointActivated;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +23,7 @@ public class Checkpoints : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Checkpoint!");
+            checkpointActivated?.Invoke();
             sm.SavePositions();
         }
     }

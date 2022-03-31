@@ -24,12 +24,7 @@ public class SaveManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        smallBoxes = GameObject.FindGameObjectsWithTag("box_Small");
-        bigBoxes = GameObject.FindGameObjectsWithTag("box_Big");
-        buttons = GameObject.FindGameObjectsWithTag("Button");
-        platforms = GameObject.FindGameObjectsWithTag("Platform");
-        player = GameObject.FindGameObjectWithTag("Player");
-        _mUIManager = GameObject.FindGameObjectWithTag("UIManager");
+        
     }
 
     // Update is called once per frame
@@ -39,6 +34,13 @@ public class SaveManager : MonoBehaviour
     }
     public void SavePositions()
     {
+        smallBoxes = GameObject.FindGameObjectsWithTag("box_Small");
+        bigBoxes = GameObject.FindGameObjectsWithTag("box_Big");
+        buttons = GameObject.FindGameObjectsWithTag("Button");
+        platforms = GameObject.FindGameObjectsWithTag("Platform");
+        player = GameObject.FindGameObjectWithTag("Player");
+        _mUIManager = GameObject.FindGameObjectWithTag("UIManager");
+
         foreach (GameObject gameObject in buttons)
         {
             gameObject.GetComponent<SaturationControl>().SaveCurrentState();
@@ -65,6 +67,13 @@ public class SaveManager : MonoBehaviour
     }
     public void ResetPositions()
     {
+        smallBoxes = GameObject.FindGameObjectsWithTag("box_Small");
+        bigBoxes = GameObject.FindGameObjectsWithTag("box_Big");
+        buttons = GameObject.FindGameObjectsWithTag("Button");
+        platforms = GameObject.FindGameObjectsWithTag("Platform");
+        player = GameObject.FindGameObjectWithTag("Player");
+        _mUIManager = GameObject.FindGameObjectWithTag("UIManager");
+
         foreach (GameObject gameObject in buttons)
         {
             gameObject.GetComponent<SaturationControl>().ResetState();

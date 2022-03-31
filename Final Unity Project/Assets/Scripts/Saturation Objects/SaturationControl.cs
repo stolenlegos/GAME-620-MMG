@@ -6,6 +6,8 @@ public class SaturationControl : MonoBehaviour {
   public bool colored;
     public bool hovered;
     public Vector3 savedPosition;
+    private Transform playerPostion;
+    private GameObject coloredEnergy;
     public bool savedColorState;
     private bool swap;
     private PlayerObjectInteractions POI;
@@ -16,6 +18,8 @@ public class SaturationControl : MonoBehaviour {
 
     void Start() {
         POI = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerObjectInteractions>();
+        playerPostion = GameObject.FindGameObjectWithTag("Player").transform;
+        coloredEnergy = GameObject.FindGameObjectWithTag("ColoredEnergy");
         colored = false;
         ShaderEvents.SaturationChange += BoolChange;
         saturationLevel = 1;
@@ -30,15 +34,14 @@ public class SaturationControl : MonoBehaviour {
       }
 
       material.SetFloat("_Saturation", saturationLevel);
+        playerPostion = GameObject.FindGameObjectWithTag("Player").transform;
     }
-
 
     private void ReduceSat(){
       if (saturationLevel < 1) {
         saturationLevel += 0.5f * Time.deltaTime;
       }
     }
-
 
     private void IncreaseSat(){
       if (saturationLevel > 0) {
@@ -52,23 +55,23 @@ public class SaturationControl : MonoBehaviour {
         }
     }
 
-
     private void IncreaseSat2(){
         if (saturationLevel > 0){
             saturationLevel -= 0.8f * Time.deltaTime;
         }
     }
 
-
     private void BoolChange (GameObject obj) {
       if (obj == this.gameObject) {
         colored = !colored;
             if (colored){
                 EnergyEvents.objectsColored.Add(this.gameObject);
+                EnergyGive();
                 //Debug.Log(EnergyEvents.objectsColored);
             }
             if (!colored){
                 EnergyEvents.objectsColored.Remove(this.gameObject);
+                EnergyReturn();
             }
             //Debug.Log("Ran");
       }
@@ -123,6 +126,20 @@ public class SaturationControl : MonoBehaviour {
                 swap = false;
             }
         }
+    }
+    private void EnergyGive()
+    {
+        GameObject energyBall;
+        energyBall = Instantiate(coloredEnergy, playerPostion.position, playerPostion.rotation);
+        energyBall.GetComponent<EnergyTransfer>().giving = true;
+        Debug.Log("Give");
+    }
+    private void EnergyReturn()
+    {
+        GameObject energyBall;
+        energyBall = Instantiate(coloredEnergy, this.gameObject.transform.position, this.gameObject.transform.rotation);
+        energyBall.GetComponent<EnergyTransfer>().returning = true;
+        Debug.Log("Return");
     }
     public void SaveCurrentState(){
         savedPosition = this.transform.position;

@@ -7,12 +7,29 @@ public class DialogueManager : MonoBehaviour
 {
     public Text nameText;
     public Text dialogueText;
+    public static DialogueManager instance;
 
     public Animator animator;
 
     private Queue<string> sentences;
-    
+
     // Start is called before the first frame update
+
+    private void Awake(){
+        if (instance == null){
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else{
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnEnable()
+    {
+        Checkpoints.checkpointActivated += CheckpointBark;
+    }
+
     void Start(){
         sentences = new Queue<string>();
     }
@@ -37,7 +54,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         string sentence = sentences.Dequeue();
-        dialogueText.text = sentence;
+        //dialogueText.text = sentence;
         StopAllCoroutines();
         StartCoroutine(TypeSentence(sentence));
     }
@@ -54,6 +71,17 @@ public class DialogueManager : MonoBehaviour
         animator.SetBool("IsOpen", false);
 
         Debug.Log("End of Conversation");
+    }
+
+    void CheckpointBark()
+    {
+        Debug.Log("CheckpointBark");
+        Dialogue dialogue = new Dialogue();
+        dialogue.name = "Care";
+        dialogue.sentences = new string[2];
+        dialogue.sentences[0] = "Hello World.";
+        dialogue.sentences[1] = "It's me.";
+        StartDialogue(dialogue);
     }
 
 }

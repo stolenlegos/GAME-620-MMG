@@ -10,6 +10,7 @@ public class EnergyManager : MonoBehaviour {
     private float startTime = 0f;
     private float holdTime = 3.0f;
     private bool objColored;
+    public List<GameObject> savedObjectsColored = new List<GameObject>();
 
 
   void Start() {
@@ -43,7 +44,7 @@ public class EnergyManager : MonoBehaviour {
         {
             currentEnergy = maxEnergy;
         }
-        Debug.Log("Objects in colored list " + EnergyEvents.objectsColored.Count);
+        //Debug.Log("Objects in colored list " + EnergyEvents.objectsColored.Count);
     }
     private void CheckEnergy(GameObject obj) {
     objColored = obj.GetComponent<SaturationControl>().colored;
@@ -51,11 +52,9 @@ public class EnergyManager : MonoBehaviour {
     if (objColored) {
       ShaderEvents.ChangeColor(obj);
       currentEnergy += 1;
-            Debug.Log("EnergyAdded");
     } else if (!objColored && currentEnergy > 0) {
       ShaderEvents.ChangeColor(obj);
       currentEnergy -= 1;
-            Debug.Log("EnergyRemoved");
         }
 
     EnergyEvents.EnergyChange(currentEnergy, maxEnergy);
@@ -64,10 +63,16 @@ public class EnergyManager : MonoBehaviour {
     {
         savedCurrentEnergy = this.currentEnergy;
         savedMaxEnergy = this.maxEnergy;
+        savedObjectsColored = new List<GameObject>();
+        foreach(GameObject obj in EnergyEvents.objectsColored)
+        {
+            savedObjectsColored.Add(obj);
+        }
     }
     public void ResetState()
     {
         this.currentEnergy = savedCurrentEnergy;
         this.maxEnergy = savedMaxEnergy;
+        EnergyEvents.objectsColored = savedObjectsColored;
     }
 }
