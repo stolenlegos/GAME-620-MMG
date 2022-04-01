@@ -18,6 +18,7 @@ TagManager:
   - SM
   - GameStart
   - UIManager
+  - ColoredEnergy
   layers:
   - Default
   - TransparentFX
