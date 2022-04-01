@@ -132,6 +132,7 @@ public class SaturationControl : MonoBehaviour {
         GameObject energyBall;
         energyBall = Instantiate(coloredEnergy, playerPostion.position, playerPostion.rotation);
         energyBall.GetComponent<EnergyTransfer>().giving = true;
+        energyBall.GetComponent<EnergyTransfer>().targetObject = this.gameObject;
         Debug.Log("Give");
     }
     private void EnergyReturn()

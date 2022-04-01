@@ -8,6 +8,7 @@ public class EnergyTransfer : MonoBehaviour
     public bool giving;
     private float speed;
     private Vector3 playerPosition;
+    public GameObject targetObject;
     
     // Start is called before the first frame update
     void Start()
@@ -28,7 +29,7 @@ public class EnergyTransfer : MonoBehaviour
         }
         else if (giving){
             if(EnergyEvents.objectsColored.Count >= 1){
-                transform.position = Vector3.MoveTowards(this.transform.position, EnergyEvents.objectsColored[EnergyEvents.objectsColored.Count - 1].transform.position, speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(this.transform.position, targetObject.transform.position, speed * Time.deltaTime);
                 if (transform.position == EnergyEvents.objectsColored[EnergyEvents.objectsColored.Count - 1].transform.position)
                 {
                     Destroy(gameObject);
