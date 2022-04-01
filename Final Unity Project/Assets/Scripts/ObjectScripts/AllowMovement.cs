@@ -77,7 +77,7 @@ public class AllowMovement : MonoBehaviour {
             grabbed = false;
             this.transform.parent = null;
         }
-        else if (grabbed == true)
+        else if (grabbed)
         {
             
             if (this.gameObject.tag == "box_Small")
@@ -123,7 +123,6 @@ public class AllowMovement : MonoBehaviour {
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
-
     }
 
 
@@ -152,6 +151,7 @@ public class AllowMovement : MonoBehaviour {
                 rb.isKinematic = true;
                 stackCollider.enabled = false;
                 this.transform.position = boxHolder.transform.position;
+                boxHolder.GetComponent<BoxCollider2D>().enabled = true;
             }
         }
   }
@@ -163,6 +163,7 @@ public class AllowMovement : MonoBehaviour {
             if(this.gameObject.tag == "box_Small"){
                 rb.isKinematic = false;
                 stackCollider.enabled = true;
+                boxHolder.GetComponent<BoxCollider2D>().enabled = false;
             }
             if (this.gameObject.tag == "box_Big"){
                 player.GetComponent<PlayerController>()._bPushingOrPulling = false;
