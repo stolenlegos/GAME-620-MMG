@@ -1195,10 +1195,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 83003686304771535, guid: 8f8c9907ca99fd34482fb656bb1db36b, type: 3}
-      propertyPath: m_GravityScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1411213823341843047, guid: 8f8c9907ca99fd34482fb656bb1db36b, type: 3}
       propertyPath: m_Size.x
       value: 1.1696491
@@ -1452,14 +1448,6 @@ PrefabInstance:
       propertyPath: material
       value: 
       objectReference: {fileID: 2100000, guid: 89f81c7252fa9ab44aa59f14a4b67590, type: 2}
-    - target: {fileID: 9122164496577469397, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
-      propertyPath: m_GravityScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9122164496577469397, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1981800716279561321, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3669a0ea332d5c748a64cc867121fdbe, type: 3}
@@ -10755,6 +10743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   returning: 0
   giving: 0
+  targetObject: {fileID: 0}
 --- !u!1 &1171161018
 GameObject:
   m_ObjectHideFlags: 0
@@ -13017,7 +13006,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5937162383236334011, guid: a3ab8665d09949a40a78e74b562215b7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.94
+      value: -15.15
       objectReference: {fileID: 0}
     - target: {fileID: 5937162383236334011, guid: a3ab8665d09949a40a78e74b562215b7, type: 3}
       propertyPath: m_LocalPosition.y

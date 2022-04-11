@@ -223,6 +223,7 @@ MonoBehaviour:
   colored: 0
   hovered: 0
   savedPosition: {x: 0, y: 0, z: 0}
+  savedColorState: 0
   material: {fileID: 2100000, guid: e6fee31a106fa574b89a5316996976f4, type: 2}
 --- !u!114 &1728165120425618933
 MonoBehaviour:
@@ -241,8 +242,6 @@ MonoBehaviour:
     m_Bits: 160
   falling: 0
   stacked: 0
-  detected: 0
-  onPlatform: 0
   grabbed: 0
   groundedObject: []
   wallObjectsRight: []
