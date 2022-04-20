@@ -158,8 +158,7 @@ public class DialogueManager : MonoBehaviour
             checkpointBarkList.sentences[6] = "You're improving each time. Just a little more.";
             checkpointBarkList.sentences[7] = "Don't wear yourself out. Relax, think, then try again.";
 
-            int index = Random.Range(0,7);
-            //checkpointBark.sentences = new string[1];
+            int index = Random.Range(0, checkpointBarkList.sentences.Length - 1);
             checkpointBark.sentences[0] = checkpointBarkList.sentences[index];
 
             StartDialogue(checkpointBark);
