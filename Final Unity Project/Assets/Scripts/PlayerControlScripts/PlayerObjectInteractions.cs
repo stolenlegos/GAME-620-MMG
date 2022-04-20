@@ -14,15 +14,15 @@ public class PlayerObjectInteractions : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.F) && _objectsToColor.Count != 0 && !Input.GetMouseButton(0)) {
+        if (Input.GetMouseButtonDown(0) && _objectsToColor.Count != 0 /*&& !Input.GetMouseButton(0)*/) {
           EnergyEvents.ChangeColor(_objectsToColor[_objectsToColor.Count - 1]);
         }
 
-        if (Input.GetMouseButtonDown(0) && _objectsNear.Count != 0 && playerController.mPlayerState != CharacterState.JUMPING) {
+        if (Input.GetKeyDown(KeyCode.W) && _objectsNear.Count != 0 && playerController.mPlayerState != CharacterState.JUMPING) {
           PlayerActions.ObjectGrab(_objectsNear[_objectsNear.Count - 1]);
         }
 
-        if (Input.GetMouseButtonUp(0) &&_objectsNear.Count != 0) {
+        if (Input.GetKeyUp(KeyCode.W) &&_objectsNear.Count != 0) {
             int i = 0;
             while (i < _objectsNear.Count)
             {

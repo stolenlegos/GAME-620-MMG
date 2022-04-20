@@ -82,7 +82,8 @@ public class PlayerController : MonoBehaviour
         moveVertical = Input.GetAxis("Vertical");
         UpdateWalkingAnimation();
 
-        Debug.Log(_mAnimatorComponent.GetBool("isGrounded_b"));
+        //Debug.Log("Grounded Animation: " + _mAnimatorComponent.GetBool("isGrounded_b"));
+        //Debug.Log("Animation " + _mAnimatorComponent.GetCurrentAnimatorStateInfo(0).fullPathHash);
 
         if (!_bInputsDisabled)
         {
@@ -110,21 +111,17 @@ public class PlayerController : MonoBehaviour
                                 _bIsGoingRight = false;
                             }
                     }
-                    else if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && !_bPushingOrPulling)
+                    else if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && !_bPushingOrPulling && !_bPlayerCanExamine)
                     {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                             _bPlayerStateChanged = true;
                             mPlayerState = CharacterState.JUMPING;
                     }
-                    else if (Input.GetMouseButtonDown(2) && _bPlayerCanExamine)
+                    else if (Input.GetKeyDown(KeyCode.Space) && _bPlayerCanExamine)
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.EXAMINE;
                        // Debug.Log("PlayerStateChangedExamine");
-                    }
-                    else if (!_bGrounded)
-                    {
-
                     }
                 }
 
@@ -133,16 +130,16 @@ public class PlayerController : MonoBehaviour
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _mAnimatorComponent.SetFloat("Speed_f", 1f);
                     _bMovementDisabled = false;
-                        if (Input.GetKey(KeyCode.D))
-                        {
+                    if (Input.GetKey(KeyCode.D))
+                    {
                             _bIsGoingRight = true;
                             transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                        }
-                        else if (Input.GetKey(KeyCode.A))
-                        {
+                    }
+                    else if (Input.GetKey(KeyCode.A))
+                    {
                             _bIsGoingRight = false;
                             transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                        }
+                    }
                     if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && !_bPushingOrPulling)
                     {
                             gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
@@ -176,7 +173,7 @@ public class PlayerController : MonoBehaviour
               _bMovementDisabled = true;
               _mCameraManager.PlayerExamineStart();
               //Debug.Log("PlayerExamining");
-                if(Input.GetMouseButtonUp(2))
+                if(Input.GetKeyUp(KeyCode.Space))
                 {
                     while (_mCameraManager.zoomBackTimer > 0)
                     {
@@ -202,7 +199,6 @@ public class PlayerController : MonoBehaviour
         {
             
         }
-
         //pushing big boxes code
         amountMoved = transform.position - previousPos;
         previousPos = transform.position;
@@ -258,6 +254,10 @@ public class PlayerController : MonoBehaviour
         {
             if ((collision.transform.tag == "Terrain" || collision.transform.tag == "box_Big" || collision.transform.tag == "box_Small" || collision.transform.tag == "Platform"))
             {
+                if (!IsGrounded())
+                {
+                    _bGrounded = false;
+                }
                 if (collision.collider.tag == "StackPoint")
                 {
                     this.transform.parent = collision.transform;
@@ -284,6 +284,27 @@ public class PlayerController : MonoBehaviour
         if(collision.collider.tag == "StackPoint")
         {
             this.transform.parent = null;
+        }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if ((collision.transform.tag == "Terrain" || collision.transform.tag == "box_Big" || collision.transform.tag == "box_Small" || collision.transform.tag == "Platform") && _bGrounded == false)
+        {
+            IsGrounded();
+            if (IsGrounded())
+            {
+                _bGrounded = true;
+            }
+            if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && _bGrounded == true)
+            {
+                _bMovementDisabled = false;
+                _bPlayerStateChanged = true;
+                mPlayerState = CharacterState.WALKING;
+            }
+            else if (_bGrounded == true)
+            {
+                mPlayerState = CharacterState.IDLE;
+            }
         }
     }
     private void energyCheck(int currentEnergy, int maxEnergy)

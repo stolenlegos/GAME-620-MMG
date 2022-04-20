@@ -7,6 +7,7 @@ public class Checkpoints : MonoBehaviour
 {
     private SaveManager sm;
     public static event Action checkpointActivated;
+    private bool firstPass = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,8 +24,16 @@ public class Checkpoints : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            checkpointActivated?.Invoke();
-            sm.SavePositions();
+            if(firstPass == true)
+            {
+                sm.SavePositions();
+                firstPass = false;
+            }
+            else
+            {
+                checkpointActivated?.Invoke();
+                sm.SavePositions();
+            }
         }
     }
 }

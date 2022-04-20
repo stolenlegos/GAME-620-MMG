@@ -22,7 +22,7 @@ public class EnergyManager : MonoBehaviour {
     {
         if (currentEnergy != maxEnergy)
         {                
-                if (Input.GetKey(KeyCode.F))
+                if (Input.GetMouseButton(0))
                 {
                     startTime += Time.deltaTime;
                     if (startTime > holdTime)

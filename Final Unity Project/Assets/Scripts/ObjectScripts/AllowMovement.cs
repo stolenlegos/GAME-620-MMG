@@ -74,12 +74,12 @@ public class AllowMovement : MonoBehaviour {
         }
         else if (grabbed && !colored)
         {
+            Debug.Log("Release");
             grabbed = false;
             this.transform.parent = null;
         }
         else if (grabbed)
         {
-            
             if (this.gameObject.tag == "box_Small")
             {
                 this.transform.position = boxHolder.transform.position;
@@ -115,7 +115,6 @@ public class AllowMovement : MonoBehaviour {
                         wallObjectsRight.Clear();
                     }
                 }
-                
             }
         }
         else if (falling && !grabbed)
@@ -127,7 +126,7 @@ public class AllowMovement : MonoBehaviour {
 
 
   private void BoolChange (GameObject obj) {
-    if (obj == this.gameObject && !grabbed) {
+    if (obj == this.gameObject /*&& (!grabbed || grabbed)*/) {
       colored = !colored;
     }
   }
