@@ -9,6 +9,7 @@ public class PlatformMovement : MonoBehaviour
     public Transform startPos;
     private bool colored;
     private bool savedColored;
+    private Animator _mAnimatorComponent;
 
     Vector3 nextPos;
 
@@ -18,6 +19,7 @@ public class PlatformMovement : MonoBehaviour
         nextPos = startPos.position;
         colored = false;
         ShaderEvents.SaturationChange += BoolChange;
+        _mAnimatorComponent = this.gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -25,6 +27,7 @@ public class PlatformMovement : MonoBehaviour
     {
         if (colored)
         {
+            _mAnimatorComponent.SetBool("Colored", true);
             if (transform.position == pos1.position)
             {
                 nextPos = pos2.position;
@@ -34,9 +37,13 @@ public class PlatformMovement : MonoBehaviour
                 nextPos = pos1.position;
             }
         }
-        if (!colored && transform.position != pos1.position)
+        if (!colored)
         {
-            nextPos = pos1.position;
+            _mAnimatorComponent.SetBool("Colored", false);
+            if (!colored && transform.position != pos1.position)
+            {
+                nextPos = pos1.position;
+            }
         }
         transform.position = Vector3.MoveTowards(transform.position, nextPos, speed * Time.deltaTime);
     }

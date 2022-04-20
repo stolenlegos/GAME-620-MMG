@@ -8,6 +8,7 @@ public class DialogueManager : MonoBehaviour
     public Text nameText;
     public Text dialogueText;
     public static DialogueManager instance;
+    private bool checkpointBarkFirst;
 
     public Animator animator;
 
