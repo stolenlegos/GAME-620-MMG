@@ -63,4 +63,14 @@ public class PlatformMovement : MonoBehaviour
     {
         this.colored = savedColored;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Door")
+        {
+            if (nextPos == pos2.position)
+            {
+                nextPos = pos1.position;
+            }
+        }
+    }
 }

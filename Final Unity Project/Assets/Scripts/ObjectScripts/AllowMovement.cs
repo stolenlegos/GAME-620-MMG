@@ -83,6 +83,30 @@ public class AllowMovement : MonoBehaviour {
             if (this.gameObject.tag == "box_Small")
             {
                 this.transform.position = boxHolder.transform.position;
+                if (player.GetComponent<PlayerController>()._bIsGoingRight == true)
+                {
+                    Debug.Log("WalkingRight");
+                    if (WallCheckRight())
+                    {
+                        rb.isKinematic = false;
+                    }
+                    else if (!WallCheckRight())
+                    {
+                        rb.isKinematic = true;
+                    }
+                }
+                if (player.GetComponent<PlayerController>()._bIsGoingRight == false)
+                {
+                    Debug.Log("WalkingLeft");
+                    if (WallCheckLeft())
+                    {
+                        rb.isKinematic = false;
+                    }
+                    else if (!WallCheckLeft())
+                    {
+                        rb.isKinematic = true;
+                    }
+                }
             }
             else if(this.gameObject.tag == "box_Big")
             {
@@ -121,6 +145,10 @@ public class AllowMovement : MonoBehaviour {
         {
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+        if(this.gameObject.name == "box_Small 7")
+        {
+            Debug.Log(IsGrounded());
         }
     }
 
@@ -206,7 +234,7 @@ public class AllowMovement : MonoBehaviour {
                 falling = false;
                 this.transform.parent = null;
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
-                //Debug.Log("Terrain Collision");
+                Debug.Log("Terrain Collision");
             }
         }
         else{
@@ -283,6 +311,7 @@ public class AllowMovement : MonoBehaviour {
     {
         float extraHeightText = .05f;
         RaycastHit2D[] raycastHits;
+        Physics2D.queriesHitTriggers = true;
         raycastHits = Physics2D.RaycastAll(boxCollider.bounds.center, Vector2.down, boxCollider.bounds.extents.y + extraHeightText, ~spirals);
         Color rayColor;
         for (int i = 0; i < raycastHits.Length; i++)
@@ -321,6 +350,7 @@ public class AllowMovement : MonoBehaviour {
     {
         float extraHeightText = .05f;
         RaycastHit2D[] raycastHits;
+        Physics2D.queriesHitTriggers = false;
         raycastHits = Physics2D.RaycastAll(boxCollider.bounds.center, Vector2.right, boxCollider.bounds.extents.y + extraHeightText, ~spirals);
         Color rayColor;
         for (int i = 0; i < raycastHits.Length; i++) {
@@ -348,6 +378,7 @@ public class AllowMovement : MonoBehaviour {
     {
         float extraHeightText = .05f;
         RaycastHit2D[] raycastHits;
+        Physics2D.queriesHitTriggers = false;
         raycastHits = Physics2D.RaycastAll(boxCollider.bounds.center, Vector2.left, boxCollider.bounds.extents.y + extraHeightText, ~spirals);
         Color rayColor;
         for (int i = 0; i < raycastHits.Length; i++){

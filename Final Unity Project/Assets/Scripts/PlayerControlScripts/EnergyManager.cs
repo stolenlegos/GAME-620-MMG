@@ -25,6 +25,7 @@ public class EnergyManager : MonoBehaviour {
                 if (Input.GetMouseButton(0))
                 {
                     startTime += Time.deltaTime;
+                    
                     if (startTime > holdTime)
                     {
                         foreach (GameObject gameObject in EnergyEvents.objectsColored.ToArray())
@@ -34,7 +35,16 @@ public class EnergyManager : MonoBehaviour {
                         EnergyEvents.objectsColored.Clear();
                         currentEnergy = maxEnergy;
                     }
-                }           
+                }
+                else if (!Input.GetMouseButton(0) && startTime != 0f)
+                {
+                startTime -= Time.deltaTime;
+
+                    if (startTime < 0f)
+                    {
+                        startTime = 0;
+                    }
+                }
         }
         else if(startTime > 0 && currentEnergy == maxEnergy)
         {

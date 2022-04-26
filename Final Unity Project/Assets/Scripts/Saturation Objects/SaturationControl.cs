@@ -64,12 +64,12 @@ public class SaturationControl : MonoBehaviour {
     private void BoolChange (GameObject obj) {
       if (obj == this.gameObject) {
         colored = !colored;
-            if (colored){
+            if (colored && this.gameObject.tag != "Door"){
                 EnergyEvents.objectsColored.Add(this.gameObject);
                 EnergyGive();
                 //Debug.Log(EnergyEvents.objectsColored);
             }
-            if (!colored){
+            if (!colored && this.gameObject.tag != "Door"){
                 EnergyEvents.objectsColored.Remove(this.gameObject);
                 EnergyReturn();
             }

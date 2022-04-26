@@ -18,11 +18,11 @@ public class PlayerObjectInteractions : MonoBehaviour {
           EnergyEvents.ChangeColor(_objectsToColor[_objectsToColor.Count - 1]);
         }
 
-        if (Input.GetKeyDown(KeyCode.W) && _objectsNear.Count != 0 && playerController.mPlayerState != CharacterState.JUMPING) {
+        if (Input.GetKey(KeyCode.W) && _objectsNear.Count != 0 && playerController.mPlayerState != CharacterState.JUMPING) {
           PlayerActions.ObjectGrab(_objectsNear[_objectsNear.Count - 1]);
         }
 
-        if (Input.GetKeyUp(KeyCode.W) &&_objectsNear.Count != 0) {
+        if (Input.GetKeyDown(KeyCode.W) &&_objectsNear.Count != 0) {
             int i = 0;
             while (i < _objectsNear.Count)
             {

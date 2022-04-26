@@ -8,10 +8,14 @@ public class UIManager : MonoBehaviour {
   private Text energyLevelText;
   [SerializeField]
   private Slider bar;
+  [SerializeField]
+  private Slider energyReturnSlider;
   private int currentEnergy;
   private int maxEnergy;
-    private int savedCurrentEnergy;
-    private int savedMaxEnergy;
+  private float startTime = 0f;
+  private float holdTime = 3.0f;
+  private int savedCurrentEnergy;
+  private int savedMaxEnergy;
 
 
   void Start() {
@@ -20,8 +24,29 @@ public class UIManager : MonoBehaviour {
     currentEnergy = maxEnergy;
     ChangeUI();
     bar.maxValue = maxEnergy;
+    energyReturnSlider.maxValue = holdTime;
     ChangeSlider();
+    ChangeEnergyReturnSlider();
+    energyReturnSlider.gameObject.SetActive(false);
   }
+
+    private void Update()
+    {
+        if (currentEnergy != maxEnergy)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                startTime += Time.deltaTime;
+                energyReturnSlider.gameObject.SetActive(true);
+                ChangeEnergyReturnSlider();
+            }
+            else if (!Input.GetMouseButton(0) && startTime > 0f)
+            {
+                ChangeEnergyReturnSlider();
+            }
+        }
+        else { energyReturnSlider.gameObject.SetActive(false); ChangeEnergyReturnSlider(); }
+    }
 
 
   private void ChangeUI() {
@@ -45,6 +70,20 @@ public class UIManager : MonoBehaviour {
     {
         bar.value =  currentEnergy;
     }
+    //end
+    private void ChangeEnergyReturnSlider()
+    {
+        energyReturnSlider.value = startTime;
+        if(!Input.GetMouseButton(0) && startTime != 0f)
+        {
+            energyReturnSlider.value = startTime -= Time.deltaTime;
+            if(energyReturnSlider.value <= 0)
+            {
+                energyReturnSlider.value = 0;
+                startTime = 0;
+            }
+        }
+    }
     public void SaveCurrentState()
     {
         savedCurrentEnergy = this.currentEnergy;
@@ -57,4 +96,5 @@ public class UIManager : MonoBehaviour {
 
         EnergyEvents.EnergyChange(savedCurrentEnergy, savedMaxEnergy);
     }
+    
 }

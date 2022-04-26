@@ -27,6 +27,11 @@ public class AllowButtonPush : MonoBehaviour {
       StartCoroutine("ButtonTimer");
       //Debug.Log("PUSHED THE BUTTON");
     }
+    else if (!colored && doorOpen)
+        {
+            PlayerActions.ButtonPushed(door);
+            doorOpen = false;
+        }
     //Debug.Log("Door open is: " + doorOpen.ToString());
   }
 

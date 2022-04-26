@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
@@ -11,12 +13,15 @@ public class DialogueManager : MonoBehaviour
     private Coroutine typeWriterCoroutine;
     private bool typing = false;
     private bool checkpointBarkFirst = true;
+    public bool careOff = true;
 
     public Animator animator;
 
     private Queue<string> sentences;
     private string currentSentence;
     private string barkString;
+
+    public static event Action careOn;
 
     // Start is called before the first frame update
 
@@ -121,6 +126,12 @@ public class DialogueManager : MonoBehaviour
     }
 
     void EndDialogue(){
+        if (careOff)
+        {
+            careOn?.Invoke();
+            careOff = false;
+        }
+
         animator.SetBool("IsOpen", false);
 
         Debug.Log("End of Conversation");

@@ -16,6 +16,7 @@ public enum CharacterState
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private LayerMask playerLayerMask;
+    [SerializeField] private LayerMask rejectObjectsMask;
 
     public CharacterState mPlayerState = CharacterState.IDLE;
 
@@ -351,6 +352,23 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
     }
+    /*private bool WallCheck()
+    {
+        float extraHeightText = .01f;
+        RaycastHit2D raycastHit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.right, playerCollider.bounds.extents.y + extraHeightText, ~playerLayerMask);
+        Color rayColor;
+        if (raycastHit.collider != null)
+        {
+            rayColor = Color.green;
+        }
+        else
+        {
+            rayColor = Color.red;
+        }
+        Debug.DrawRay(playerCollider.bounds.center, Vector2.right * (playerCollider.bounds.extents.y + extraHeightText));
+        //Debug.Log(raycastHit.collider);
+        return raycastHit.collider != null;
+    }*/
     public void SaveCurrentState()
     {
         savedPosition = this.transform.position;
