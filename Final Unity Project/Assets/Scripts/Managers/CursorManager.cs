@@ -13,6 +13,7 @@ public class CursorManager : MonoBehaviour
 
     private int currentFrame;
     private float frameTimer;
+    private Vector3 lastMouseCoordinate = Vector3.zero;
 
     // Start is called before the first frame update
     private void OnEnable()
@@ -21,10 +22,16 @@ public class CursorManager : MonoBehaviour
     }
     private void Start()
     {
-        Cursor.visible = false;
+        
+        //Cursor.visible = false;
     }
     private void Update()
     {
+        /*Vector3 mouseDelta = Input.mousePosition - lastMouseCoordinate;
+        if(mouseDelta.x < 0)
+        {
+            cursorTextureArray[currentFrame].
+        }*/
         frameTimer -= Time.deltaTime;
         if(frameTimer <= 0f)
         {

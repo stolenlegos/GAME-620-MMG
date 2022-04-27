@@ -9,10 +9,12 @@ public class EnergyTransfer : MonoBehaviour
     private float speed;
     private Vector3 playerPosition;
     public GameObject targetObject;
-    
+    public Animator _mAnimatorComponent;
+
     // Start is called before the first frame update
     void Start()
     {
+        _mAnimatorComponent = gameObject.GetComponent<Animator>();
         playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
         speed = 6.5f;
     }
@@ -20,6 +22,7 @@ public class EnergyTransfer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //_mAnimatorComponent.Play();
         playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
         if (returning){
             transform.position = Vector3.MoveTowards(this.transform.position, playerPosition, speed * Time.deltaTime);

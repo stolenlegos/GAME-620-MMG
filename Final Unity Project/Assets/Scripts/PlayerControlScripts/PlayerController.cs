@@ -253,7 +253,7 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.transform != null)
         {
-            if ((collision.transform.tag == "Terrain" || collision.transform.tag == "box_Big" || collision.transform.tag == "box_Small" || collision.transform.tag == "Platform"))
+            if ((collision.transform.tag == "Terrain" || collision.transform.tag == "box_Big" || collision.transform.tag == "box_Small" || collision.transform.tag == "Platform" || collision.transform.tag == "Door"))
             {
                 if (!IsGrounded())
                 {
@@ -310,7 +310,7 @@ public class PlayerController : MonoBehaviour
     }
     private void energyCheck(int currentEnergy, int maxEnergy)
     {
-        if (currentEnergy == (maxEnergy - 1))
+      if (currentEnergy == (maxEnergy - 1))
       {
           //Debug.Log("less fast");
           mSpeed = 3.0f * .75f;
@@ -327,6 +327,12 @@ public class PlayerController : MonoBehaviour
           //Debug.Log("the slowest of the fast");
           mSpeed = 3.0f * .25f;
           mJumpStrength = 7.1f * .65f;
+      }
+      else if (currentEnergy == (maxEnergy - 4))
+      {
+            //Debug.Log("the slowest of the fast");
+            mSpeed = 3.0f * .33f;
+            mJumpStrength = 7.1f * .65f;
       }
       else if (currentEnergy == maxEnergy)
       {

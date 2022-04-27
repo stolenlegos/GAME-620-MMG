@@ -19,6 +19,8 @@ TagManager:
   - GameStart
   - UIManager
   - ColoredEnergy
+  - Door
+  - BoxHolder
   layers:
   - Default
   - TransparentFX

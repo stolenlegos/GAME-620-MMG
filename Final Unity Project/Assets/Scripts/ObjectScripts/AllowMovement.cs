@@ -77,38 +77,52 @@ public class AllowMovement : MonoBehaviour {
             Debug.Log("Release");
             grabbed = false;
             this.transform.parent = null;
+            ReleaseObject(this.gameObject);
         }
         else if (grabbed)
         {
             if (this.gameObject.tag == "box_Small")
             {
-                this.transform.position = boxHolder.transform.position;
-                if (player.GetComponent<PlayerController>()._bIsGoingRight == true)
+                if (!boxHolder.GetComponent<BoxholderScript>().doNotPickUp)
                 {
-                    Debug.Log("WalkingRight");
-                    if (WallCheckRight())
+                    this.transform.position = boxHolder.transform.position;
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == true)
                     {
-                        rb.isKinematic = false;
+                        Debug.Log("WalkingRight");
+                        if (WallCheckRight())
+                        {
+                            rb.isKinematic = false;
+                        }
+                        else if (!WallCheckRight())
+                        {
+                            rb.isKinematic = true;
+                        }
                     }
-                    else if (!WallCheckRight())
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == false)
+                    {
+                        Debug.Log("WalkingLeft");
+                        if (WallCheckLeft())
+                        {
+                            rb.isKinematic = false;
+                        }
+                        else if (!WallCheckLeft())
+                        {
+                            rb.isKinematic = true;
+                        }
+                    }
+                    if (IsGrounded())
                     {
                         rb.isKinematic = true;
                     }
-                }
-                if (player.GetComponent<PlayerController>()._bIsGoingRight == false)
-                {
-                    Debug.Log("WalkingLeft");
-                    if (WallCheckLeft())
+                    else if (!IsGrounded())
                     {
                         rb.isKinematic = false;
                     }
-                    else if (!WallCheckLeft())
-                    {
-                        rb.isKinematic = true;
-                    }
                 }
+                else { }
             }
-            else if(this.gameObject.tag == "box_Big")
+            
+            else if (this.gameObject.tag == "box_Big")
             {
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
                 //rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -146,10 +160,6 @@ public class AllowMovement : MonoBehaviour {
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
-        if(this.gameObject.name == "box_Small 7")
-        {
-            Debug.Log(IsGrounded());
-        }
     }
 
 
@@ -169,16 +179,23 @@ public class AllowMovement : MonoBehaviour {
             stacked = false;
             falling = false;
             transform.parent = null;
-            if(this.gameObject.tag == "box_Big")
+            if (this.gameObject.tag == "box_Big")
             {
                 player.GetComponent<PlayerController>()._bPushingOrPulling = true;
             }
             if (this.gameObject.tag == "box_Small")
             {
-                rb.isKinematic = true;
-                stackCollider.enabled = false;
-                this.transform.position = boxHolder.transform.position;
-                //boxHolder.GetComponent<BoxCollider2D>().enabled = true;
+                if (!boxHolder.GetComponent<BoxholderScript>().doNotPickUp)
+                {
+                    rb.isKinematic = true;
+                    stackCollider.enabled = false;
+                    this.transform.position = boxHolder.transform.position;
+                }
+                else if (boxHolder.GetComponent<BoxholderScript>().doNotPickUp)
+                {
+                    grabbed = false;
+                    ReleaseObject(this.gameObject);
+                }
             }
         }
   }
@@ -188,9 +205,9 @@ public class AllowMovement : MonoBehaviour {
     if (obj == this.gameObject) {
             grabbed = false;
             if(this.gameObject.tag == "box_Small"){
+                Debug.Log(boxHolder.GetComponent<BoxCollider2D>().enabled);
                 rb.isKinematic = false;
                 stackCollider.enabled = true;
-                //boxHolder.GetComponent<BoxCollider2D>().enabled = false;
             }
             if (this.gameObject.tag == "box_Big"){
                 player.GetComponent<PlayerController>()._bPushingOrPulling = false;

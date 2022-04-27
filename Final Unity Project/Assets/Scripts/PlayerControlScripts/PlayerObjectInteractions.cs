@@ -33,8 +33,12 @@ public class PlayerObjectInteractions : MonoBehaviour {
     }
 
     void OnTriggerEnter2D (Collider2D other) {
-        if (other.tag != "Spiral" || other.tag != "Examiner") {
-            _objectsNear.Add(other.gameObject);
+        //if ((other.gameObject.tag == "Spiral") || (other.gameObject.tag == "Examiner") || (other.gameObject.tag != "StackPoint"))
+        if ((other.gameObject.tag == "box_Big") || (other.gameObject.tag == "box_Small") || (other.gameObject.tag == "button_small") || (other.gameObject.tag == "Button") || (other.gameObject.tag == "Door")) {
+            if (!_objectsNear.Contains(other.gameObject))
+            {
+                _objectsNear.Add(other.gameObject);
+            }
         }
     }
 
@@ -44,6 +48,16 @@ public class PlayerObjectInteractions : MonoBehaviour {
     }
         _objectsNear.Remove(other.gameObject);
 
+    }
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if ((other.gameObject.tag == "box_Big") || (other.gameObject.tag == "box_Small") || (other.gameObject.tag == "button_small") || (other.gameObject.tag == "Button") || (other.gameObject.tag == "Door"))
+        {
+            if (!_objectsNear.Contains(other.gameObject))
+            {
+                _objectsNear.Add(other.gameObject);
+            }
+        }
     }
 
 }
