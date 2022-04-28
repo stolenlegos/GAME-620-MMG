@@ -14,6 +14,9 @@ public class AllowMovement : MonoBehaviour {
     private bool onPlatform;
     public bool grabbed;
     private bool grabbable;
+    private bool colliding = false;
+    private Vector3 lastKnownSafePosition;
+    private bool notPickedUp = true;
 
     //StatesToSave
     private bool savedColored;
@@ -81,85 +84,130 @@ public class AllowMovement : MonoBehaviour {
         }
         else if (grabbed)
         {
+            //rb.velocity = Vector2.zero;
             if (this.gameObject.tag == "box_Small")
             {
-                if (!boxHolder.GetComponent<BoxholderScript>().doNotPickUp)
+                if (!boxHolder.GetComponent<BoxholderScript>().doNotPickUp && notPickedUp)
                 {
+                    //Debug.Log("Running");
+                    notPickedUp = false;
                     this.transform.position = boxHolder.transform.position;
-                    if (player.GetComponent<PlayerController>()._bIsGoingRight == true)
+                    /*if (player.GetComponent<PlayerController>()._bIsGoingRight == true)
                     {
                         Debug.Log("WalkingRight");
                         if (WallCheckRight())
                         {
                             rb.isKinematic = false;
                         }
-                        else if (!WallCheckRight())
-                        {
+                        else if (!WallCheckRight()){
                             rb.isKinematic = true;
                         }
                     }
-                    if (player.GetComponent<PlayerController>()._bIsGoingRight == false)
-                    {
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == false){
                         Debug.Log("WalkingLeft");
-                        if (WallCheckLeft())
-                        {
+                        if (WallCheckLeft()){
                             rb.isKinematic = false;
                         }
-                        else if (!WallCheckLeft())
-                        {
+                        else if (!WallCheckLeft()){
                             rb.isKinematic = true;
                         }
                     }
-                    if (IsGrounded())
-                    {
+                    if (IsGrounded()){
                         rb.isKinematic = true;
                     }
-                    else if (!IsGrounded())
-                    {
+                    else if (!IsGrounded()){
+                        rb.isKinematic = false;
+                    }*/
+                }
+                else if ((!boxHolder.GetComponent<BoxholderScript>().doNotPickUp || boxHolder.GetComponent<BoxholderScript>().doNotPickUp) && !notPickedUp){
+                    //Debug.Log("Running2");
+                    this.transform.position = boxHolder.transform.position;
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == true){
+                        //Debug.Log("WalkingRight");
+                        if (WallCheckRight()){
+                            //Debug.Log("Running1");
+                            rb.isKinematic = false;
+                        }
+                        else if (!WallCheckRight()){
+                            rb.isKinematic = true;
+                        }
+                    }
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == false){
+                        //Debug.Log("WalkingLeft");
+                        if (WallCheckLeft()){
+                            //Debug.Log("Running2");
+                            rb.isKinematic = false;
+                        }
+                        else if (!WallCheckLeft()){
+                            rb.isKinematic = true;
+                        }
+                    }
+                    else if (IsGrounded()){
                         rb.isKinematic = false;
                     }
+                    else if (!IsGrounded() && (!WallCheckLeft() || !WallCheckRight())){
+                        Debug.Log("Running3");
+                        rb.isKinematic = true;
+                    }
                 }
-                else { }
             }
             
-            else if (this.gameObject.tag == "box_Big")
-            {
+            else if (this.gameObject.tag == "box_Big" && player.GetComponent<PlayerController>()._bPushingOrPulling == true){
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
                 //rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                if (player.transform.position.y <= this.gameObject.transform.position.y)
-                {
-                    if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x < this.gameObject.transform.position.x && !WallCheckLeft())
-                    {
-                        Debug.Log("Running1");
+                if (player.transform.position.y <= this.gameObject.transform.position.y){
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x < this.gameObject.transform.position.x && !WallCheckLeft() && colored){
+                        //Debug.Log("Running1");
                         this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
                         wallObjectsRight.Clear();
+                        player.GetComponent<PlayerController>()._bPulling = true;
+                        player.GetComponent<PlayerController>()._bPushing = false;
                     }
-                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x > this.gameObject.transform.position.x && !WallCheckRight())
-                    {
-                        Debug.Log("Running2");
+                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x > this.gameObject.transform.position.x && !WallCheckRight() && colored){
+                        //Debug.Log("Running2");
                         this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
                         wallObjectsLeft.Clear();
+                        player.GetComponent<PlayerController>()._bPulling = true;
+                        player.GetComponent<PlayerController>()._bPushing = false;
                     }
-                    if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x < this.gameObject.transform.position.x && !WallCheckRight())
-                    {
-                        Debug.Log("Running3");
+                    if (player.GetComponent<PlayerController>()._bIsGoingRight == true && player.transform.position.x < this.gameObject.transform.position.x && !WallCheckRight() && colored){
+                        //Debug.Log("Running3");
                         this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
                         wallObjectsLeft.Clear();
+                        player.GetComponent<PlayerController>()._bPushing = true;
+                        player.GetComponent<PlayerController>()._bPulling = false;
                     }
-                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x > this.gameObject.transform.position.x && !WallCheckLeft())
-                    {
-                        Debug.Log("Running4");
+                    else if (player.GetComponent<PlayerController>()._bIsGoingRight == false && player.transform.position.x > this.gameObject.transform.position.x && !WallCheckLeft() && colored){
+                        //Debug.Log("Running4");
                         this.gameObject.transform.position += player.GetComponent<PlayerController>().amountMoved;
                         wallObjectsRight.Clear();
+                        player.GetComponent<PlayerController>()._bPushing = true;
+                        player.GetComponent<PlayerController>()._bPulling = false;
+                    }
+                    else{
+
+                    }
+                    if (!colored){
+                        grabbed = false;
+                        player.GetComponent<PlayerController>()._bPushing = false;
+                        player.GetComponent<PlayerController>()._bPulling = false;
+                        player.GetComponent<PlayerController>()._bPushingOrPulling = false;
+                        ReleaseObject(this.gameObject);
                     }
                 }
             }
+            if (WallCheckLeft() || WallCheckRight() && colored){
+                player.GetComponent<PlayerController>().mSpeed = 0f;
+            }
         }
-        else if (falling && !grabbed)
-        {
+        else if (falling && !grabbed){
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
+        if (!colliding){
+            lastKnownSafePosition = transform.position;
+        }
+        Debug.Log(rb.isKinematic);
     }
 
 
@@ -179,20 +227,16 @@ public class AllowMovement : MonoBehaviour {
             stacked = false;
             falling = false;
             transform.parent = null;
-            if (this.gameObject.tag == "box_Big")
-            {
+            if (this.gameObject.tag == "box_Big"){
                 player.GetComponent<PlayerController>()._bPushingOrPulling = true;
             }
-            if (this.gameObject.tag == "box_Small")
-            {
-                if (!boxHolder.GetComponent<BoxholderScript>().doNotPickUp)
-                {
+            if (this.gameObject.tag == "box_Small"){
+                if (!boxHolder.GetComponent<BoxholderScript>().doNotPickUp){
                     rb.isKinematic = true;
                     stackCollider.enabled = false;
                     this.transform.position = boxHolder.transform.position;
                 }
-                else if (boxHolder.GetComponent<BoxholderScript>().doNotPickUp)
-                {
+                else if (boxHolder.GetComponent<BoxholderScript>().doNotPickUp){
                     grabbed = false;
                     ReleaseObject(this.gameObject);
                 }
@@ -203,11 +247,26 @@ public class AllowMovement : MonoBehaviour {
 
   private void ReleaseObject (GameObject obj) {
     if (obj == this.gameObject) {
+            Debug.Log("Release");
+            player.GetComponent<PlayerController>()._bPushing = false;
+            player.GetComponent<PlayerController>()._bPulling = false;
+            player.GetComponent<PlayerController>()._bPushingOrPulling = false;
             grabbed = false;
+            notPickedUp = true;
             if(this.gameObject.tag == "box_Small"){
                 Debug.Log(boxHolder.GetComponent<BoxCollider2D>().enabled);
                 rb.isKinematic = false;
                 stackCollider.enabled = true;
+                if (WallCheckLeft())
+                {
+                    transform.position = lastKnownSafePosition;
+                    wallObjectsLeft.Clear();
+                }
+                if (WallCheckRight())
+                {
+                    transform.position = lastKnownSafePosition;
+                    wallObjectsRight.Clear();
+                }
             }
             if (this.gameObject.tag == "box_Big"){
                 player.GetComponent<PlayerController>()._bPushingOrPulling = false;
@@ -262,6 +321,11 @@ public class AllowMovement : MonoBehaviour {
     {
         if (collision != null)
         {
+            colliding = false;
+            if(collision.collider.tag == "box_Big" || collision.collider.tag == "box_Small" || collision.collider.tag == "Terrain")
+            {
+                colliding = true;
+            }
             if (collision.collider.tag == "StackPoint" && !grabbed && IsGrounded())
             {
                 falling = false;
@@ -387,6 +451,7 @@ public class AllowMovement : MonoBehaviour {
         }
         Debug.DrawRay(boxCollider.bounds.center, Vector2.right * (boxCollider.bounds.extents.y + extraHeightText));
         if (wallObjectsRight.Count == 1) {
+            rb.velocity = Vector3.zero;
             return true;
         }
         else { return false; }
@@ -412,6 +477,7 @@ public class AllowMovement : MonoBehaviour {
         }
         Debug.DrawRay(boxCollider.bounds.center, Vector2.left * (boxCollider.bounds.extents.y + extraHeightText));
         if (wallObjectsLeft.Count == 1) {
+            rb.velocity = Vector3.zero;
             return true;
         }
         else { return false; }

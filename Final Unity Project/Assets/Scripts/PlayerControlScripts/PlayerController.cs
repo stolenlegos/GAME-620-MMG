@@ -21,8 +21,9 @@ public class PlayerController : MonoBehaviour
     public CharacterState mPlayerState = CharacterState.IDLE;
 
     //Movement Settings
-    private float mSpeed = 2.5f;
+    public float mSpeed = 2.5f;
     private float mJumpStrength = 7.1f;
+    private float storedSpeed;
 
     //State Animation Controller
   //  public RuntimeAnimatorController mIdleController;
@@ -37,6 +38,8 @@ public class PlayerController : MonoBehaviour
     private bool _bInputsDisabled = false;
     private bool _bMovementDisabled = false;
     private bool _bGrounded = true;
+    public bool _bPushing = false;
+    public bool _bPulling = false;
     public bool _bPushingOrPulling = false;
 
     //private bool _bPlayerInvincible = false;
@@ -49,6 +52,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2D;
     private CapsuleCollider2D playerCollider;
     private GameObject boxMovement;
+
+    public List<GameObject> wallObjectsRight = new List<GameObject>();
+    public List<GameObject> wallObjectsLeft = new List<GameObject>();
 
     private float moveHorizontal;
     private float moveVertical;
@@ -131,27 +137,46 @@ public class PlayerController : MonoBehaviour
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _mAnimatorComponent.SetFloat("Speed_f", 1f);
                     _bMovementDisabled = false;
-                    if (Input.GetKey(KeyCode.D))
+                    if (_bPulling)
                     {
+                        if (Input.GetKey(KeyCode.D) && !WallCheckRight())
+                        {
                             _bIsGoingRight = true;
                             transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
-                    }
-                    else if (Input.GetKey(KeyCode.A))
-                    {
+                        }
+                        else if (Input.GetKey(KeyCode.A) && !WallCheckLeft())
+                        {
                             _bIsGoingRight = false;
                             transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
+                        }
+                    }
+                    else if (!_bPulling)
+                    {
+                        wallObjectsLeft.Clear();
+                        wallObjectsRight.Clear();
+                        if (Input.GetKey(KeyCode.D))
+                        {
+                            _bIsGoingRight = true;
+                            transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
+                        }
+                        else if (Input.GetKey(KeyCode.A))
+                        {
+                            _bIsGoingRight = false;
+                            transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
+                        }
                     }
                     if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && !_bPushingOrPulling)
                     {
-                            gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
-                            _bPlayerStateChanged = true;
-                            mPlayerState = CharacterState.JUMPING;
+                        gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.JUMPING;
                     }
                     else if (!Input.GetKey(KeyCode.D) && (!Input.GetKey(KeyCode.A)))
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.IDLE;
                     }
+
                 }
                 if (mPlayerState == CharacterState.JUMPING)
                 {
@@ -200,6 +225,11 @@ public class PlayerController : MonoBehaviour
         {
             
         }
+        if(_bPushingOrPulling && !IsGrounded())
+        {
+            _bPushingOrPulling = false;
+        }
+        //Debug.Log("Push/Pull" + _bPushingOrPulling);
         //pushing big boxes code
         amountMoved = transform.position - previousPos;
         previousPos = transform.position;
@@ -208,10 +238,10 @@ public class PlayerController : MonoBehaviour
     private void UpdateWalkingAnimation() {
       if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)){
         _mAnimatorComponent.SetFloat("Speed_f", 1);
-        if (Input.GetKey(KeyCode.A)) {
-          //rend.flipX = true;
+        if ((Input.GetKey(KeyCode.A) && _bPulling) || (Input.GetKey(KeyCode.D) && _bPulling)) {
+          rend.flipX = true;
             } else {
-          //rend.flipX = false;
+          rend.flipX = false;
             }
       } else {
         _mAnimatorComponent.SetFloat("Speed_f", 0);
@@ -358,23 +388,69 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(raycastHit.collider);
         return raycastHit.collider != null;
     }
-    /*private bool WallCheck()
+    private bool WallCheckRight()
     {
-        float extraHeightText = .01f;
-        RaycastHit2D raycastHit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.right, playerCollider.bounds.extents.y + extraHeightText, ~playerLayerMask);
+        float extraHeightText = -.3f;
+        RaycastHit2D[] raycastHits;
+        Physics2D.queriesHitTriggers = false;
+        raycastHits = Physics2D.RaycastAll(playerCollider.bounds.center, Vector2.right, playerCollider.bounds.extents.y + extraHeightText, ~playerLayerMask);
         Color rayColor;
-        if (raycastHit.collider != null)
+        for (int i = 0; i < raycastHits.Length; i++)
         {
-            rayColor = Color.green;
-        }
-        else
-        {
-            rayColor = Color.red;
+            RaycastHit2D hit = raycastHits[i];
+            if (hit.collider.gameObject != this.gameObject)
+            {
+                if (wallObjectsRight.Count != 1)
+                {
+                    if (hit.collider.gameObject.tag != "Player")
+                    {
+                        wallObjectsRight.Add(hit.collider.gameObject);
+                        rayColor = Color.green;
+                    }
+                }
+            }
+            else
+            {
+                rayColor = Color.red;
+            }
         }
         Debug.DrawRay(playerCollider.bounds.center, Vector2.right * (playerCollider.bounds.extents.y + extraHeightText));
-        //Debug.Log(raycastHit.collider);
-        return raycastHit.collider != null;
-    }*/
+        if (wallObjectsRight.Count == 1)
+        {
+            return true;
+        }
+        else { return false; }
+    }
+    private bool WallCheckLeft()
+    {
+        float extraHeightText = -.3f;
+        RaycastHit2D[] raycastHits;
+        Physics2D.queriesHitTriggers = false;
+        raycastHits = Physics2D.RaycastAll(playerCollider.bounds.center, Vector2.left, playerCollider.bounds.extents.y + extraHeightText, ~playerLayerMask);
+        Color rayColor;
+        for (int i = 0; i < raycastHits.Length; i++)
+        {
+            RaycastHit2D hit = raycastHits[i];
+            if (hit.collider.gameObject != this.gameObject)
+            {
+                if (wallObjectsLeft.Count != 1)
+                {
+                    if (hit.collider.gameObject.tag != "Player")
+                    {
+                        wallObjectsLeft.Add(hit.collider.gameObject);
+                        rayColor = Color.green;
+                    }
+                }
+            }
+            else { rayColor = Color.red; }
+        }
+        Debug.DrawRay(playerCollider.bounds.center, Vector2.left * (playerCollider.bounds.extents.y + extraHeightText));
+        if (wallObjectsLeft.Count == 1)
+        {
+            return true;
+        }
+        else { return false; }
+    }
     public void SaveCurrentState()
     {
         savedPosition = this.transform.position;
@@ -383,24 +459,5 @@ public class PlayerController : MonoBehaviour
     {
         this.transform.position = savedPosition;
     }
-    /*public void ChangeAnimator()
-{
-    RuntimeAnimatorController newAnimator = mIdleController;
-
-    if(mPlayerState == CharacterState.WALKING || mPlayerState == CharacterState.JUMPING)
-    {
-        newAnimator = mWalkingController;
-        if(_bIsGoingRight)
-        {
-            gameObject.GetComponent<SpriteRenderer>().flipX = false;
-        }
-        else
-        {
-            gameObject.GetComponent<SpriteRenderer>().flipX = true;
-        }
-    }
-
-    gameObject.GetComponent<Animator>().runtimeAnimatorController = newAnimator;
-}*/
 
 }

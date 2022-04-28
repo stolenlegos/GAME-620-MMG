@@ -125,11 +125,19 @@ MonoBehaviour:
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  rejectObjectsMask:
+    serializedVersion: 2
+    m_Bits: 0
   mPlayerState: 0
+  mSpeed: 2.5
   _mAnimatorComponent: {fileID: 5937162384208615716}
   rend: {fileID: 5937162384208615719}
   _bIsGoingRight: 1
+  _bPushing: 0
+  _bPulling: 0
   _bPushingOrPulling: 0
+  wallObjectsRight: []
+  wallObjectsLeft: []
   previousPos: {x: 0, y: 0, z: 0}
   amountMoved: {x: 0, y: 0, z: 0}
   savedPosition: {x: 0, y: 0, z: 0}
@@ -161,6 +169,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEnergy: 4
   currentEnergy: 0
+  savedCurrentEnergy: 0
+  savedMaxEnergy: 0
+  savedObjectsColored: []
 --- !u!70 &5937162383236334007
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

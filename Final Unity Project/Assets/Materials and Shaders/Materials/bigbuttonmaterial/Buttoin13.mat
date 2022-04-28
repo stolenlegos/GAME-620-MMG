@@ -50,7 +50,7 @@ Material:
     m_Floats:
     - Vector1_1a602a35520b427182c681c5bfff8ef0: 0
     - _EnableExternalAlpha: 0
-    - _Saturation: 1
+    - _Saturation: 1.0011964
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}

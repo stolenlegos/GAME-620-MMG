@@ -16,6 +16,8 @@ public class CameraManager : MonoBehaviour
     public GameObject[] bigBoxes;
     public GameObject[] buttons;
     public GameObject[] platforms;
+    public GameObject[] doors;
+    //public Object[] pulseObjects;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +26,8 @@ public class CameraManager : MonoBehaviour
         bigBoxes = GameObject.FindGameObjectsWithTag("box_Big");
         buttons = GameObject.FindGameObjectsWithTag("Button");
         platforms = GameObject.FindGameObjectsWithTag("Platform");
+        doors = GameObject.FindGameObjectsWithTag("Door");
+        //pulseObjects = Object.FindObjectsOfType<SaturationControl>();
     }
     // Update is called once per frame
     void Update()
@@ -68,6 +72,14 @@ public class CameraManager : MonoBehaviour
             {
                 gameObject.GetComponent<SaturationControl>().Pulse();
             }
+            foreach (GameObject gameObject in doors)
+            {
+                gameObject.GetComponent<SaturationControl>().Pulse();
+            }
+            /*foreach (GameObject pulse in pulseObjects)
+            {
+                pulse.GetComponent<SaturationControl>().Pulse();
+            }*/
         }
         else if (_followPlayer)
         {

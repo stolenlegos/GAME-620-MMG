@@ -222,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spirals:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   falling: 0
   stacked: 0
   grabbed: 0

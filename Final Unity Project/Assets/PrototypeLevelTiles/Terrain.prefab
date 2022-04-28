@@ -863,7 +863,7 @@ Tilemap:
       e33: 1
   m_TileColorArray:
   - m_RefCount: 1
-    m_Data: {r: 0.9154893, g: 0.5352064, b: 0.5669718, a: 1}
+    m_Data: {r: 0.9873931, g: 0.41660014, b: 0.52877665, a: 1}
   - m_RefCount: 56
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
@@ -978,11 +978,11 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6146426010999443859}
   m_Enabled: 1
-  m_CellSize: {x: 60.75, y: 41.8125, z: 0}
+  m_CellSize: {x: 1, y: 1, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &5526400495074117357
+--- !u!114 &5318417966260414417
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

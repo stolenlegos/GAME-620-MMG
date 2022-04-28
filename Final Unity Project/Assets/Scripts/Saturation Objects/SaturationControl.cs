@@ -118,13 +118,20 @@ public class SaturationControl : MonoBehaviour {
             IncreaseSat2();
             if (saturationLevel <= 0f){
                 swap = true;
+                Debug.Log("Swap is true");
             }
         }
         else if (saturationLevel < 1 && swap){
             ReduceSat2();
             if (saturationLevel >= 1f){
                 swap = false;
+                Debug.Log("Swap is false");
             }
+        }
+        if(saturationLevel > 1f)
+        {
+            swap = false;
+            Debug.Log("Pulse Break");
         }
     }
     private void EnergyGive()
@@ -133,14 +140,14 @@ public class SaturationControl : MonoBehaviour {
         energyBall = Instantiate(coloredEnergy, playerPostion.position, playerPostion.rotation);
         energyBall.GetComponent<EnergyTransfer>().giving = true;
         energyBall.GetComponent<EnergyTransfer>().targetObject = this.gameObject;
-        Debug.Log("Give");
+        //Debug.Log("Give");
     }
     private void EnergyReturn()
     {
         GameObject energyBall;
         energyBall = Instantiate(coloredEnergy, this.gameObject.transform.position, this.gameObject.transform.rotation);
         energyBall.GetComponent<EnergyTransfer>().returning = true;
-        Debug.Log("Return");
+        //Debug.Log("Return");
     }
     public void SaveCurrentState(){
         savedPosition = this.transform.position;
