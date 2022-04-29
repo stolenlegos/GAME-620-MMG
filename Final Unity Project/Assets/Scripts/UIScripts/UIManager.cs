@@ -4,21 +4,40 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
-  [SerializeField]
+    public static UIManager instance;
+
+    [SerializeField]
   private Text energyLevelText;
   [SerializeField]
   private Slider bar;
   [SerializeField]
   private Slider energyReturnSlider;
+  [SerializeField]
+  private Text energyReturnSliderText;
+  [SerializeField]
+  //private 
   private int currentEnergy;
   private int maxEnergy;
+    private float energyFall;
   private float startTime = 0f;
   private float holdTime = 3.0f;
   private int savedCurrentEnergy;
   private int savedMaxEnergy;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
-  void Start() {
+    void Start() {
     EnergyEvents.EnergyUIChange += ChangeEnergyLevels;
     maxEnergy = 4;
     currentEnergy = maxEnergy;
@@ -46,6 +65,7 @@ public class UIManager : MonoBehaviour {
             }
         }
         else { energyReturnSlider.gameObject.SetActive(false); ChangeEnergyReturnSlider(); }
+        //float diff = 
     }
 
 
@@ -74,10 +94,22 @@ public class UIManager : MonoBehaviour {
     private void ChangeEnergyReturnSlider()
     {
         energyReturnSlider.value = startTime;
-        if(!Input.GetMouseButton(0) && startTime != 0f)
+        if (energyReturnSlider.value > 0f && energyReturnSlider.value <= .99f)
+        {
+            energyReturnSliderText.text = "3";
+        }
+        else if (energyReturnSlider.value >= 1f && energyReturnSlider.value <= 1.99f)
+        {
+            energyReturnSliderText.text = "2";
+        }
+        else if (energyReturnSlider.value >= 2f && energyReturnSlider.value <= 2.99f)
+        {
+            energyReturnSliderText.text = "1";
+        }
+        if (!Input.GetMouseButton(0) && startTime != 0f)
         {
             energyReturnSlider.value = startTime -= Time.deltaTime;
-            if(energyReturnSlider.value <= 0)
+            if (energyReturnSlider.value <= 0)
             {
                 energyReturnSlider.value = 0;
                 startTime = 0;

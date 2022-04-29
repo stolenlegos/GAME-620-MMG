@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CursorManager : MonoBehaviour
 {
+    public static CursorManager instance;
     [SerializeField]
     private Texture2D[] cursorTextureArray;
     [SerializeField]
@@ -15,6 +16,18 @@ public class CursorManager : MonoBehaviour
     private float frameTimer;
     private Vector3 lastMouseCoordinate = Vector3.zero;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     // Start is called before the first frame update
     private void OnEnable()
     {

@@ -71,6 +71,10 @@ public class PlatformMovement : MonoBehaviour
             {
                 nextPos = pos1.position;
             }
+            else if (nextPos == pos1.position)
+            {
+                nextPos = pos2.position;
+            }
         }
     }
 }

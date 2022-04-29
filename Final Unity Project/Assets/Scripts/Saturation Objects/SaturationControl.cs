@@ -14,6 +14,7 @@ public class SaturationControl : MonoBehaviour {
     [SerializeField]
   private Material material;
   private float saturationLevel;
+    private SpriteRenderer selectionRender;
 
 
     void Start() {
@@ -23,6 +24,16 @@ public class SaturationControl : MonoBehaviour {
         colored = false;
         ShaderEvents.SaturationChange += BoolChange;
         saturationLevel = 1;
+        if(this.transform.childCount > 1)
+        {
+            selectionRender = this.transform.GetChild(1).GetComponent<SpriteRenderer>();
+            selectionRender.enabled = false;
+        }
+        if(this.gameObject.tag == "Platform")
+        {
+            selectionRender = this.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            selectionRender.enabled = false;
+        }
     }
 
 
@@ -92,6 +103,10 @@ public class SaturationControl : MonoBehaviour {
                 }
             }
         }
+        if(hovered && selectionRender != null)
+        {
+            selectionRender.enabled = true;
+        }
     }
     private void OnMouseEnter(){
         swap = false;
@@ -111,6 +126,10 @@ public class SaturationControl : MonoBehaviour {
         if (!hovered) {
             PlayerActions.ObjectDropped(this.gameObject);
             POI._objectsToColor.Remove(this.gameObject);
+        }
+        if (selectionRender != null)
+        {
+            selectionRender.enabled = false;
         }
     }
     public void Pulse(){

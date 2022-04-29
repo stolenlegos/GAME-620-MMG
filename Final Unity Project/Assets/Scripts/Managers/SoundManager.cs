@@ -1,59 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.Audio;
+using System;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    //Audio players components
-    public AudioSource EffectsSource;
-    public AudioSource MusicSource;
+    public Sound[] sounds;
 
-    //Random pitch adjustment range
-    public float LowPitchRange = .95f;
-    public float HighPitchRange = 1.05f;
+    public static SoundManager instance;
 
-    //Singleton Instance
-    public static SoundManager Instance = null;
-
-    // Initialize the singleton instance
     private void Awake()
     {
-        //If there is not already an instance of SoundManager, set it to this.
-        if (Instance = null)
+        if(instance == null)
         {
-            Instance = this;
+            instance = this;
         }
-        //If an instance already exists, destroy whatever this object is to enforce singleton
-        else if (Instance != this)
+        else
         {
             Destroy(gameObject);
+            return;
         }
 
-        //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading scene.
+        DontDestroyOnLoad(gameObject);
+
+        foreach (Sound s in sounds)
+        {
+            s.source = gameObject.AddComponent<AudioSource>();
+            s.source.clip = s.clip;
+
+            s.source.volume = s.volume;
+            s.source.pitch = s.pitch;
+            s.source.loop = s.loop;
+        }
     }
 
-    //Play a single clip through the sound effects source
-    public void Play(AudioClip clip)
+    private void Start()
     {
-        EffectsSource.clip = clip;
-        EffectsSource.Play();
+        
     }
 
-    //Play a single clip through the music source
-    public void PlayMusic(AudioClip clip)
+    private void Update()
     {
-        MusicSource.clip = clip;
-        MusicSource.Play();
+        
     }
 
-    //Play a random clip from an array, and randomzie pitch
-    public void RandomSoundEffect(params AudioClip[] clips)
+    public void Play(string name)
     {
-        int randomIndex = Random.Range(0, clips.Length);
-        float randomPitch = Random.Range(LowPitchRange, HighPitchRange);
-
-        EffectsSource.pitch = randomPitch;
-        EffectsSource.clip = clips[randomIndex];
-        EffectsSource.Play();
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if(s == null)
+        {
+            Debug.Log("Failed to play " + name);
+            return;
+        }
+        s.source.Play();
     }
+    
 }

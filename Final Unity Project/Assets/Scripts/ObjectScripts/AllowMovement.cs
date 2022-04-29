@@ -196,9 +196,9 @@ public class AllowMovement : MonoBehaviour {
                     }
                 }
             }
-            if (WallCheckLeft() || WallCheckRight() && colored){
+            /*if (WallCheckLeft() || WallCheckRight() && colored){
                 player.GetComponent<PlayerController>().mSpeed = 0f;
-            }
+            }*/
         }
         else if (falling && !grabbed){
             rb.constraints = RigidbodyConstraints2D.None;

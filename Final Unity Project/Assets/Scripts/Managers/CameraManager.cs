@@ -7,6 +7,8 @@ public class CameraManager : MonoBehaviour
     public Transform player;
     public Vector3 offset;
 
+    public static CameraManager instance;
+
     private Camera cam;
     public int normalview = 30;
     public int zoomBackTimer;
@@ -19,6 +21,19 @@ public class CameraManager : MonoBehaviour
     public GameObject[] doors;
     //public Object[] pulseObjects;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         cam = GetComponent<Camera> ();

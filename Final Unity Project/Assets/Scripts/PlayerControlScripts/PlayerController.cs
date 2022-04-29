@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public enum CharacterState
 {
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     public Animator _mAnimatorComponent;
     public SpriteRenderer rend;
+    public Light2D playerLight;
     public bool _bIsGoingRight = true;
     private bool _bPlayerStateChanged = false;
 
@@ -345,31 +347,36 @@ public class PlayerController : MonoBehaviour
           //Debug.Log("less fast");
           mSpeed = 3.0f * .75f;
           mJumpStrength = 7.1f * .80f;
+          playerLight.pointLightOuterRadius = 2.15f * .75f;
       }
       else if (currentEnergy == (maxEnergy - 2))
       {
           //Debug.Log("more less fast");
           mSpeed = 3.0f * .5f;
           mJumpStrength = 7.1f * .75f;
-      }
+            playerLight.pointLightOuterRadius = 2.15f * .5f;
+        }
       else if (currentEnergy == (maxEnergy - 3))
+      {
+          //Debug.Log("the slowest of the fast");
+          mSpeed = 3.0f * .33f;
+          mJumpStrength = 7.1f * .65f;
+            playerLight.pointLightOuterRadius = 2.15f * .33f;
+        }
+      else if (currentEnergy == (maxEnergy - 4))
       {
           //Debug.Log("the slowest of the fast");
           mSpeed = 3.0f * .25f;
           mJumpStrength = 7.1f * .65f;
-      }
-      else if (currentEnergy == (maxEnergy - 4))
-      {
-            //Debug.Log("the slowest of the fast");
-            mSpeed = 3.0f * .33f;
-            mJumpStrength = 7.1f * .65f;
-      }
+            playerLight.pointLightOuterRadius = 2.15f * .25f;
+        }
       else if (currentEnergy == maxEnergy)
       {
           //Debug.Log("Fast");
           mSpeed = 3.0f;
           mJumpStrength = 7.1f;
-      }
+            playerLight.pointLightOuterRadius = 2.15f;
+        }
     }
     private bool IsGrounded()
     {
