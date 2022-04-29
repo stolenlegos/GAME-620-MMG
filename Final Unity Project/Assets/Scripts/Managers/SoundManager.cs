@@ -35,7 +35,7 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        
+        Play("GameMusic");
     }
 
     private void Update()
