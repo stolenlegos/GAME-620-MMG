@@ -33,11 +33,11 @@ public class AllowButtonPush : MonoBehaviour {
             {
                 _mUIManager.DisplayTimer(this.gameObject.transform);
             }
-            /*if(ButtonPressCoroutine != null)
+            if(ButtonPressCoroutine != null)
             {
                 StopCoroutine("ButtonTimer");
-            }*/
-            StartCoroutine("ButtonTimer");
+            }
+            ButtonPressCoroutine = StartCoroutine("ButtonTimer");
       //Debug.Log("PUSHED THE BUTTON");
     }
     else if (!colored && doorOpen)
@@ -79,10 +79,10 @@ public class AllowButtonPush : MonoBehaviour {
     if (colored) {
       EnergyEvents.ChangeColor(this.gameObject);
     }
-    /*if (!colored)
+    if (!colored)
         {
             StopCoroutine(ButtonPressCoroutine);
-        }*/
+        }
   }
 
 }
