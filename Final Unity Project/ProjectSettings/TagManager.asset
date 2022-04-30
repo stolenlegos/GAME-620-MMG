@@ -21,6 +21,7 @@ TagManager:
   - ColoredEnergy
   - Door
   - BoxHolder
+  - ButtonTimer
   layers:
   - Default
   - TransparentFX

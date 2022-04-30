@@ -6,7 +6,7 @@ public class Interactable : MonoBehaviour
 {
     public Dialogue dialogue;
     private bool dialogueEnded;
-    //public bool freezeOnDialogueStart;
+    public bool freezeOnDialogueStart;
 
     private void Start() {
         dialogueEnded = false;
@@ -28,7 +28,7 @@ public class Interactable : MonoBehaviour
             dialogueEnded = true;
         }
         else { }
-        if(this.gameObject.tag == "GameStart")
+        if(this.gameObject.tag == "GameStart" && !dialogueEnded)
         {
             TriggerDialogue();
             dialogueEnded = true;

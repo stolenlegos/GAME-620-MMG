@@ -51,7 +51,27 @@ public class SoundManager : MonoBehaviour
             Debug.Log("Failed to play " + name);
             return;
         }
-        s.source.Play();
+        s.source.Play(); 
+    }
+    public void Stop(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null)
+        {
+            Debug.Log("Failed to stop" + name);
+            return;
+        }
+        s.source.Stop();
+    }
+    public void PitchChange(string name, float pitchChange)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null)
+        {
+            Debug.Log("Failed to change pitch " + name);
+            return;
+        }
+        s.source.pitch = pitchChange;
     }
     
 }

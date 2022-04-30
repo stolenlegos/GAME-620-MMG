@@ -14,7 +14,9 @@ public class UIManager : MonoBehaviour {
   private Slider energyReturnSlider;
   [SerializeField]
   private Text energyReturnSliderText;
-  [SerializeField]
+    public Image transBar;
+    public Image fillBar;
+    public GameObject Timer;
   //private 
   private int currentEnergy;
   private int maxEnergy;
@@ -23,6 +25,7 @@ public class UIManager : MonoBehaviour {
   private float holdTime = 3.0f;
   private int savedCurrentEnergy;
   private int savedMaxEnergy;
+    private float fillSpeed = .25f;
 
     private void Awake()
     {
@@ -65,7 +68,10 @@ public class UIManager : MonoBehaviour {
             }
         }
         else { energyReturnSlider.gameObject.SetActive(false); ChangeEnergyReturnSlider(); }
-        //float diff = 
+        if(transBar.fillAmount >= fillBar.fillAmount)
+        {
+            transBar.fillAmount -= fillSpeed * Time.deltaTime;
+        }
     }
 
 
@@ -89,6 +95,10 @@ public class UIManager : MonoBehaviour {
     private void ChangeSlider()
     {
         bar.value =  currentEnergy;
+        if(transBar.fillAmount <= fillBar.fillAmount)
+        {
+            transBar.fillAmount = fillBar.fillAmount;
+        }
     }
     //end
     private void ChangeEnergyReturnSlider()
@@ -127,6 +137,12 @@ public class UIManager : MonoBehaviour {
         this.maxEnergy = savedMaxEnergy;
 
         EnergyEvents.EnergyChange(savedCurrentEnergy, savedMaxEnergy);
+    }
+    public void DisplayTimer(Transform buttonPosition)
+    {
+        GameObject timer;
+        timer = Instantiate(Timer, buttonPosition.position, buttonPosition.rotation);
+        timer.transform.parent = buttonPosition;
     }
     
 }

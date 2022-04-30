@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AllowButtonPush : MonoBehaviour {
-  private bool colored;
+  public bool colored;
   private GameObject player;
   private bool playerNear;
   private bool doorOpen;
+    private Coroutine ButtonPressCoroutine;
+    private UIManager _mUIManager;
   [SerializeField] private GameObject door;
-  [SerializeField] private float timer;
+  public float timer;
 
 
   void Start() {
-    player = GameObject.FindGameObjectWithTag("Player");
+        _mUIManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        player = GameObject.FindGameObjectWithTag("Player");
     colored = false;
     doorOpen = false;
     playerNear = false;
@@ -25,7 +29,15 @@ public class AllowButtonPush : MonoBehaviour {
     if (colored && Input.GetKeyDown(KeyCode.E) && playerNear) {
       PlayerActions.ButtonPushed(door);
       doorOpen = true;
-      StartCoroutine("ButtonTimer");
+            if (doorOpen)
+            {
+                _mUIManager.DisplayTimer(this.gameObject.transform);
+            }
+            if(ButtonPressCoroutine != null)
+            {
+                StopCoroutine("ButtonTimer");
+            }
+            ButtonPressCoroutine = StartCoroutine("ButtonTimer");
       //Debug.Log("PUSHED THE BUTTON");
     }
     else if (!colored && doorOpen)
@@ -67,6 +79,10 @@ public class AllowButtonPush : MonoBehaviour {
     if (colored) {
       EnergyEvents.ChangeColor(this.gameObject);
     }
+    if (!colored)
+        {
+            StopCoroutine(ButtonPressCoroutine);
+        }
   }
 
 }

@@ -21,7 +21,7 @@ public class CareLightScript : MonoBehaviour
     void FollowMousePosition()
     {
         var mousePos = Input.mousePosition;
-        var wantedPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x + 15f, mousePos.y - 15f, depth));
+        var wantedPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x /*+ 15f*/, mousePos.y /*- 15f*/, depth));
         transform.position = wantedPos;
     }
 }

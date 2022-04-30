@@ -17,6 +17,7 @@ public class AllowMovement : MonoBehaviour {
     private bool colliding = false;
     private Vector3 lastKnownSafePosition;
     private bool notPickedUp = true;
+    private bool pushNoise = false; 
 
     //StatesToSave
     private bool savedColored;
@@ -27,6 +28,7 @@ public class AllowMovement : MonoBehaviour {
     private bool savedGrabbed;
     private bool savedGrabbable;
 
+    private SoundManager _mSoundManager;
     private GameObject player;
     private GameObject boxHolder;
     private Vector3 stackPosition;
@@ -44,6 +46,7 @@ public class AllowMovement : MonoBehaviour {
 
     void Start()
     {
+        _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         player = GameObject.FindGameObjectWithTag("Player");
         boxHolder = GameObject.Find("BoxHolder");
         boxCollider = transform.GetComponent<BoxCollider2D>();
@@ -288,6 +291,7 @@ public class AllowMovement : MonoBehaviour {
             //Debug.Log(collision.gameObject.tag);
             if (collision.collider.tag == "StackPoint" && !grabbed && IsGrounded())
             {
+                _mSoundManager.Play("BoxDrop");
                 falling = false;
                 stacked = true;
                 this.transform.parent = null;
@@ -300,6 +304,7 @@ public class AllowMovement : MonoBehaviour {
             }
             else if (collision.collider.tag == "Platform" && !grabbed && IsGrounded())
             {
+                _mSoundManager.Play("BoxDrop");
                 falling = false;
                 this.transform.parent = null;
                 this.transform.parent = collision.transform;
@@ -307,6 +312,7 @@ public class AllowMovement : MonoBehaviour {
             }
             else if (collision.collider.tag == "Terrain" && !grabbed && IsGrounded())
             {
+                _mSoundManager.Play("BoxDrop");
                 falling = false;
                 this.transform.parent = null;
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;

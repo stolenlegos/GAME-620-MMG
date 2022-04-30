@@ -9,13 +9,17 @@ public class DialogueManager : MonoBehaviour
 {
     public Text nameText;
     public Text dialogueText;
+    public Image textEnder;
     public static DialogueManager instance;
     private Coroutine typeWriterCoroutine;
     private bool typing = false;
     private bool checkpointBarkFirst = true;
+    private float starTime = 0f;
+    private float endTime = 1f;
     public bool careOff = true;
 
     public Animator animator;
+    public SoundManager soundManager;
 
     private Queue<string> sentences;
     private string currentSentence;
@@ -42,6 +46,7 @@ public class DialogueManager : MonoBehaviour
 
     void Start(){
         sentences = new Queue<string>();
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
     private void Update()
     {
@@ -83,6 +88,27 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
+        if (typing)
+        {
+            textEnder.enabled = false;
+        }
+        if (!typing)
+        {
+            soundManager.Stop("CareTalk");
+            if (starTime <= 0)
+            {
+                Debug.Log("On");
+                textEnder.enabled = true;
+                starTime += Time.deltaTime;
+            }
+            else if (starTime >= endTime)
+            {
+                Debug.Log("Off");
+                textEnder.enabled = false;
+                starTime -= Time.deltaTime;
+            }
+        }
+        Debug.Log(textEnder.enabled);
     }
 
     public void StartDialogue (Dialogue dialogue){
@@ -117,6 +143,10 @@ public class DialogueManager : MonoBehaviour
     IEnumerator TypeSentence (string sentence){
         currentSentence = sentence;
         typing = true;
+        if (typing)
+        {
+            soundManager.Play("CareTalk");
+        }
         dialogueText.text = "";
         foreach(char letter in sentence.ToCharArray()){
             dialogueText.text += letter;

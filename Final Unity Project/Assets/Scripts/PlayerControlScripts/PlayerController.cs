@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
@@ -22,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public CharacterState mPlayerState = CharacterState.IDLE;
 
     //Movement Settings
-    public float mSpeed = 2.5f;
+    public float mSpeed = 3f;
     private float mJumpStrength = 7.1f;
     private float storedSpeed;
 
@@ -86,11 +87,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("PlayerState: " + mPlayerState);
+        Debug.Log("PlayerState: " + mPlayerState);
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
         UpdateWalkingAnimation();
 
+        //Debug.Log(mSpeed);
         //Debug.Log("Grounded Animation: " + _mAnimatorComponent.GetBool("isGrounded_b"));
         //Debug.Log("Animation " + _mAnimatorComponent.GetCurrentAnimatorStateInfo(0).fullPathHash);
 
@@ -105,11 +107,18 @@ public class PlayerController : MonoBehaviour
             {
                 if (mPlayerState == CharacterState.IDLE)
                 {
+                    _mSoundManager.Stop("BoxPush/Pull");
+                    _mSoundManager.Stop("Walking");
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _mAnimatorComponent.SetFloat("Speed_f", 0f);
                     if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A)))
                     {
-                            _bPlayerStateChanged = true;
+                        _mSoundManager.Play("Walking");
+                        if (_bPushingOrPulling)
+                        {
+                            _mSoundManager.Play("BoxPush/Pull");
+                        }
+                        _bPlayerStateChanged = true;
                             mPlayerState = CharacterState.WALKING;
                             if (Input.GetKey(KeyCode.D))
                             {
@@ -122,7 +131,8 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && !_bPushingOrPulling && !_bPlayerCanExamine)
                     {
-                            gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
+                        _mSoundManager.Play("Jumping");
+                        gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                             _bPlayerStateChanged = true;
                             mPlayerState = CharacterState.JUMPING;
                     }
@@ -139,8 +149,9 @@ public class PlayerController : MonoBehaviour
                     _mAnimatorComponent.SetBool("isGrounded_b", true);
                     _mAnimatorComponent.SetFloat("Speed_f", 1f);
                     _bMovementDisabled = false;
-                    if (_bPulling)
+                    if (_bPulling && IsGrounded())
                     {
+                        //_mSoundManager.Play("Carrying");
                         if (Input.GetKey(KeyCode.D) && !WallCheckRight())
                         {
                             _bIsGoingRight = true;
@@ -152,10 +163,11 @@ public class PlayerController : MonoBehaviour
                             transform.position += new Vector3(moveHorizontal, 0, 0) * Time.deltaTime * mSpeed;
                         }
                     }
-                    else if (!_bPulling)
+                    else if (!_bPulling && IsGrounded())
                     {
                         wallObjectsLeft.Clear();
                         wallObjectsRight.Clear();
+                        
                         if (Input.GetKey(KeyCode.D))
                         {
                             _bIsGoingRight = true;
@@ -169,14 +181,22 @@ public class PlayerController : MonoBehaviour
                     }
                     if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && !_bPushingOrPulling)
                     {
+                        _mSoundManager.Play("Jumping");
+                        _mSoundManager.Stop("Walking");
                         gameObject.GetComponent<Rigidbody2D>().velocity = transform.up * mJumpStrength;
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.JUMPING;
                     }
-                    else if (!Input.GetKey(KeyCode.D) && (!Input.GetKey(KeyCode.A)))
+                    else if (!Input.GetKey(KeyCode.D) && (!Input.GetKey(KeyCode.A)) && IsGrounded())
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.IDLE;
+                    }
+                    else if (!IsGrounded())
+                    {
+                        _mSoundManager.Stop("Walking");
+                        _bPlayerStateChanged = true;
+                        mPlayerState = CharacterState.JUMPING;
                     }
 
                 }
@@ -301,12 +321,14 @@ public class PlayerController : MonoBehaviour
                 }
                 if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && IsGrounded())
                 {
+                    _mSoundManager.Play("Walking");
                     _bMovementDisabled = false;
                     _bPlayerStateChanged = true;
                     mPlayerState = CharacterState.WALKING;
                 }
                 else if (IsGrounded())
                 {
+                    _mSoundManager.Play("Landing");
                     mPlayerState = CharacterState.IDLE;
                 }
             }
@@ -330,6 +352,7 @@ public class PlayerController : MonoBehaviour
             }
             if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && _bGrounded == true)
             {
+                _mSoundManager.Play("Walking");
                 _bMovementDisabled = false;
                 _bPlayerStateChanged = true;
                 mPlayerState = CharacterState.WALKING;
@@ -348,6 +371,8 @@ public class PlayerController : MonoBehaviour
           mSpeed = 3.0f * .75f;
           mJumpStrength = 7.1f * .80f;
           playerLight.pointLightOuterRadius = 2.15f * .75f;
+            float pitchChange = 0.8f;
+            _mSoundManager.PitchChange("Walking", pitchChange);
       }
       else if (currentEnergy == (maxEnergy - 2))
       {
@@ -355,6 +380,8 @@ public class PlayerController : MonoBehaviour
           mSpeed = 3.0f * .5f;
           mJumpStrength = 7.1f * .75f;
             playerLight.pointLightOuterRadius = 2.15f * .5f;
+            float pitchChange = 0.7f;
+            _mSoundManager.PitchChange("Walking", pitchChange);
         }
       else if (currentEnergy == (maxEnergy - 3))
       {
@@ -362,6 +389,8 @@ public class PlayerController : MonoBehaviour
           mSpeed = 3.0f * .33f;
           mJumpStrength = 7.1f * .65f;
             playerLight.pointLightOuterRadius = 2.15f * .33f;
+            float pitchChange = 0.6f;
+            _mSoundManager.PitchChange("Walking", pitchChange);
         }
       else if (currentEnergy == (maxEnergy - 4))
       {
@@ -369,6 +398,8 @@ public class PlayerController : MonoBehaviour
           mSpeed = 3.0f * .25f;
           mJumpStrength = 7.1f * .65f;
             playerLight.pointLightOuterRadius = 2.15f * .25f;
+            float pitchChange = 0.5f;
+            _mSoundManager.PitchChange("Walking", pitchChange);
         }
       else if (currentEnergy == maxEnergy)
       {
@@ -376,6 +407,8 @@ public class PlayerController : MonoBehaviour
           mSpeed = 3.0f;
           mJumpStrength = 7.1f;
             playerLight.pointLightOuterRadius = 2.15f;
+            float pitchChange = 0.85f;
+            _mSoundManager.PitchChange("Walking", pitchChange);
         }
     }
     private bool IsGrounded()
