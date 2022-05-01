@@ -95,8 +95,6 @@ public class PlayerController : MonoBehaviour
         UpdateWalkingAnimation();
 
         //Debug.Log(mSpeed);
-        //Debug.Log("Grounded Animation: " + _mAnimatorComponent.GetBool("isGrounded_b"));
-        //Debug.Log("Animation " + _mAnimatorComponent.GetCurrentAnimatorStateInfo(0).fullPathHash);
 
         if (!_bInputsDisabled)
         {
@@ -261,7 +259,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void UpdateWalkingAnimation() {
-      if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)){
+      if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && !_bMovementDisabled){
         _mAnimatorComponent.SetFloat("Speed_f", 1);
         if ((Input.GetKey(KeyCode.A) && _bPulling) || (Input.GetKey(KeyCode.D) && _bPulling)) {
           rend.flipX = true;

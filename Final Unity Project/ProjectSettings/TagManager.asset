@@ -27,6 +27,12 @@ TagManager:
   - BigBoxTutorial
   - ButtonTutorial
   - EnergyReturnTutorial
+  - PuzzleOne
+  - PuzzleTwo
+  - PuzzleThree
+  - PuzzleFour
+  - PuzzleFive
+  - GameEnd
   layers:
   - Default
   - TransparentFX

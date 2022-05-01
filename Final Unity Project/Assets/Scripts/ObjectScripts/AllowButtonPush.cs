@@ -12,6 +12,7 @@ public class AllowButtonPush : MonoBehaviour {
     private bool noRepeatButtonT = false;
     private Coroutine ButtonPressCoroutine;
     private UIManager _mUIManager;
+    private DialogueManager _mDialogueManager;
   [SerializeField] private GameObject door;
   public float timer;
     public static event Action buttonTutorialPush;
@@ -19,6 +20,7 @@ public class AllowButtonPush : MonoBehaviour {
 
   void Start() {
         _mUIManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        _mDialogueManager = GameObject.FindGameObjectWithTag("DialogueManager").GetComponent<DialogueManager>();
         player = GameObject.FindGameObjectWithTag("Player");
     colored = false;
     doorOpen = false;
@@ -33,13 +35,13 @@ public class AllowButtonPush : MonoBehaviour {
       doorOpen = true;
             if (doorOpen)
             {
-                _mUIManager.DisplayTimer(this.gameObject.transform);
+                _mUIManager.DisplayTimer(this.gameObject.transform, timer);
             }
             if(ButtonPressCoroutine != null)
             {
                 StopCoroutine("ButtonTimer");
             }
-            if (this.gameObject.name == "Button (2)" && !noRepeatButtonT)
+            if (this.gameObject.name == "Button (2)" && !noRepeatButtonT && _mDialogueManager.buttonTutorial1Occured)
             {
                 buttonTutorialPush.Invoke();
                 noRepeatButtonT = true;

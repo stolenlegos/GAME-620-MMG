@@ -102,7 +102,7 @@ public class DialogueInteract : MonoBehaviour
     }
     private void OnMouseEnter()
     {
-        if(this.gameObject.name == "Platform" && !doNotRepeatPlatformTutorial)
+        if(this.gameObject.name == "Platform" && !doNotRepeatPlatformTutorial && _mDialogueManager.examinerTutorialOccured)
         {
             Debug.Log("InvokePlatform");
             platformTutorialActivated.Invoke();

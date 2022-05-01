@@ -138,11 +138,14 @@ public class UIManager : MonoBehaviour {
 
         EnergyEvents.EnergyChange(savedCurrentEnergy, savedMaxEnergy);
     }
-    public void DisplayTimer(Transform buttonPosition)
+    public void DisplayTimer(Transform buttonPosition, float amount)
     {
-        GameObject timer;
-        timer = Instantiate(Timer, buttonPosition.position, buttonPosition.rotation);
-        timer.transform.parent = buttonPosition;
+        if (amount < 100f)
+        {
+            GameObject timer;
+            timer = Instantiate(Timer, buttonPosition.position, buttonPosition.rotation);
+            timer.transform.parent = buttonPosition;
+        }
     }
     
 }

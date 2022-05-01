@@ -49,11 +49,11 @@ public class DialogueManager : MonoBehaviour
     private bool smallBoxTutorial4Occured = false; 
     private bool bigBoxTutorial1Occured = false; //8
     private bool bigBoxTutorial2Occured = false; //9
-    private bool buttonTutorial1Occured = false; //10
+    public bool buttonTutorial1Occured = false; //10
     private bool buttonTutorial2Occured = false; //11
     private bool buttonTutorial3Occured = false; //12
     private bool restPointTutorialOccured = false; //13
-    private bool examinerTutorialOccured = false; //14
+    public bool examinerTutorialOccured = false; //14
     private bool platformTutorialOccured = false; //15
     //puzzle bools
     private bool puzzle1 = false; //16
@@ -220,33 +220,40 @@ public class DialogueManager : MonoBehaviour
         }
         else if (currentDialogue.dialogueTag == "SmallBoxTutorial3"){
             smallBoxTutorial3Occured = true;
+            playerController._bMovementDisabled = false;
         }
         else if (currentDialogue.dialogueTag == "SmallBoxTutorial4"){
             smallBoxTutorial4Occured = true;
         }
         else if (currentDialogue.dialogueTag == "BigBoxTutorial1"){
             bigBoxTutorial1Occured = true;
+            playerController._bMovementDisabled = false;
         }
         else if (currentDialogue.dialogueTag == "BigBoxTutorial2"){
             bigBoxTutorial2Occured = true;
         }
         else if (currentDialogue.dialogueTag == "ButtonTutorial1"){
             buttonTutorial1Occured = true;
+            playerController._bMovementDisabled = false;
         }
         else if (currentDialogue.dialogueTag == "ButtonTutorial2"){
             buttonTutorial2Occured = true;
         }
         else if (currentDialogue.dialogueTag == "ButtonTutorial3"){
             buttonTutorial3Occured = true;
+            playerController._bMovementDisabled = false;
         }
         else if (currentDialogue.dialogueTag == "RestPoint"){
             restPointTutorialOccured = true;
+            playerController._bMovementDisabled = false;
         }
         else if (currentDialogue.dialogueTag == "ExaminerTutorial"){
             examinerTutorialOccured = true;
+            playerController._bMovementDisabled = false;
         }
         else if (currentDialogue.dialogueTag == "PlatformTutorial"){
             platformTutorialOccured = true;
+            playerController._bMovementDisabled = false;
         }
         else if (currentDialogue.dialogueTag == "PuzzleOne"){
             puzzle1 = true;
@@ -286,6 +293,7 @@ public class DialogueManager : MonoBehaviour
             intro.sentences[7] = "Anyway, I think a formal introduction, or rather, reintroduction is in order. My name is Care.";
             intro.sentences[8] = "Now, let’s get you moving. (press A or D to start moving).";
             playerController._bMovementDisabled = true;
+            soundManager.Stop("Walking");
             StartDialogue(intro);
         }
     }
@@ -312,6 +320,8 @@ public class DialogueManager : MonoBehaviour
             smallBoxTutorial1.sentences = new string[2];
             smallBoxTutorial1.sentences[0] = "Hey, look. A box! One of nature’s finest creations, haha.";
             smallBoxTutorial1.sentences[1] = "That…that was a joke. Anyway, something about it looks…wrong. Let me go over there and check it out. (Put Care over the box using the mouse)";
+            playerController._bMovementDisabled = true;
+            soundManager.Stop("Walking");
             StartDialogue(smallBoxTutorial1);
         }
     }
@@ -368,6 +378,8 @@ public class DialogueManager : MonoBehaviour
             bigBoxTutorial1.sentences = new string[2];
             bigBoxTutorial1.sentences[0] = "Look at that, another box! Bigger this time though. Looks like they’re evolving.";
             bigBoxTutorial1.sentences[1] = "Ok, yeah, I’ll stop trying to be funny. Anyway, I bet if you give that box some of your energy, you could push it around, just like the other one. You probably couldn’t jump around with it, though. (Interact with the big box)";
+            playerController._bMovementDisabled = true;
+            soundManager.Stop("Walking");
             StartDialogue(bigBoxTutorial1);
         }
     }
@@ -390,6 +402,8 @@ public class DialogueManager : MonoBehaviour
             buttonTutorial1.dialogueTag = "ButtonTutorial1";
             buttonTutorial1.sentences = new string[1];
             buttonTutorial1.sentences[0] = "Uh oh, looks like we’re blocked by a door. That button behind us probably opens it. Let’s go check. (give energy to the button and interact with it)";
+            playerController._bMovementDisabled = true;
+            soundManager.Stop("Walking");
             StartDialogue(buttonTutorial1);
         }
     }
@@ -420,6 +434,8 @@ public class DialogueManager : MonoBehaviour
             buttonTutorial3.sentences[4] = "I will warn you though, concentrating returns energy from everywhere, so you’ll get your energy back from the box here too. Then once you’re done concentrating, we can check out the Rest Point up on that ledge.";
             buttonTutorial3.sentences[5] = "Anyway, I’ll stop talking. Time to concentrate!";
             buttonTutorial3.sentences[6] = "(Click and hold the mouse button to concentrate. Your Concentration Time is tracked by the bar below the Energy Bar in the top left of the screen)";
+            playerController._bMovementDisabled = true;
+            soundManager.Stop("Walking");
             StartDialogue(buttonTutorial3);
         }
     }
@@ -435,6 +451,8 @@ public class DialogueManager : MonoBehaviour
             firstCheckpointTutorial.sentences[2] = "When you return to the point, some of the progress you make may be lost, but I’m confident you’ll be able to get right back to where you were.";
             firstCheckpointTutorial.sentences[3] = "(If you are ever unable to continue, press R to return to a Rest Point)";
             firstCheckpointTutorial.sentences[4] = "Now, let’s go see what that purple swirly thing is on the ground. I think I know, but I want to be sure.";
+            playerController._bMovementDisabled = true;
+            soundManager.Stop("Walking");
             StartDialogue(firstCheckpointTutorial);
         }
         else if (checkpointBarkFirst && returnedToRestPoint){
@@ -485,6 +503,8 @@ public class DialogueManager : MonoBehaviour
             examinerTutorial.sentences[1] = "Not only that, when you use the examiner, objects that use will pulse, so you can see where you can use your energy.";
             examinerTutorial.sentences[2] = "(When standing on an Examiner, hold Spacebar to use it. Releasing Space Bar will end the examination)";
             examinerTutorial.sentences[3] = "Oh! Looks like there’s one more object here to check out. Put me over that platform there.";
+            playerController._bMovementDisabled = true;
+            soundManager.Stop("Walking");
             StartDialogue(examinerTutorial);
         }
     }
@@ -500,6 +520,8 @@ public class DialogueManager : MonoBehaviour
             platformTutorial.sentences[2] = "Oh, if you take energy away from a platform, it will move back to the point that it started at unless it was already there. Good thing to keep in mind, I think.";
             platformTutorial.sentences[3] = "Anyway, I think that’s all I remember seeing when I made my way in here, so now it’s time to get you out of here.";
             platformTutorial.sentences[4] = "And like I said, I’ll be with you every step of the way.";
+            playerController._bMovementDisabled = true;
+            soundManager.Stop("Walking");
             StartDialogue(platformTutorial);
         }
     }
@@ -574,6 +596,8 @@ public class DialogueManager : MonoBehaviour
             gameEndDialogue.sentences[0] = "You made it! I’m proud of you. I really am. Despite all your hardship, you made it here.";
             gameEndDialogue.sentences[1] = "I know that the rest of the world seems scary. That moving forward after so much pain is hard. But you’ll get through it. You’ve already made it to this end, so you’ll make it to the next.";
             gameEndDialogue.sentences[2] = "And I’ll be right there with you.";
+            playerController._bMovementDisabled = true;
+            soundManager.Stop("Walking");
             StartDialogue(gameEndDialogue);
         }
     }
