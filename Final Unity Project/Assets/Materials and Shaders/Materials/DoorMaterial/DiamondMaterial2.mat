@@ -37,6 +37,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_1a602a35520b427182c681c5bfff8ef0: 97.09
-    - _Saturation: 1
+    - _Saturation: 1.0015677
     m_Colors: []
   m_BuildTextureStacks: []

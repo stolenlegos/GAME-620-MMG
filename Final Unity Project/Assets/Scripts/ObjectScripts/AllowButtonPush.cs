@@ -9,10 +9,12 @@ public class AllowButtonPush : MonoBehaviour {
   private GameObject player;
   private bool playerNear;
   private bool doorOpen;
+    private bool noRepeatButtonT = false;
     private Coroutine ButtonPressCoroutine;
     private UIManager _mUIManager;
   [SerializeField] private GameObject door;
   public float timer;
+    public static event Action buttonTutorialPush;
 
 
   void Start() {
@@ -37,9 +39,14 @@ public class AllowButtonPush : MonoBehaviour {
             {
                 StopCoroutine("ButtonTimer");
             }
+            if (this.gameObject.name == "Button (2)" && !noRepeatButtonT)
+            {
+                buttonTutorialPush.Invoke();
+                noRepeatButtonT = true;
+            }
             ButtonPressCoroutine = StartCoroutine("ButtonTimer");
-      //Debug.Log("PUSHED THE BUTTON");
-    }
+            //Debug.Log("PUSHED THE BUTTON");
+        }
     else if (!colored && doorOpen)
         {
             PlayerActions.ButtonPushed(door);

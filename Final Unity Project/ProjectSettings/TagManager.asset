@@ -22,6 +22,11 @@ TagManager:
   - Door
   - BoxHolder
   - ButtonTimer
+  - DialogueManager
+  - SmallBoxTutorial
+  - BigBoxTutorial
+  - ButtonTutorial
+  - EnergyReturnTutorial
   layers:
   - Default
   - TransparentFX

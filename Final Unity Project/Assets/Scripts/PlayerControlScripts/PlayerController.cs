@@ -39,11 +39,13 @@ public class PlayerController : MonoBehaviour
     private bool _bPlayerStateChanged = false;
 
     private bool _bInputsDisabled = false;
-    private bool _bMovementDisabled = false;
+    public bool _bMovementDisabled = false;
+    public bool _bJumpingDisabled = false;
     private bool _bGrounded = true;
     public bool _bPushing = false;
     public bool _bPulling = false;
     public bool _bPushingOrPulling = false;
+    private bool passedThroughCheckpoint = false;
 
     //private bool _bPlayerInvincible = false;
     private bool _bPlayerCanExamine = false;
@@ -87,7 +89,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("PlayerState: " + mPlayerState);
+        //Debug.Log("PlayerState: " + mPlayerState);
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
         UpdateWalkingAnimation();
@@ -100,7 +102,8 @@ public class PlayerController : MonoBehaviour
         {
             _bPlayerStateChanged = false;
             // check state changes
-            if (Input.GetKeyDown(KeyCode.R)){
+            // save 
+            if (Input.GetKeyDown(KeyCode.R) && passedThroughCheckpoint){
                 _mSaveManager.ResetPositions();
             } 
             if (!_bMovementDisabled)
@@ -280,6 +283,10 @@ public class PlayerController : MonoBehaviour
         {
             //Debug.Log("Triggered");
             this.transform.parent = other.gameObject.transform;
+        }
+        if (other.gameObject.tag == "Checkpoint")
+        {
+            passedThroughCheckpoint = true;
         }
     }
     private void OnTriggerStay2D(Collider2D other)

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class SaturationControl : MonoBehaviour {
@@ -15,6 +16,8 @@ public class SaturationControl : MonoBehaviour {
   private Material material;
   private float saturationLevel;
     private SpriteRenderer selectionRender;
+    public static event Action smallBoxTutorialActivated;
+    public static event Action smallBoxTutorialClickActivated;
 
 
     void Start() {
@@ -75,6 +78,7 @@ public class SaturationControl : MonoBehaviour {
     private void BoolChange (GameObject obj) {
       if (obj == this.gameObject) {
         colored = !colored;
+            Debug.Log("clicked");
             if (colored && this.gameObject.tag != "Door"){
                 EnergyEvents.objectsColored.Add(this.gameObject);
                 EnergyGive();
@@ -83,6 +87,11 @@ public class SaturationControl : MonoBehaviour {
             if (!colored && this.gameObject.tag != "Door"){
                 EnergyEvents.objectsColored.Remove(this.gameObject);
                 EnergyReturn();
+            }
+            if(this.gameObject.name == "box_Small 7")
+            {
+                Debug.Log("Invoked");
+                smallBoxTutorialClickActivated.Invoke();
             }
             //Debug.Log("Ran");
       }
@@ -116,6 +125,10 @@ public class SaturationControl : MonoBehaviour {
                 POI._objectsNear.Add(this.gameObject);
             }
             POI._objectsToColor.Add(this.gameObject);
+        }
+        if(this.gameObject.name == "box_Small 7")
+        {
+            smallBoxTutorialActivated.Invoke();
         }
     }
     private void OnMouseExit(){

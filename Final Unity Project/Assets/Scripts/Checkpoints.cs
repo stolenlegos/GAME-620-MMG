@@ -26,6 +26,7 @@ public class Checkpoints : MonoBehaviour
         {
             if(firstPass == true)
             {
+                checkpointActivated.Invoke();
                 sm.SavePositions();
                 firstPass = false;
             }
