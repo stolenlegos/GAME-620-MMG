@@ -10,7 +10,7 @@ public class AllowButtonPush : MonoBehaviour {
   private bool playerNear;
   private bool doorOpen;
     private bool noRepeatButtonT = false;
-    private Coroutine ButtonPressCoroutine;
+    public Coroutine ButtonPressCoroutine;
     private UIManager _mUIManager;
     private DialogueManager _mDialogueManager;
   [SerializeField] private GameObject door;
@@ -93,5 +93,16 @@ public class AllowButtonPush : MonoBehaviour {
             StopCoroutine(ButtonPressCoroutine);
         }
   }
+    public void ResetButtonPush()
+    {
+        if(ButtonPressCoroutine != null)
+        {
+            StopCoroutine(ButtonPressCoroutine);
+        }
+        if(this.gameObject.transform.childCount == 3)
+        {
+            Destroy(this.gameObject.transform.GetChild(2).gameObject);
+        }
+    }
 
 }

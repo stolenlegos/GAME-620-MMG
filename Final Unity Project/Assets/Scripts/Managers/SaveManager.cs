@@ -9,6 +9,7 @@ public class SaveManager : MonoBehaviour
     public GameObject[] bigBoxes;
     public GameObject[] buttons;
     public GameObject[] platforms;
+    public GameObject[] doors;
     public GameObject player;
     public GameObject _mUIManager;
 
@@ -39,6 +40,7 @@ public class SaveManager : MonoBehaviour
         buttons = GameObject.FindGameObjectsWithTag("Button");
         platforms = GameObject.FindGameObjectsWithTag("Platform");
         player = GameObject.FindGameObjectWithTag("Player");
+        doors = GameObject.FindGameObjectsWithTag("Door");
         _mUIManager = GameObject.FindGameObjectWithTag("UIManager");
 
         foreach (GameObject gameObject in buttons)
@@ -60,6 +62,10 @@ public class SaveManager : MonoBehaviour
             gameObject.GetComponent<SaturationControl>().SaveCurrentState();
             gameObject.GetComponent<PlatformMovement>().SaveCurrentState();
         }
+        foreach (GameObject gameObject in doors)
+        {
+            gameObject.GetComponent<Door>().SaveDoorState();
+        }
         player.GetComponent<PlayerController>().SaveCurrentState();
         player.GetComponent<EnergyManager>().SaveCurrentState();
         _mUIManager.GetComponent<UIManager>().SaveCurrentState();
@@ -77,6 +83,7 @@ public class SaveManager : MonoBehaviour
         foreach (GameObject gameObject in buttons)
         {
             gameObject.GetComponent<SaturationControl>().ResetState();
+            gameObject.GetComponent<AllowButtonPush>().ResetButtonPush();
         }
         foreach (GameObject gameObject in bigBoxes)
         {
@@ -92,6 +99,10 @@ public class SaveManager : MonoBehaviour
         {
             gameObject.GetComponent<SaturationControl>().ResetState();
             gameObject.GetComponent<PlatformMovement>().ResetState();
+        }
+        foreach (GameObject gameObject in doors)
+        {
+            gameObject.GetComponent<Door>().ReloadDoorState();
         }
         player.GetComponent<PlayerController>().ResetState();
         player.GetComponent<EnergyManager>().ResetState();

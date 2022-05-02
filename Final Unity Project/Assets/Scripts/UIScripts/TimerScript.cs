@@ -15,7 +15,14 @@ public class TimerScript : MonoBehaviour
         this.gameObject.transform.position += Vector3.up * 1f;
         if (this.transform.parent != null)
         {
-            timeStart = this.gameObject.transform.parent.GetComponent<AllowButtonPush>().timer;
+            if (this.gameObject.transform.parent.childCount <= 3)
+            {
+                timeStart = this.gameObject.transform.parent.GetComponent<AllowButtonPush>().timer;
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 

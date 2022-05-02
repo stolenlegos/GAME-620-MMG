@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     public bool _bPulling = false;
     public bool _bPushingOrPulling = false;
     private bool passedThroughCheckpoint = false;
+    public bool groundedForDialogue = true;
 
     //private bool _bPlayerInvincible = false;
     private bool _bPlayerCanExamine = false;
@@ -89,19 +90,27 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("PlayerState: " + mPlayerState);
+        Debug.Log("PlayerState: " + mPlayerState);
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
         UpdateWalkingAnimation();
 
+        Debug.Log("is grounded" + groundedForDialogue);
         //Debug.Log(mSpeed);
+        if (!IsGrounded()) { groundedForDialogue = false; }
+        
 
         if (!_bInputsDisabled)
         {
             _bPlayerStateChanged = false;
             // check state changes
             // save 
-            if (Input.GetKeyDown(KeyCode.R) && passedThroughCheckpoint){
+            if (_bMovementDisabled && mPlayerState == CharacterState.IDLE)
+            {
+                _mAnimatorComponent.SetBool("isGrounded_b", true);
+                _mAnimatorComponent.SetFloat("Speed_f", 0f);
+            }
+                if (Input.GetKeyDown(KeyCode.R) && passedThroughCheckpoint){
                 _mSaveManager.ResetPositions();
             } 
             if (!_bMovementDisabled)
@@ -141,6 +150,7 @@ public class PlayerController : MonoBehaviour
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.EXAMINE;
+                        _mSoundManager.Play("Examine");
                        // Debug.Log("PlayerStateChangedExamine");
                     }
                 }
@@ -152,7 +162,6 @@ public class PlayerController : MonoBehaviour
                     _bMovementDisabled = false;
                     if (_bPulling && IsGrounded())
                     {
-                        //_mSoundManager.Play("Carrying");
                         if (Input.GetKey(KeyCode.D) && !WallCheckRight())
                         {
                             _bIsGoingRight = true;
@@ -228,6 +237,7 @@ public class PlayerController : MonoBehaviour
                     {
                         _mCameraManager.PlayerExamineEnd();
                     }
+                    _mSoundManager.Stop("Examine");
                     _bPlayerStateChanged = true;
                     mPlayerState = CharacterState.IDLE;
                     _bMovementDisabled = false;
@@ -326,6 +336,7 @@ public class PlayerController : MonoBehaviour
                 }
                 if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && IsGrounded())
                 {
+                    _mSoundManager.Play("Landing");
                     _mSoundManager.Play("Walking");
                     _bMovementDisabled = false;
                     _bPlayerStateChanged = true;
@@ -431,7 +442,13 @@ public class PlayerController : MonoBehaviour
         }
         Debug.DrawRay(playerCollider.bounds.center, Vector2.down * (playerCollider.bounds.extents.y + extraHeightText));
         //Debug.Log(raycastHit.collider);
-        return raycastHit.collider != null;
+        if (raycastHit.collider != null)
+        {
+            groundedForDialogue = true;
+            return true;
+        }
+        else { return false; }
+        //return raycastHit.collider != null;
     }
     private bool WallCheckRight()
     {

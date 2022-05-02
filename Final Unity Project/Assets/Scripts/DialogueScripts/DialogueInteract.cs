@@ -28,11 +28,15 @@ public class DialogueInteract : MonoBehaviour
 
     private bool doNotRepeatMovementIntro = false;
     private bool doNotRepeatPlatformTutorial = false;
+    private bool doNotRepeatRestPointTutorial = false;
+    private bool doNotRepeatExaminerTutorial = false;
     private DialogueManager _mDialogueManager;
+    private PlayerController playerController;
     // Start is called before the first frame update
     void Start()
     {
         _mDialogueManager = GameObject.FindGameObjectWithTag("DialogueManager").GetComponent<DialogueManager>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -98,6 +102,11 @@ public class DialogueInteract : MonoBehaviour
             Debug.Log("invoke movement tutorial");
             movementActivated.Invoke();
             doNotRepeatMovementIntro = true;
+        }
+        else if (this.gameObject.tag == "Examiner" && collision.gameObject.tag == "Player" && !doNotRepeatExaminerTutorial && playerController.groundedForDialogue)
+        {
+            examinerStartActivated.Invoke();
+            doNotRepeatExaminerTutorial = true;
         }
     }
     private void OnMouseEnter()

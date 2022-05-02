@@ -40,8 +40,8 @@ public class DialogueManager : MonoBehaviour
     public bool introTutorialOccured = false; //1
     private bool introMovementTutorialOccured = false; //2
     //movement tutorial bools
-    private bool introMovementMoveOccured = false; //3
-    private bool introMovementJumpOccured = false; //4
+    //private bool introMovementMoveOccured = false; //3
+    //private bool introMovementJumpOccured = false; //4
     // object bools
     private bool smallBoxTutorial1Occured = false; //5
     public bool smallBoxTutorial2Occured = false; //6
@@ -402,7 +402,9 @@ public class DialogueManager : MonoBehaviour
             buttonTutorial1.dialogueTag = "ButtonTutorial1";
             buttonTutorial1.sentences = new string[1];
             buttonTutorial1.sentences[0] = "Uh oh, looks like we’re blocked by a door. That button behind us probably opens it. Let’s go check. (give energy to the button and interact with it)";
+            playerController.mPlayerState = CharacterState.IDLE;
             playerController._bMovementDisabled = true;
+            soundManager.Stop("BoxPush/Pull");
             soundManager.Stop("Walking");
             StartDialogue(buttonTutorial1);
         }
@@ -434,7 +436,9 @@ public class DialogueManager : MonoBehaviour
             buttonTutorial3.sentences[4] = "I will warn you though, concentrating returns energy from everywhere, so you’ll get your energy back from the box here too. Then once you’re done concentrating, we can check out the Rest Point up on that ledge.";
             buttonTutorial3.sentences[5] = "Anyway, I’ll stop talking. Time to concentrate!";
             buttonTutorial3.sentences[6] = "(Click and hold the mouse button to concentrate. Your Concentration Time is tracked by the bar below the Energy Bar in the top left of the screen)";
+            playerController.mPlayerState = CharacterState.IDLE;
             playerController._bMovementDisabled = true;
+            soundManager.Stop("BoxPush/Pull");
             soundManager.Stop("Walking");
             StartDialogue(buttonTutorial3);
         }
@@ -451,6 +455,7 @@ public class DialogueManager : MonoBehaviour
             firstCheckpointTutorial.sentences[2] = "When you return to the point, some of the progress you make may be lost, but I’m confident you’ll be able to get right back to where you were.";
             firstCheckpointTutorial.sentences[3] = "(If you are ever unable to continue, press R to return to a Rest Point)";
             firstCheckpointTutorial.sentences[4] = "Now, let’s go see what that purple swirly thing is on the ground. I think I know, but I want to be sure.";
+            playerController.mPlayerState = CharacterState.IDLE;
             playerController._bMovementDisabled = true;
             soundManager.Stop("Walking");
             StartDialogue(firstCheckpointTutorial);

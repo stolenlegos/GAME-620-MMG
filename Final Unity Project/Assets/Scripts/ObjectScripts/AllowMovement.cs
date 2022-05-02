@@ -192,6 +192,7 @@ public class AllowMovement : MonoBehaviour {
 
     private void GrabObject (GameObject obj) {
     if (obj == this.gameObject && colored && detected && grabbable) {
+            _mSoundManager.Play("BoxPickUp");
             groundedObject.Clear();
             wallObjectsRight.Clear();
             wallObjectsLeft.Clear();
@@ -230,6 +231,7 @@ public class AllowMovement : MonoBehaviour {
   private void ReleaseObject (GameObject obj) {
     if (obj == this.gameObject) {
             //Debug.Log("Release");
+            _mSoundManager.Play("BoxRelease");
             player.GetComponent<PlayerController>()._bPushing = false;
             player.GetComponent<PlayerController>()._bPulling = false;
             player.GetComponent<PlayerController>()._bPushingOrPulling = false;

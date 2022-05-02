@@ -16,11 +16,14 @@ public class SaturationControl : MonoBehaviour {
   private Material material;
   private float saturationLevel;
     private SpriteRenderer selectionRender;
+    private SoundManager _mSoundManager;
+    private bool itemColored = false;
     public static event Action smallBoxTutorialActivated;
     public static event Action smallBoxTutorialClickActivated;
 
 
     void Start() {
+        _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         POI = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerObjectInteractions>();
         playerPostion = GameObject.FindGameObjectWithTag("Player").transform;
         coloredEnergy = GameObject.FindGameObjectWithTag("ColoredEnergy");
@@ -46,6 +49,11 @@ public class SaturationControl : MonoBehaviour {
       } else if (colored) {
         IncreaseSat();
       }
+      if(saturationLevel == 1 && itemColored)
+        {
+            _mSoundManager.Play("FullColor");
+            itemColored = false;
+        }
 
       material.SetFloat("_Saturation", saturationLevel);
         playerPostion = GameObject.FindGameObjectWithTag("Player").transform;
@@ -78,7 +86,10 @@ public class SaturationControl : MonoBehaviour {
     private void BoolChange (GameObject obj) {
       if (obj == this.gameObject) {
         colored = !colored;
-            Debug.Log("clicked");
+            if(colored && !itemColored)
+            {
+                itemColored = true;
+            }
             if (colored && this.gameObject.tag != "Door"){
                 EnergyEvents.objectsColored.Add(this.gameObject);
                 EnergyGive();
@@ -90,7 +101,6 @@ public class SaturationControl : MonoBehaviour {
             }
             if(this.gameObject.name == "box_Small 7")
             {
-                Debug.Log("Invoked");
                 smallBoxTutorialClickActivated.Invoke();
             }
             //Debug.Log("Ran");
@@ -119,6 +129,7 @@ public class SaturationControl : MonoBehaviour {
     }
     private void OnMouseEnter(){
         swap = false;
+        _mSoundManager.Play("Select");
         if (this.tag != "Spiral" || this.tag != "Examiner"){
             if (POI._objectsNear.Contains(this.gameObject)){
                 POI._objectsNear.Remove(this.gameObject);
@@ -182,8 +193,8 @@ public class SaturationControl : MonoBehaviour {
         //Debug.Log("Return");
     }
     public void SaveCurrentState(){
-        savedPosition = this.transform.position;
-        savedColorState = this.colored;
+            savedPosition = this.transform.position;
+            savedColorState = this.colored;
     }
     public void ResetState(){
         this.transform.position = savedPosition;
