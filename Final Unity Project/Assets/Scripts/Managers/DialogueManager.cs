@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -22,11 +23,13 @@ public class DialogueManager : MonoBehaviour
     public Animator animator;
     public SoundManager soundManager;
     private PlayerController playerController;
+    private ChangeScene changeScene;
 
     //Sentence and bark framework
     private Queue<string> sentences;
     private string currentSentence;
     private string barkString;
+    private Scene scene;
 
     //Referenced Actions
     public static event Action careOn;
@@ -108,17 +111,28 @@ public class DialogueManager : MonoBehaviour
 
     void Start(){
         sentences = new Queue<string>();
+        scene = SceneManager.GetActiveScene();
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-    }
+        changeScene = GameObject.FindGameObjectWithTag("SceneChange").GetComponent<ChangeScene>();
+}
     private void Update(){
-        if(sentences.Count > 0){
-            if (Input.GetMouseButtonDown(0)){
-                if (!typing){
+        if(scene.name != "MainGame")
+        {
+            Destroy(gameObject);
+        }
+        if (sentences.Count > 0)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (!typing)
+                {
                     DisplayNextSentence(currentDialogue);
                 }
-                else{
-                    if(typeWriterCoroutine != null){
+                else
+                {
+                    if (typeWriterCoroutine != null)
+                    {
                         StopCoroutine(typeWriterCoroutine);
                     }
                     typing = false;
@@ -126,17 +140,25 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
-        else if (sentences.Count == 0 && animator.GetBool("IsOpen") == true){
-            if (Input.GetMouseButtonDown(0)){
-                if (!typing){
-                    DisplayNextSentence(currentDialogue);
-                }
-                else{
-                    if (typeWriterCoroutine != null){
-                        StopCoroutine(typeWriterCoroutine);
+        else if (animator != null)
+        {
+            if (sentences.Count == 0 && animator.GetBool("IsOpen") == true)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (!typing)
+                    {
+                        DisplayNextSentence(currentDialogue);
                     }
-                    typing = false;
-                    dialogueText.text = currentSentence;
+                    else
+                    {
+                        if (typeWriterCoroutine != null)
+                        {
+                            StopCoroutine(typeWriterCoroutine);
+                        }
+                        typing = false;
+                        dialogueText.text = currentSentence;
+                    }
                 }
             }
         }
@@ -160,7 +182,10 @@ public class DialogueManager : MonoBehaviour
     }
 
     public void StartDialogue (Dialogue dialogue){
-        animator.SetBool("IsOpen", true);
+        if (animator != null)
+        {
+            animator.SetBool("IsOpen", true);
+        }
         nameText.text = dialogue.name;
         currentDialogue = dialogue;
         sentences.Clear();
@@ -272,9 +297,13 @@ public class DialogueManager : MonoBehaviour
         }
         else if (currentDialogue.dialogueTag == "GameEnd"){
             gameEnd = true;
+            changeScene.SwitchScene("Credits");
         }
 
-        animator.SetBool("IsOpen", false);
+        if (animator != null)
+        {
+            animator.SetBool("IsOpen", false);
+        }
     }
     void Intro()
     {

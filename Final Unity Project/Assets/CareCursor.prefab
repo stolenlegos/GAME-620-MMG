@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7803503323387030521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7803503323387030519}
+  - component: {fileID: 7803503323387030520}
+  m_Layer: 0
+  m_Name: CareCursor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7803503323387030519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7803503323387030521}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 968.187, y: 514.32574, z: -327.52737}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7803503323387030520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7803503323387030521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f47c0cb61170d48bac3e9ec16fff87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorTextureArray:
+  - {fileID: 2800000, guid: fe6a814eea5c5074f9867e8fdb8891dc, type: 3}
+  - {fileID: 2800000, guid: 98ec61dbc7b25754f8a4941df0f93a91, type: 3}
+  - {fileID: 2800000, guid: 025677220da3a3c4a9dcda422cdf7202, type: 3}
+  - {fileID: 2800000, guid: b5aca3c3b54676d4395c3206179693ac, type: 3}
+  - {fileID: 2800000, guid: adad72274f926ca4eb1cd29e233749f6, type: 3}
+  - {fileID: 2800000, guid: f09bf25944fd3bf4e90e780e5e8ed8ba, type: 3}
+  - {fileID: 2800000, guid: 3218ee51122593e4bb959cc48188647f, type: 3}
+  - {fileID: 2800000, guid: acb1d5fb588449441b1ce19a38c50f7b, type: 3}
+  - {fileID: 2800000, guid: 20c2832f646d7774fba329fa43b6beb4, type: 3}
+  - {fileID: 2800000, guid: 67b7c64471e43e0469c1f8431b9833f6, type: 3}
+  - {fileID: 2800000, guid: cfb82ba435ec1144895a2d75694d6a95, type: 3}
+  - {fileID: 2800000, guid: 4fb3187ccfba1624bb6348ed036f119d, type: 3}
+  - {fileID: 2800000, guid: 74c3676d17f24ef4c82223fc04fc1ea1, type: 3}
+  - {fileID: 2800000, guid: 1101798e4413dc643af6fa5c69416908, type: 3}
+  frameCount: 14
+  frameRate: 0.1

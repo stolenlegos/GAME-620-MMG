@@ -41,15 +41,18 @@ public class UIManager : MonoBehaviour {
     }
 
     void Start() {
-    EnergyEvents.EnergyUIChange += ChangeEnergyLevels;
-    maxEnergy = 4;
-    currentEnergy = maxEnergy;
-    ChangeUI();
-    bar.maxValue = maxEnergy;
-    energyReturnSlider.maxValue = holdTime;
-    ChangeSlider();
-    ChangeEnergyReturnSlider();
-    energyReturnSlider.gameObject.SetActive(false);
+        if (energyLevelText != null && bar != null && energyReturnSlider != null && energyReturnSliderText != null && transBar != null && fillBar != null && Timer != null)
+        {
+            EnergyEvents.EnergyUIChange += ChangeEnergyLevels;
+            maxEnergy = 4;
+            currentEnergy = maxEnergy;
+            ChangeUI();
+            bar.maxValue = maxEnergy;
+            energyReturnSlider.maxValue = holdTime;
+            ChangeSlider();
+            ChangeEnergyReturnSlider();
+            energyReturnSlider.gameObject.SetActive(false);
+        }
   }
 
     private void Update()
@@ -67,7 +70,7 @@ public class UIManager : MonoBehaviour {
                 ChangeEnergyReturnSlider();
             }
         }
-        else { energyReturnSlider.gameObject.SetActive(false); ChangeEnergyReturnSlider(); }
+        else if (energyReturnSlider != null){ energyReturnSlider.gameObject.SetActive(false); ChangeEnergyReturnSlider(); }
         if(transBar.fillAmount >= fillBar.fillAmount)
         {
             transBar.fillAmount -= fillSpeed * Time.deltaTime;

@@ -1,0 +1,148 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5487252061420457413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5487252061420457415}
+  - component: {fileID: 5487252061420457414}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: SoundManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5487252061420457415
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487252061420457413}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -13.531239, y: 26.921396, z: -4.2457275}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5487252061420457414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487252061420457413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb3f65359d12b8140b93e1eb219bd297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: GameMusic
+    clip: {fileID: 8300000, guid: ba91883e5fb096440b42299bc71a61c7, type: 3}
+    volume: 0.15
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: CareTalk
+    clip: {fileID: 8300000, guid: 2c5b2704b357eb54a8f5d181565c8ee2, type: 3}
+    volume: 0.4
+    pitch: 0.4
+    loop: 1
+    source: {fileID: 0}
+  - name: Walking
+    clip: {fileID: 8300000, guid: 321c6c606c46e64408c1a6b2191d314d, type: 3}
+    volume: 0.5
+    pitch: 0.85
+    loop: 1
+    source: {fileID: 0}
+  - name: Jumping
+    clip: {fileID: 8300000, guid: 9ac68a10b8ce50445b285ac9080fc8eb, type: 3}
+    volume: 0.25
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Landing
+    clip: {fileID: 8300000, guid: a30a38dbed23b774eb3f1aa4ffbe5473, type: 3}
+    volume: 0.25
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: DoorOpen
+    clip: {fileID: 8300000, guid: c4ba507f508037f4eb5a601866a6d907, type: 3}
+    volume: 0.4
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: EnergyTransfer
+    clip: {fileID: 8300000, guid: e0cdcd8a9fda1af42a053d7612fa568b, type: 3}
+    volume: 0.1
+    pitch: 0.25
+    loop: 1
+    source: {fileID: 0}
+  - name: ButtonPush
+    clip: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Select
+    clip: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: BoxDrop
+    clip: {fileID: 8300000, guid: 944103009948d584b8ff0680ed28a592, type: 3}
+    volume: 0.25
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: BoxPush/Pull
+    clip: {fileID: 8300000, guid: 6a0749c2f8d3c31479a1dd2078aa0488, type: 3}
+    volume: 0.334
+    pitch: 0.25
+    loop: 1
+    source: {fileID: 0}
+  - name: Checkpoint
+    clip: {fileID: 8300000, guid: 75cf3bda4f5137a44b8b0e6aabb5ebb3, type: 3}
+    volume: 0.25
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: BoxPickUp
+    clip: {fileID: 8300000, guid: 1d13b1eb57555924abceb10f5319d3bb, type: 3}
+    volume: 0.3
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: BoxRelease
+    clip: {fileID: 8300000, guid: 5064436af9de8f946bf16197fdb9d488, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Examining
+    clip: {fileID: 8300000, guid: 7fb54987229dfc74886b48d2924f8bcd, type: 3}
+    volume: 0.15
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: PlatformMoving
+    clip: {fileID: 8300000, guid: 5a37f7610f896504d8c329cfd27c6d58, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: FullColor
+    clip: {fileID: 8300000, guid: 8ce20cacf6fb0a74daf228a22cb7e1ea, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

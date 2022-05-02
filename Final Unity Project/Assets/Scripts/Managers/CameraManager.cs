@@ -23,7 +23,7 @@ public class CameraManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        if (instance == null)
+        /*if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(instance);
@@ -31,7 +31,7 @@ public class CameraManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }
+        }*/
     }
 
     void Start()

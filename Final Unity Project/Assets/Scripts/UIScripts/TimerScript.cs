@@ -32,7 +32,11 @@ public class TimerScript : MonoBehaviour
         if (this.transform.parent != null)
         {
             timeEnd = (/*this.gameObject.transform.parent.GetComponent<AllowButtonPush>().timer*/ timeStart -= (Time.deltaTime));
-            buttonTime.text = ":" + (int) timeEnd;
+            if (timeEnd <= 10)
+            {
+                buttonTime.text = ":0" + (int)timeEnd;
+            }
+            else { buttonTime.text = ":" + (int)timeEnd; }
             if(timeEnd <= 0f || !this.transform.parent.GetComponent<AllowButtonPush>().colored)
             {
                 Destroy(this.gameObject);
