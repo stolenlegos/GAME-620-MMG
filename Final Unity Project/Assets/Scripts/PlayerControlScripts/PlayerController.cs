@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.EXAMINE;
-                        _mSoundManager.Play("Examine");
+                        _mSoundManager.Play("Examining");
                        // Debug.Log("PlayerStateChangedExamine");
                     }
                 }
@@ -237,7 +237,7 @@ public class PlayerController : MonoBehaviour
                     {
                         _mCameraManager.PlayerExamineEnd();
                     }
-                    _mSoundManager.Stop("Examine");
+                    _mSoundManager.Stop("Examining");
                     _bPlayerStateChanged = true;
                     mPlayerState = CharacterState.IDLE;
                     _bMovementDisabled = false;

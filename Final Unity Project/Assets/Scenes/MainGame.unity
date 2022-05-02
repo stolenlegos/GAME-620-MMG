@@ -48011,7 +48011,7 @@ PrefabInstance:
       objectReference: {fileID: 1604683774}
     - target: {fileID: 5777462348095698332, guid: 50d3bf4d2b36359468a1f04d01311843, type: 3}
       propertyPath: timer
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50d3bf4d2b36359468a1f04d01311843, type: 3}
@@ -52034,7 +52034,7 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: EnergyTransfer
-    clip: {fileID: 8300000, guid: 53d74b06444d6b1499a9d18694ad75bb, type: 3}
+    clip: {fileID: 8300000, guid: e0cdcd8a9fda1af42a053d7612fa568b, type: 3}
     volume: 0.1
     pitch: 0.25
     loop: 1
@@ -52046,12 +52046,6 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: Select
-    clip: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
-    volume: 0.1
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: BoxPickUp
     clip: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
     volume: 0.1
     pitch: 1
@@ -52070,7 +52064,37 @@ MonoBehaviour:
     loop: 1
     source: {fileID: 0}
   - name: Checkpoint
-    clip: {fileID: 8300000, guid: 53d74b06444d6b1499a9d18694ad75bb, type: 3}
+    clip: {fileID: 8300000, guid: 75cf3bda4f5137a44b8b0e6aabb5ebb3, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: BoxPickUp
+    clip: {fileID: 8300000, guid: 1d13b1eb57555924abceb10f5319d3bb, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: BoxRelease
+    clip: {fileID: 8300000, guid: 5064436af9de8f946bf16197fdb9d488, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Examining
+    clip: {fileID: 8300000, guid: 7fb54987229dfc74886b48d2924f8bcd, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: PlatformMoving
+    clip: {fileID: 8300000, guid: 5a37f7610f896504d8c329cfd27c6d58, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: FullColor
+    clip: {fileID: 8300000, guid: 8ce20cacf6fb0a74daf228a22cb7e1ea, type: 3}
     volume: 0.1
     pitch: 1
     loop: 0
@@ -54164,11 +54188,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5937162383236334011, guid: a3ab8665d09949a40a78e74b562215b7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 132.98
+      value: -42.32
       objectReference: {fileID: 0}
     - target: {fileID: 5937162383236334011, guid: a3ab8665d09949a40a78e74b562215b7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.91
+      value: -20.92
       objectReference: {fileID: 0}
     - target: {fileID: 5937162383236334011, guid: a3ab8665d09949a40a78e74b562215b7, type: 3}
       propertyPath: m_LocalPosition.z

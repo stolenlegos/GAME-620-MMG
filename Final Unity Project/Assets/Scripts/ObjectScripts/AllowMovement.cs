@@ -231,7 +231,7 @@ public class AllowMovement : MonoBehaviour {
   private void ReleaseObject (GameObject obj) {
     if (obj == this.gameObject) {
             //Debug.Log("Release");
-            _mSoundManager.Play("BoxRelease");
+            //_mSoundManager.Play("BoxRelease");
             player.GetComponent<PlayerController>()._bPushing = false;
             player.GetComponent<PlayerController>()._bPulling = false;
             player.GetComponent<PlayerController>()._bPushingOrPulling = false;

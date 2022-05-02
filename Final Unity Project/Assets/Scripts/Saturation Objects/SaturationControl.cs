@@ -49,12 +49,11 @@ public class SaturationControl : MonoBehaviour {
       } else if (colored) {
         IncreaseSat();
       }
-      if(saturationLevel == 1 && itemColored)
+      if(saturationLevel <= 0 && itemColored && this.gameObject.tag != "Door")
         {
             _mSoundManager.Play("FullColor");
             itemColored = false;
         }
-
       material.SetFloat("_Saturation", saturationLevel);
         playerPostion = GameObject.FindGameObjectWithTag("Player").transform;
     }
