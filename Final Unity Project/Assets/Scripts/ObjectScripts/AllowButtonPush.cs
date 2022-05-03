@@ -9,6 +9,7 @@ public class AllowButtonPush : MonoBehaviour {
   private GameObject player;
   private bool playerNear;
   private bool doorOpen;
+    private bool storedColor;
     private bool noRepeatButtonT = false;
     public Coroutine ButtonPressCoroutine;
     private UIManager _mUIManager;
@@ -93,6 +94,11 @@ public class AllowButtonPush : MonoBehaviour {
             StopCoroutine(ButtonPressCoroutine);
         }
   }
+    public void SaveButtonPush()
+    {
+        storedColor = colored;
+    }
+
     public void ResetButtonPush()
     {
         if(ButtonPressCoroutine != null)
@@ -103,6 +109,7 @@ public class AllowButtonPush : MonoBehaviour {
         {
             Destroy(this.gameObject.transform.GetChild(2).gameObject);
         }
+        colored = storedColor;
     }
 
 }

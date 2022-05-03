@@ -46,6 +46,7 @@ public class SaveManager : MonoBehaviour
         foreach (GameObject gameObject in buttons)
         {
             gameObject.GetComponent<SaturationControl>().SaveCurrentState();
+            gameObject.GetComponent<AllowButtonPush>().SaveButtonPush();
         }
         foreach (GameObject gameObject in bigBoxes)
         {
