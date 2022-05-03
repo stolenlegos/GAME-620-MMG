@@ -39,11 +39,14 @@ public class PlayerController : MonoBehaviour
     private bool _bPlayerStateChanged = false;
 
     private bool _bInputsDisabled = false;
-    private bool _bMovementDisabled = false;
+    public bool _bMovementDisabled = false;
+    public bool _bJumpingDisabled = false;
     private bool _bGrounded = true;
     public bool _bPushing = false;
     public bool _bPulling = false;
     public bool _bPushingOrPulling = false;
+    private bool passedThroughCheckpoint = false;
+    public bool groundedForDialogue = true;
 
     //private bool _bPlayerInvincible = false;
     private bool _bPlayerCanExamine = false;
@@ -92,15 +95,22 @@ public class PlayerController : MonoBehaviour
         moveVertical = Input.GetAxis("Vertical");
         UpdateWalkingAnimation();
 
+        Debug.Log("is grounded" + groundedForDialogue);
         //Debug.Log(mSpeed);
-        //Debug.Log("Grounded Animation: " + _mAnimatorComponent.GetBool("isGrounded_b"));
-        //Debug.Log("Animation " + _mAnimatorComponent.GetCurrentAnimatorStateInfo(0).fullPathHash);
+        if (!IsGrounded()) { groundedForDialogue = false; }
+        
 
         if (!_bInputsDisabled)
         {
             _bPlayerStateChanged = false;
             // check state changes
-            if (Input.GetKeyDown(KeyCode.R)){
+            // save 
+            if (_bMovementDisabled && mPlayerState == CharacterState.IDLE)
+            {
+                _mAnimatorComponent.SetBool("isGrounded_b", true);
+                _mAnimatorComponent.SetFloat("Speed_f", 0f);
+            }
+                if (Input.GetKeyDown(KeyCode.R) && passedThroughCheckpoint){
                 _mSaveManager.ResetPositions();
             } 
             if (!_bMovementDisabled)
@@ -140,6 +150,7 @@ public class PlayerController : MonoBehaviour
                     {
                         _bPlayerStateChanged = true;
                         mPlayerState = CharacterState.EXAMINE;
+                        _mSoundManager.Play("Examining");
                        // Debug.Log("PlayerStateChangedExamine");
                     }
                 }
@@ -151,7 +162,6 @@ public class PlayerController : MonoBehaviour
                     _bMovementDisabled = false;
                     if (_bPulling && IsGrounded())
                     {
-                        //_mSoundManager.Play("Carrying");
                         if (Input.GetKey(KeyCode.D) && !WallCheckRight())
                         {
                             _bIsGoingRight = true;
@@ -227,6 +237,7 @@ public class PlayerController : MonoBehaviour
                     {
                         _mCameraManager.PlayerExamineEnd();
                     }
+                    _mSoundManager.Stop("Examining");
                     _bPlayerStateChanged = true;
                     mPlayerState = CharacterState.IDLE;
                     _bMovementDisabled = false;
@@ -258,7 +269,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void UpdateWalkingAnimation() {
-      if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)){
+      if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && !_bMovementDisabled){
         _mAnimatorComponent.SetFloat("Speed_f", 1);
         if ((Input.GetKey(KeyCode.A) && _bPulling) || (Input.GetKey(KeyCode.D) && _bPulling)) {
           rend.flipX = true;
@@ -280,6 +291,10 @@ public class PlayerController : MonoBehaviour
         {
             //Debug.Log("Triggered");
             this.transform.parent = other.gameObject.transform;
+        }
+        if (other.gameObject.tag == "Checkpoint")
+        {
+            passedThroughCheckpoint = true;
         }
     }
     private void OnTriggerStay2D(Collider2D other)
@@ -321,6 +336,7 @@ public class PlayerController : MonoBehaviour
                 }
                 if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && IsGrounded())
                 {
+                    _mSoundManager.Play("Landing");
                     _mSoundManager.Play("Walking");
                     _bMovementDisabled = false;
                     _bPlayerStateChanged = true;
@@ -426,7 +442,13 @@ public class PlayerController : MonoBehaviour
         }
         Debug.DrawRay(playerCollider.bounds.center, Vector2.down * (playerCollider.bounds.extents.y + extraHeightText));
         //Debug.Log(raycastHit.collider);
-        return raycastHit.collider != null;
+        if (raycastHit.collider != null)
+        {
+            groundedForDialogue = true;
+            return true;
+        }
+        else { return false; }
+        //return raycastHit.collider != null;
     }
     private bool WallCheckRight()
     {

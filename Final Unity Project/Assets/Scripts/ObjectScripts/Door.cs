@@ -7,11 +7,14 @@ public class Door : MonoBehaviour {
   private Collider2D trigger;
   private SpriteRenderer sprite;
   private bool open;
+    public bool storedOpen;
     private SoundManager _mSoundManager;
+    private SaveManager _mSaveManager;
 
 
   void Start() {
         _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        _mSaveManager = GameObject.FindGameObjectWithTag("SM").GetComponent<SaveManager>();
         col = GetComponent<Collider2D>();
     trigger = GetComponent<CapsuleCollider2D>();
     sprite = GetComponent<SpriteRenderer>();
@@ -30,6 +33,7 @@ public class Door : MonoBehaviour {
       sprite.enabled = true;
       trigger.enabled = true;
     }
+        
     if(this.transform.parent.GetComponent<AllowButtonPush>().colored == false)
         {
             open = false;
@@ -51,4 +55,12 @@ public class Door : MonoBehaviour {
             }
     }
   }
+    public void SaveDoorState()
+    {
+        storedOpen = open;
+    }
+    public void ReloadDoorState()
+    {
+        open = storedOpen; 
+    }
 }

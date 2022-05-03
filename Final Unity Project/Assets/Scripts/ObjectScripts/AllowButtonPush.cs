@@ -9,14 +9,19 @@ public class AllowButtonPush : MonoBehaviour {
   private GameObject player;
   private bool playerNear;
   private bool doorOpen;
-    private Coroutine ButtonPressCoroutine;
+    private bool storedColor;
+    private bool noRepeatButtonT = false;
+    public Coroutine ButtonPressCoroutine;
     private UIManager _mUIManager;
+    private DialogueManager _mDialogueManager;
   [SerializeField] private GameObject door;
   public float timer;
+    public static event Action buttonTutorialPush;
 
 
   void Start() {
         _mUIManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        _mDialogueManager = GameObject.FindGameObjectWithTag("DialogueManager").GetComponent<DialogueManager>();
         player = GameObject.FindGameObjectWithTag("Player");
     colored = false;
     doorOpen = false;
@@ -31,15 +36,20 @@ public class AllowButtonPush : MonoBehaviour {
       doorOpen = true;
             if (doorOpen)
             {
-                _mUIManager.DisplayTimer(this.gameObject.transform);
+                _mUIManager.DisplayTimer(this.gameObject.transform, timer);
             }
             if(ButtonPressCoroutine != null)
             {
                 StopCoroutine("ButtonTimer");
             }
+            if (this.gameObject.name == "Button (2)" && !noRepeatButtonT && _mDialogueManager.buttonTutorial1Occured)
+            {
+                buttonTutorialPush.Invoke();
+                noRepeatButtonT = true;
+            }
             ButtonPressCoroutine = StartCoroutine("ButtonTimer");
-      //Debug.Log("PUSHED THE BUTTON");
-    }
+            //Debug.Log("PUSHED THE BUTTON");
+        }
     else if (!colored && doorOpen)
         {
             PlayerActions.ButtonPushed(door);
@@ -84,5 +94,22 @@ public class AllowButtonPush : MonoBehaviour {
             StopCoroutine(ButtonPressCoroutine);
         }
   }
+    public void SaveButtonPush()
+    {
+        storedColor = colored;
+    }
+
+    public void ResetButtonPush()
+    {
+        if(ButtonPressCoroutine != null)
+        {
+            StopCoroutine(ButtonPressCoroutine);
+        }
+        if(this.gameObject.transform.childCount == 3)
+        {
+            Destroy(this.gameObject.transform.GetChild(2).gameObject);
+        }
+        colored = storedColor;
+    }
 
 }

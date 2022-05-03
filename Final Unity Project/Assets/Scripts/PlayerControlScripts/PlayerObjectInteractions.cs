@@ -7,22 +7,24 @@ public class PlayerObjectInteractions : MonoBehaviour {
   public List<GameObject> _objectsNear = new List<GameObject>();
     public List<GameObject> _objectsToColor = new List<GameObject>();
     private PlayerController playerController;
+    private DialogueManager dialogueManager;
 
     private void Awake()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        dialogueManager = GameObject.FindGameObjectWithTag("DialogueManager").GetComponent<DialogueManager>();
     }
 
     void Update() {
-        if (Input.GetMouseButtonDown(0) && _objectsToColor.Count != 0 /*&& !Input.GetMouseButton(0)*/) {
+        if (Input.GetMouseButtonDown(0) && _objectsToColor.Count != 0 && dialogueManager.smallBoxTutorial2Occured/*&& !Input.GetMouseButton(0)*/) {
           EnergyEvents.ChangeColor(_objectsToColor[_objectsToColor.Count - 1]);
         }
 
-        if (Input.GetKey(KeyCode.W) && _objectsNear.Count != 0 && playerController.mPlayerState != CharacterState.JUMPING) {
+        if (Input.GetKey(KeyCode.E) && _objectsNear.Count != 0 && playerController.mPlayerState != CharacterState.JUMPING) {
           PlayerActions.ObjectGrab(_objectsNear[_objectsNear.Count - 1]);
         }
 
-        if (Input.GetKeyDown(KeyCode.W) &&_objectsNear.Count != 0) {
+        if (Input.GetKeyDown(KeyCode.E) &&_objectsNear.Count != 0) {
             int i = 0;
             while (i < _objectsNear.Count)
             {

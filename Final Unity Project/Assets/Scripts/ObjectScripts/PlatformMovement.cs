@@ -9,7 +9,9 @@ public class PlatformMovement : MonoBehaviour
     public Transform startPos;
     private bool colored;
     private bool savedColored;
+    private bool transport = false;
     private Animator _mAnimatorComponent;
+    private SoundManager _mSoundManager;
 
     Vector3 nextPos;
 
@@ -20,6 +22,7 @@ public class PlatformMovement : MonoBehaviour
         colored = false;
         ShaderEvents.SaturationChange += BoolChange;
         _mAnimatorComponent = this.gameObject.GetComponent<Animator>();
+        _mSoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -37,7 +40,7 @@ public class PlatformMovement : MonoBehaviour
                 nextPos = pos1.position;
             }
         }
-        if (!colored)
+        if (!colored && !transport)
         {
             _mAnimatorComponent.SetBool("Colored", false);
             if (!colored && transform.position != pos1.position)
@@ -53,6 +56,14 @@ public class PlatformMovement : MonoBehaviour
         if (obj == this.gameObject)
         {
             colored = !colored;
+            if (colored)
+            {
+                _mSoundManager.Play("PlatformMoving");
+            }
+            else if (!colored)
+            {
+                _mSoundManager.Stop("PlatformMoving");
+            }
         }
     }
     public void SaveCurrentState()
@@ -65,7 +76,7 @@ public class PlatformMovement : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Door")
+        if(collision.gameObject.tag == "Door" && colored)
         {
             if (nextPos == pos2.position)
             {
@@ -75,6 +86,11 @@ public class PlatformMovement : MonoBehaviour
             {
                 nextPos = pos2.position;
             }
+        }
+        else if (collision.gameObject.tag == "Door" && !colored)
+        {
+
+            this.transform.position = startPos.position;
         }
     }
 }
