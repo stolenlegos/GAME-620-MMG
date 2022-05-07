@@ -1,18 +1,18 @@
 {
-"name": "com.unityexample.Heartache"
-"version": "1.0.1"
-"displayName": "Heartache Package"
-"description": "This is the package containing all of the code for my capstone project, Heartache."
-"unity": "2020.3.27f1"
-"unityRelease": "05b"
+"name": "com.unityexample.Heartache",
+"version": "1.0.1",
+"displayName": "Heartache Package",
+"description": "This is the package containing all of the code for my capstone project, Heartache.",
+"unity": "2020.3.27f1",
+"unityRelease": "05b",
 "keywords": {
-	"heartache"
-	"platformer"
+	"heartache",
+	"platformer",
 	"capstone"
 	}
 "author": {
-	"name": "Sam Smyth"
-	"email": "samuelsmyth667@gmail.com"
+	"name": "Sam Smyth",
+	"email": "samuelsmyth667@gmail.com",
 	"url": "www.unavailabe.com"
 	}
 "type": "game"
